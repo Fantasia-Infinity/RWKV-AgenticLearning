@@ -1,0 +1,24 @@
+# 采集时间: 2026-11-05T20:24:02Z (UTC)
+# 与上游 NovaSky-AI/SkyRL 的 ahead/behind
+
+## 命令: git rev-list --left-right --count upstream/main...origin/main
+## 输出: 左=upstream 独有(behind) 右=fork 独有(ahead)
+59	272
+
+## origin/main HEAD
+04a5c9856830e0862eb33b67f6d8924e33aaceee 2026-10-31T03:47:56-07:00 chore: configure code owners
+## upstream/main HEAD
+1f77d3407bc8481de855128bec2dd14b7b2efe7c 2026-11-05T11:32:37-08:00 [megatron] Qwen3.8-Flash-Next context parallelism up to 262K (#2607)
+## merge-base
+69410e77e4048b6a96fc3dcf9c6f6541e563687f 2026-10-23T15:23:49-07:00 [megatron] chunked_mlp: equal MoE call counts per rank, and router replay (R3) per chunk (#2532)
+
+## fork 相对 merge-base 的改动统计
+ tests/train/test_vllm_metrics_scraper.py           |    1 +
+ tests/train/utils/test_rate_limiter.py             |   12 -
+ uv.lock                                            | 4152 ++++++++++++++------
+ 186 files changed, 38659 insertions(+), 1787 deletions(-)
+
+## 说明：upstream/main 于 2026-11-05T11:32:37-08:00 (=19:32Z) 又有新提交，故 behind 比交接的 58 多 1
+
+## 全历史提交数 (origin/main) / upstream 独有 / fork 独有
+total=1672  fork-only(ahead)=272  upstream-only(behind)=59

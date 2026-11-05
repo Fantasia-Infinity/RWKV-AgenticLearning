@@ -1,0 +1,46 @@
+# 跟踪仓库清单。格式: owner/repo [| branch] [| 备注]
+# branch 省略 = 用仓库默认分支(HEAD symref)
+# 维护约定: rwkv-rs 组织全量仓库必须在此(2026-11-05 校准为 30 个)
+
+# ===== L2 训练 / RL =====
+rwkv-rs/skyrl-rwkv
+rwkv-rs/vllm-rwkv | rwkv
+rwkv-rs/verl-rwkv
+rwkv-rs/torchtitan-rwkv
+rwkv-rs/antidoom-rwkv
+rwkv-rs/fla-rwkv
+rwkv-rs/Megatrwkv-Bridge
+Joluck/RWKV-PEFT
+OpenMOSE/RWKV-LM-RLHF
+TimeMobius/RWKV-Megatron
+howard-hou/RWKV-SFT
+
+# ===== L1 算子 / 推理 / 状态 =====
+rwkv-rs/FlashRWKV2
+rwkv-rs/transformers-rwkv
+rwkv-rs/hf-adapter
+rwkv-rs/tokenizers-rwkv
+rwkv-rs/rwkv-rs
+rwkv-rs/rwkv-rs-stable
+rwkv-rs/rwkv-rs-test
+xiaol/wkvm
+RWKV-Vibe/rwkv_lightning
+
+# ===== L5 评测 =====
+rwkv-rs/rwkv-skills
+rwkv-rs/browsecomp-plus-eval
+rwkv-rs/evalscope-rwkv
+rwkv-rs/lighteval-rwkv
+rwkv-rs/lm-evaluation-harness-rwkv
+rwkv-rs/chinese-babylm-eval-pipeline
+
+# ===== Agent 运行时 / 其他 =====
+rwkv-rs/RWKV-Scout
+rwkv-rs/RWKV-LH
+rwkv-rs/RWKV-AUTODECO
+rwkv-rs/any2rwkv
+rwkv-rs/codex-compact-router
+rwkv-rs/llm-compressor-rwkv
+rwkv-rs/rwkv7-ascend-npu
+rwkv-rs/wandb-rs
+rwkv-rs/wx-cli

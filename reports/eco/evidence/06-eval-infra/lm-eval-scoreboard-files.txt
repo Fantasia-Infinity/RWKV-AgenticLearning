@@ -1,0 +1,8 @@
+configs/benchmarks.toml
+lm_eval/_cli/harness.py
+lm_eval/_cli/publish.py
+lm_eval/loggers/scoreboard.py
+tests/test_cli_publish.py
+tests/test_cli_subcommands.py
+tests/test_evaluator_benchmark_publish.py
+tests/test_scoreboard_benchmark_publication.py

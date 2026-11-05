@@ -1,0 +1,49 @@
+=== wkvm atom feeds @ 2026-11-05T20:08:45Z ===
+--- branch: main ---
+<id>tag:github.com,2008:/xiaol/wkvm/commits/main</id>
+<title>Recent Commits to wkvm:main</title>
+<updated>2026-08-02T03:15:22Z</updated>
+<entry>
+<id>tag:github.com,2008:Grit::Commit/93e7a8714588875b2766160ce6aae5f7b17be933</id>
+<title>
+<updated>2026-08-02T03:15:22Z</updated>
+<entry>
+<id>tag:github.com,2008:Grit::Commit/246095f67ec8c6e424671dc5ab3e5913b1cec3ec</id>
+<title>
+<updated>2026-08-02T03:11:04Z</updated>
+<entry>
+--- branch: demo/open-webui-video ---
+<id>tag:github.com,2008:/xiaol/wkvm/commits/demo/open-webui-video</id>
+<title>Recent Commits to wkvm:demo/open-webui-video</title>
+<updated>2026-07-17T05:29:03Z</updated>
+<entry>
+<id>tag:github.com,2008:Grit::Commit/5a5fda5ceb48eacded5098fe9dc3b6a05e356776</id>
+<title>
+<updated>2026-07-17T05:29:03Z</updated>
+<entry>
+<id>tag:github.com,2008:Grit::Commit/9200cdb7ca5f6a7c21c27c4a82c882e9fdfb80d4</id>
+<title>
+<updated>2026-07-17T03:16:48Z</updated>
+<entry>
+--- branch: m4-qwen35-hybrid ---
+<id>tag:github.com,2008:/xiaol/wkvm/commits/m4-qwen35-hybrid</id>
+<title>Recent Commits to wkvm:m4-qwen35-hybrid</title>
+<updated>2026-09-10T03:18:07Z</updated>
+<entry>
+<id>tag:github.com,2008:Grit::Commit/241affd2f6d172f8ee1e4f492e1badbc65ef68ac</id>
+<title>
+<updated>2026-09-10T03:18:07Z</updated>
+<entry>
+<id>tag:github.com,2008:Grit::Commit/f5c5cdd1e0a4cbdf533b44da1bc1e9c96946cb2a</id>
+<title>
+<updated>2026-09-10T02:42:22Z</updated>
+<entry>
+=== raw HTTP status probes @ 2026-11-05T20:08:46Z ===
+404  https://raw.githubusercontent.com/xiaol/wkvm/main/LICENSE
+404  https://raw.githubusercontent.com/xiaol/wkvm/main/LICENSE.md
+404  https://raw.githubusercontent.com/xiaol/wkvm/main/LICENSE.txt
+404  https://raw.githubusercontent.com/xiaol/wkvm/main/COPYING
+200  https://raw.githubusercontent.com/xiaol/wkvm/main/pyproject.toml
+200  https://raw.githubusercontent.com/xiaol/wkvm/main/README.md
+404  https://raw.githubusercontent.com/rwkv-rs/Helicopter/main/README.md
+404  https://api.github.com/repos/rwkv-rs/Helicopter

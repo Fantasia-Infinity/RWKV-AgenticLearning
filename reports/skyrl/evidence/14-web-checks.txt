@@ -1,0 +1,23 @@
+# 采集时间: 2026-11-05T20:24:36Z (UTC) — 零 API 配额 web 核验（curl，原始输出）
+
+## GitHub API repo metadata（1 次 API 调用，2026-11-05T20:15:51Z）
+full_name=rwkv-rs/skyrl-rwkv fork=True created_at=2026-08-30T19:00:45Z pushed_at=2026-10-31T10:49:00Z
+stargazers_count=5 forks_count=1 license=Apache-2.0 default_branch=main size=47778KB
+parent/source=NovaSky-AI/SkyRL   （原始 JSON: 04-api-repo-metadata.json）
+
+## GitHub 网页抓取（curl）
+repo page https://github.com/rwkv-rs/skyrl-rwkv -> http=200, 页面内 "stargazerCount":5
+Helicopter https://github.com/rwkv-rs/Helicopter -> http=404, <title>Page not found · GitHub</title>
+vllm-rwkv commit 67f0c599 -> http=200, <title>fix(benchmark): remove unsupported rapid-sampler seed · rwkv-rs/vllm-rwkv@67f0c59 · GitHub</title>
+    该页 authoredDate=2026-08-04T01:52:39-05:00 committedDate=2026-08-04T15:03:28+08:00  full_sha=67f0c5996c50dca0ad779da545cb491527de988f
+
+## 依赖 URL 可达性（HTTP 状态）
+200 https://github.com/rwkv-rs/transformers-rwkv/commit/f93dd4e01e0b565ef0390f76c6726d1d121ebbab
+200 https://github.com/rwkv-rs/lighteval-rwkv/commit/c5475e27a1e58184c9a6cdbd30572ec1ae601dd7
+200 https://github.com/rwkv-rs/tokenizers-rwkv/commit/c5d8dde5ff49c70e4656199d5033a84e03c21b2b
+200 https://github.com/Joluck/NoRA/commit/4669c35ce0ffd027456272ee5050c0f58ac8d22a
+200 https://github.com/rwkv-rs/vllm-rwkv/commit/2852a7b1d597f6e2131ec801de331b886471cd95
+200 https://pypi.org/pypi/FlashRWKV2/json
+200 https://huggingface.co/rwkv-rs/rwkv7-g1-st
+
+## git ls-remote（无 API 配额）时间戳见文件头

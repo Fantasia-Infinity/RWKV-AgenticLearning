@@ -1,0 +1,158 @@
+=== wkvm RWKV-path benchmark artifacts @ 2026-11-05T20:10:19Z ===
+########## experiments/results/m2_engine_bench.md ##########
+     1	# M2 engine bench — steady-state decode from the engine loop
+     2	
+     3	*RTX 4090 24GB, 2026-07-03, torch 2.11 cu130 + fla, bf16 weights / fp32 wkv state.
+     4	Every timed token flows through `Engine.step()`: `scheduler.schedule()` →
+     5	gather/forward/scatter → batched sample → `update_from_output()`. All B slots
+     6	decoding, nobody finishes mid-measurement (prompt 32, 64 timed steps, 8 warmup).
+     7	Reproduce: `python experiments/m2_engine_bench.py [--model PATH] --graph`.*
+     8	
+     9	## RWKV-7 World 1.5B (24 layers, d=2048) — 12.19 MiB state/slot
+    10	
+    11	| B | tok/s (eager) | tok/s (graphed) | state MiB total | peak VRAM GiB |
+    12	|---|---|---|---|---|
+    13	| 1 | 67 | 195 | 24 | 2.96 |
+    14	| 8 | 516 | 1,084 | 110 | 3.19 |
+    15	| 32 | 1,890 | 3,565 | 402 | 4.36 |
+    16	| 64 | 3,592 | 5,274 | 792 | 5.92 |
+    17	| 128 | 6,345 | 6,886 | 1,572 | 9.84 |
+    18	| 256 | 7,913 | 8,077 | 3,132 | 19.02 |
+    19	
+    20	## RWKV-7 World 191M (12 layers, d=768) — 2.29 MiB state/slot
+    21	
+    22	| B | tok/s (eager) | tok/s (graphed) | state MiB total | peak VRAM GiB |
+    23	|---|---|---|---|---|
+    24	| 1 | 132 | 680 | 5 | 0.45 |
+    25	| 8 | 1,038 | 4,160 | 21 | 0.46 |
+    26	| 32 | 3,991 | 15,299 | 75 | 0.69 |
+    27	| 64 | 7,738 | 23,471 | 149 | 0.87 |
+    28	| 128 | 14,506 | 32,338 | 295 | 1.77 |
+    29	| 256 | 26,707 | 38,856 | 587 | 2.94 |
+    30	
+    31	## Notes
+    32	
+    33	- **Graphed** = the decode-step *model forward* captured in one CUDA graph per
+    34	  batch-size bucket (`GraphedRunner` in `m2_engine_bench.py`), replayed while
+    35	  batch composition is unchanged; per-layer state gather/scatter and the
+    36	  scheduler remain eager python. Verified token-identical to the eager path
+    37	  (48 greedy tokens × 3 real prompts through the engine, both runners).
+    38	- Graph capture worked first try: fla's fused-recurrent triton kernels and the
+    39	  seeded-`Cache` forward are capture-safe under `torch.cuda.graph` with static
+    40	  input/state tensors; output-state addresses are stable in the graph pool.
+    41	- Speedup is python-launch-overhead-bound, so it decays with B: 2.9× at B=1,
+    42	  1.05× at B=256 (1.5B). At B=1 the graphed step is ~5.1 ms of which ~2.6 ms
+    43	  is the replay — the rest is the eager gather/scatter (72 `index_select` +
+    44	  72 `index_copy_` at 24 layers) plus scheduler python. Folding gather/scatter
+    45	  into the capture (or batching it across layers) is the obvious next win.
+    46	- Peak VRAM is for the `--graph` run and includes the graph's static input
+    47	  tensors (a second `[B, ...]` state copy, ~3.1 GiB at 1.5B/B=256) and the
+    48	  graph memory pool; eager-only peaks are correspondingly lower.
+    49	- vs Albatross (RWKV-7 **2.9B** fp16, hand-tuned sm_89 CUDA, static batch, no
+    50	  scheduler — see docs/COMPARISON.md §3): 195 / 840 / 3,595 / 6,042 / 10,158 /
+    51	  12,707 tok/s at B = 1/8/32/64/128/256. Our graphed 1.5B ladder sits at
+    52	  ~0.6–1.0× Albatross's *2.9B* numbers per batch point despite running a model
+    53	  half the size — i.e. per-parameter we are roughly 2× off their kernel
+    54	  efficiency, which is the expected price of python-loop + generic fla kernels
+    55	  vs hand-tuned CUDA, before any fused gather/scatter or whole-step capture.
+
+########## experiments/results/m3_results.md ##########
+     1	# M3 results: Durable State API + the three generation-claim demos
+     2	
+     3	*RWKV-7 191M (fla format), RTX 4090, 2026-07-06. Full log: `m3_run.log`. Test suite: 29/29 OK (5 new StateStore gates: cross-tier exactness, fork isolation, mutate provenance, rebuild-from-COLD-index, fingerprint rejection).*
+     4	
+     5	## Demo (a) — warm-session fleet ✅
+     6	
+     7	2000 sessions created + snapshotted through continuous batching (64 slots) in **31.7s**; WARM tier 4.46 GiB (**2.29 MiB/session**); 500 evicted to COLD safetensors in 4.9s.
+     8	
+     9	| resume-to-next-token | n | p50 | p99 | max |
+    10	|---|---|---|---|---|
+    11	| WARM (pinned host → slot) | 224 | **8.2 ms** | 9.5 ms | 35.7 ms |
+    12	| COLD (NVMe safetensors → slot) | 76 | **8.6 ms** | 17.6 ms | 18.4 ms |
+    13	
+    14	Exactness: **16/16** interrupted+resumed continuations token-identical to uninterrupted twins (both sides batch-1 to isolate the store from bf16 batch-shape effects). The p99-under-10ms number is the "thousands of hibernated sessions, sub-100ms resume" claim, beaten by 10×; per-session memory says one 24 GB card + one 64 GB host can keep ~25k sessions warm at this model size (1.5B: 12.2 MiB/session → ~5k).
+    15	
+    16	## Demo (b) — persistent, forkable, mutable agent ✅
+    17	
+    18	- **RESTART-EXACT: True** — session `agent@2` persisted to COLD, engine process exited, a fresh process rebuilt the store from `index.json` alone and produced the identical 24-token greedy continuation.
+    19	- **Fork**: 64 children in 544.8 ms (**8.5 ms/fork** — metadata + shared bytes, no state copy); 8 decoded concurrently with distinct seeds → 8 distinct continuations; parent unperturbed.
+    20	- **Mutate**: `decay(alpha=0.2)` produced `agent@3` with recorded provenance (`rule='decay' <- agent@2`); its continuation differs while the parent's remains bit-exact. This is the operation no prefix-keyed cache can represent: `agent@3` is not `f(any token prefix)`.
+    21	
+    22	## Demo (c) — trainer/server kernel parity: measured, and the claim needs sharpening ⚠️
+    23	
+    24	8 seeded rollouts × 64 tokens, scored two ways over the *same* fla kernels and weights (bf16): serving path (chunked prefill + per-token `fused_recurrent` decode) vs trainer path (one `chunk_rwkv7` full-sequence forward, `use_cache=False`):
+    25	
+    26	- **max |Δlogprob| = 1.38e-1, mean = 1.99e-2, rollouts within 5e-3 everywhere: 0/8.**
+    27	
+    28	Honest reading: *having* the same kernels on both sides does not make decode-time logprobs match trainer recompute — the fused-recurrent and chunked paths accumulate bf16 differently, and 64 recurrent steps compound it. What survives, still differentiated:
+    29	
+    30	1. wkvm can score/verify with the **trainer-identical chunked path** (it is the same `model(input_ids, use_cache=False)` call) — a scoring mode that is bitwise-equal to the trainer *by construction*, no trainer modification needed. That remains beyond SGLang's deterministic mode, whose docs require modifying the training engine.
+    31	2. The decode↔train drift is now **quantified** (mean 2e-2 at bf16, 191M/64 tokens) — RL users can decide between importance-ratio correction (standard) or chunked-path rescoring per rollout.
+    32	3. Untested here: fp32 state + fp32 accumulation variants, and whether drift shrinks at larger models; both are follow-ups before the "bitwise on-policy RL" claim is used in anger.
+    33	
+    34	## What M3 adds to the engine
+    35	
+    36	`wkvm/store.py` (tiered StateStore, `name@version` lineage, fork, mutation-rule registry with `decay`/`merge`, model fingerprint binding), scheduler `on_finish` hook + `add_resumed_request` (resume = a request with a nonzero starting point — no special path), engine `snapshot/hibernate/resume/submit_from_handle`, `/v1/states` + `/v1/generate` HTTP layer (`wkvm/server.py`), and `experiments/m3_demos.py` (all three demos, reproducible).
+
+########## ROADMAP.md ##########
+     1	# Roadmap
+     2	
+     3	Milestones are cumulative; each one is a working artifact with a demo or a green test suite.
+     4	Rationale for every design choice lives in `docs/ANGLE.md` §5 and `docs/RECURRENT_MODE.md` §6.
+     5	
+     6	## M0 — Core bookkeeping (this commit)
+     7	
+     8	- `StateArena`: per-family fixed-slot allocator; exact admission; fork = refcounted slot copy semantics reserved in the interface.
+     9	- No-phases scheduler: one integer per request (`num_computed_tokens`) converging to target under a global token budget — chunked prefill, decode, and resume fall out of one loop (stolen from vLLM v1's cleanest invariant).
+    10	- Pure Python, no torch import in `wkvm/core`; unit tests run anywhere.
+    11	
+    12	## M1 — RWKV-7 decode on one GPU
+    13	
+    14	- Model: RWKV-7 (start ~1.5B for iteration speed, then 7B).
+    15	- FLA kernels: chunked scan for prefill, recurrent update for decode; state arena owns the `[slots, ...]` tensors per layer family.
+    16	- Greedy + temperature/top-p sampling; logit parity harness vs the reference implementation (per-layer divergence check).
+    17	- Exit: correct completions, batch=N decode from the arena.
+    18	
+    19	## M2 — Continuous batching + CUDA graphs + server
+    20	
+    21	- Wire M0 scheduler to M1 runner; overlap scheduling (bounded future queue) from day one — retrofitting it is what scarred SGLang.
+    22	- Whole-step decode CUDA graphs keyed by batch size buckets (uniform batches make this trivially safe).
+    23	- `wkvm.core.mixed_batch.MixedBatchMetadata` defines the dependency-free
+    24	  ragged contract used to combine decode rows with unequal prefill rows; the
+    25	  native runner integration and CPU parity/fallback gates are implemented.
+    26	- Minimal OpenAI-compatible HTTP frontend in its own process; engine speaks token ids only.
+    27	- Exit: Albatross-comparison benchmark — decode tok/s vs batch size, flat VRAM chart.
+    28	
+    29	## M3 — StateStore + Durable State API (the moat) — ✅ DONE 2026-07-06 (see experiments/results/m3_results.md)
+    30	
+    31	- Position-indexed checkpoint store (boundary snapshots every N tokens), GPU → pinned host → NVMe tiering.
+    32	- `/v1/states`: create-from-prompt, save/load (safetensors), fork (COW slot copy), pin, delete; sessions = named states; hibernate/resume; rollback-to-checkpoint.
+    33	- Mutation hooks: registered state-update rules (decay / merge / consolidate).
+    34	- Exit demos: agent survives engine restart; corpus-state forked to 1k requests; N-thousand warm sessions with sub-100ms resume.
+    35	
+    36	## M4 — Hybrid guest allocator
+    37	
+    38	- Paged full-attention pool (page-bytes unified with state pages — vLLM's one load-bearing hybrid trick), FA3 or FlashInfer backend.
+    39	- First hybrid model: Qwen3-Next class (forces MoE-by-dependency: FlashInfer/vLLM fused-MoE kernels as imports, never in-tree).
+    40	- Exit: hybrid model E2E; pure transformer runs as all-guest parity baseline.
+    41	
+    42	## M5 — Recurrent mode for transformers (`docs/RECURRENT_MODE.md`)
+    43	
+    44	1. Ring-only slots (sink + sliding window) — also the SWA path hybrids need anyway.
+    45	2. Timescale bank: K states, per-state decay, no boundary logic (static graph ops).
+    46	3. Segmented bank: novelty/DLA boundaries + capacity-bounded merge, exposed as a `/v1/states` mutation op.
+    47	4. RWKV-MS sidecar loader (hash-bound validation); tau2 parity at batch N vs the single-sequence llama.cpp baseline.
+    48	5. Per-model layer budget profiles; flat-memory-vs-context demo chart.
+    49	
+    50	## Deferred / refused
+    51	
+    52	- Speculative decoding via N+1 state slots (only if it earns its complexity), P/D disaggregation (one transport, one RDMA write per session), TP (manual sharding in the importer when needed).
+    53	- Refused permanently: model zoo breadth, multi-platform matrix, multi-backend grammar, god-configs. See `docs/ANGLE.md` §3.
+    54	
+    55	## Day-one, retrofit-hostile decisions (enforced from M1)
+    56	
+    57	1. Tag-scoped GPU allocator (weights / states / KV pools) so RL sleep/wake works later.
+    58	2. One `process_weights_after_loading` hook — the only quantization coupling point.
+    59	3. Metrics ride the output wire; nothing scrapes the busy loop.
+    60	4. Per-request sampler/grammar state must be clonable (fork depends on it).
+    61	5. Typed frozen configs per subsystem; no god-config threading.

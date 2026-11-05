@@ -1,0 +1,93 @@
+=== Helicopter traces: old READMEs, ops dir, skyrl heli branch @ 2026-11-05T20:13:45Z ===
+--- rwkv-skills main commit ids (atom) ---
+2026-08-09T04:38:10Z c1743218c34f320bb4ee878feb41bc2a84e1ebad Remove duplicate package and vendor development assets
+2026-08-09T04:18:27Z f5765f4c1872e807cfa419919309f3cf49a9f945 Merge organization main history, keeping local runtime
+2026-08-09T04:14:31Z 6c9282b4fe5ea89f73f75474e7b1de9a358e30ca Consolidate local evaluation runtime on main
+2026-07-20T06:42:10Z 54639619f85995b80d9f0a737741241d80a5a97b Refresh vendored vLLM-RWKV snapshot
+2026-07-20T06:41:40Z 38e0b8c108453b7a2f9fc67cc4d07b8a38fb4394 Add G1H evaluation operations bundle
+
+--- ops/ tree on main ---
+"name":"g1i_strict46","path":"ops/g1i_strict46","contentType":"directory"
+"name":"systemd","path":"ops/systemd","contentType":"directory"
+"name":"g1i_strict46","path":"ops/g1i_strict46","contentType":"directory"
+"name":"systemd","path":"ops/systemd","contentType":"directory"
+"name":"assets","path":"assets","contentType":"directory"
+"name":"configs","path":"configs","contentType":"directory"
+"name":"docs","path":"docs","contentType":"directory"
+"name":"ops","path":"ops","contentType":"directory"
+"name":"scripts","path":"scripts","contentType":"directory"
+"name":"src","path":"src","contentType":"directory"
+"name":"tests","path":"tests","contentType":"directory"
+"name":"vendor","path":"vendor","contentType":"directory"
+"name":".env.example","path":".env.example","contentType":"file"
+"name":".gitattributes","path":".gitattributes","contentType":"file"
+"name":".gitignore","path":".gitignore","contentType":"file"
+"name":".python-version","path":".python-version","contentType":"file"
+"name":"README.md","path":"README.md","contentType":"file"
+"name":"README.zh-CN.md","path":"README.zh-CN.md","contentType":"file"
+"name":"pyproject.toml","path":"pyproject.toml","contentType":"file"
+"name":"uv.lock","path":"uv.lock","contentType":"file"
+
+--- docs/ tree on main ---
+"name":"runbooks","path":"docs/runbooks","contentType":"directory"
+"name":"agent_loop.md","path":"docs/agent_loop.md","contentType":"file"
+"name":"benchmark_taxonomy.md","path":"docs/benchmark_taxonomy.md","contentType":"file"
+"name":"db_schema_guide.zh-CN.md","path":"docs/db_schema_guide.zh-CN.md","contentType":"file"
+"name":"eval_db_logic.zh-CN.md","path":"docs/eval_db_logic.zh-CN.md","contentType":"file"
+"name":"function_calling_benchmark_replication.zh-CN.md","path":"docs/function_calling_benchmark_replication.zh-CN.md","contentType":"file"
+"name":"function_calling_open_leaderboard.zh-CN.md","path":"docs/function_calling_open_leaderboard.zh-CN.md","contentType":"file"
+"name":"service_perf_benchmark.zh-CN.md","path":"docs/service_perf_benchmark.zh-CN.md","contentType":"file"
+"name":"runbooks","path":"docs/runbooks","contentType":"directory"
+"name":"agent_loop.md","path":"docs/agent_loop.md","contentType":"file"
+"name":"benchmark_taxonomy.md","path":"docs/benchmark_taxonomy.md","contentType":"file"
+"name":"db_schema_guide.zh-CN.md","path":"docs/db_schema_guide.zh-CN.md","contentType":"file"
+"name":"eval_db_logic.zh-CN.md","path":"docs/eval_db_logic.zh-CN.md","contentType":"file"
+"name":"function_calling_benchmark_replication.zh-CN.md","path":"docs/function_calling_benchmark_replication.zh-CN.md","contentType":"file"
+"name":"function_calling_open_leaderboard.zh-CN.md","path":"docs/function_calling_open_leaderboard.zh-CN.md","contentType":"file"
+"name":"service_perf_benchmark.zh-CN.md","path":"docs/service_perf_benchmark.zh-CN.md","contentType":"file"
+"name":"assets","path":"assets","contentType":"directory"
+"name":"configs","path":"configs","contentType":"directory"
+"name":"docs","path":"docs","contentType":"directory"
+"name":"ops","path":"ops","contentType":"directory"
+"name":"scripts","path":"scripts","contentType":"directory"
+"name":"src","path":"src","contentType":"directory"
+"name":"tests","path":"tests","contentType":"directory"
+"name":"vendor","path":"vendor","contentType":"directory"
+"name":".env.example","path":".env.example","contentType":"file"
+"name":".gitattributes","path":".gitattributes","contentType":"file"
+"name":".gitignore","path":".gitignore","contentType":"file"
+"name":".python-version","path":".python-version","contentType":"file"
+"name":"README.md","path":"README.md","contentType":"file"
+"name":"README.zh-CN.md","path":"README.zh-CN.md","contentType":"file"
+
+--- skyrl-rwkv feat/heli-r00-training-eval atom ---
+2026-10-28T08:54:46Z | fix(rwkv): resume bounded training and evaluation phases
+2026-10-28T07:56:20Z | feat(rwkv): reuse full baseline responses for probe scoring
+2026-10-28T04:56:49Z | fix(rwkv): bound evaluation graph preparation
+2026-10-28T04:56:49Z | fix(rwkv): allow exact SFT training steps
+2026-10-28T04:42:57Z | fix(rwkv): bound evaluation startup state memory
+2026-10-28T04:26:43Z | fix(rwkv): prepare inference profiles before evaluation
+2026-10-28T04:06:42Z | fix(rwkv): isolate checkpoint evaluation dependencies
+2026-10-28T03:39:07Z | feat(rwkv): integrate bounded post-training evaluation
+2026-10-26T23:47:47Z | fix(rwkv): share verified tuning cache with inference workers [skip ci]
+2026-10-26T03:10:19Z | feat(rwkv): prepare upstream data and filter by eval pass rate
+2026-10-25T17:05:55Z | perf(rwkv): tune training launchers and instrument pipeline
+2026-10-25T02:36:05Z | feat(rwkv): add SST support to SFT
+2026-10-25T02:14:44Z | refactor(rwkv): organize canonical training recipes
+2026-10-24T21:45:39Z | build(rwkv): refresh lock after upstream rebase
+2026-10-24T19:46:35Z | refactor(rwkv): isolate RWKV paths from native trainer code
+2026-10-24T19:45:23Z | fix(rwkv): configure test and production logging
+2026-10-24T19:45:23Z | fix(rwkv): enforce fp32 recurrent training state
+2026-10-24T19:45:23Z | fix(rwkv): use bfloat16 for vllm SAO
+2026-10-24T19:45:23Z | fix(rwkv): preserve padded sequence length during chunking
+2026-10-24T19:45:23Z | feat(rwkv): align SAO launcher with async value training
+
+--- skyrl-rwkv main atom top commits ---
+2026-10-31T10:47:56Z | chore: configure code owners
+2026-10-26T23:47:47Z | fix(rwkv): share verified tuning cache with inference workers [skip ci]
+2026-10-26T03:10:19Z | feat(rwkv): prepare upstream data and filter by eval pass rate
+2026-10-25T17:05:55Z | perf(rwkv): tune training launchers and instrument pipeline
+2026-10-25T02:36:05Z | feat(rwkv): add SST support to SFT
+2026-10-25T02:14:44Z | refactor(rwkv): organize canonical training recipes
+2026-10-24T21:45:39Z | build(rwkv): refresh lock after upstream rebase
+2026-10-24T19:46:35Z | refactor(rwkv): isolate RWKV paths from native trainer code

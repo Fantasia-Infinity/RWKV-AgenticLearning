@@ -1,0 +1,47 @@
+# rwkv-rs org public repos = 40 (verified 2026-11-05 via https://github.com/orgs/rwkv-rs/repositories?page=1..3&type=all ; HTML embedded JSON, no GitHub API quota)
+# columns: name | kind(src/fork/archive) | stars | license | fork_parent | created | default_branch | last_commit(atom feed) | handoff_coverage | description
+# sources: created = repo page embedded JSON createdAt; last_commit = https://github.com/rwkv-rs/<repo>/commits.atom ; license/stars = org listing embedded JSON
+# handoff_coverage: MISSED = 内部交接 2026-11-05（未公开存档） 完全未出现该仓库名; in-handoff xN = 出现 N 次
+# note: wx-cli returns HTTP 451 on this network (GitHub legal block); its row lacks created/atom data.
+
+# name	kind	stars	license	fork_parent	created	branch	last_commit	coverage	description
+Albatross	fork	0	Apache License 2.0	BlinkDL/Albatross	2025-10-31	main	2025-10-09	in-handoff x2	Efficient RWKV inference engine. RWKV7 7.2B fp16 decoding 10250 tps @ single 5090.
+antidoom-rwkv	fork	0	Apache License 2.0	Liquid4All/antidoom	2026-08-02	main	2026-07-07	MISSED	
+any2rwkv	src	5	NONE	-	2026-08-08	main	2026-10-31	MISSED	Research tools for converting attention-based architectures to RWKV
+browsecomp-plus-eval	src	1	NONE	-	2026-07-21	main	2026-07-21	MISSED	Reproducible BrowseComp-Plus evaluation package for RWKV with parallel-candidate routing and vendored vLLM-RWKV
+burn	fork	0	Apache License 2.0	tracel-ai/burn	2025-10-10	main	2025-12-15	MISSED	Burn is a next generation Deep Learning Framework that doesn't compromise on flexibility, efficiency and portability.
+chinese-babylm-eval-pipeline	fork	0	Apache License 2.0	SiyuanSong2004/chinese-babylm-eval-pipeline	2026-05-22	main	2026-05-18	MISSED	
+codex-compact-router	src	0	MIT License	-	2026-05-10	main	2026-06-02	MISSED	
+cubecl	fork	0	Apache License 2.0	tracel-ai/cubecl	2025-10-25	main	2025-11-13	MISSED	Multi-platform high-performance compute language extension for Rust.
+evalscope-rwkv	fork	0	Apache License 2.0	modelscope/evalscope	2026-08-25	main	2026-10-30	MISSED	EvalScope fork with RWKV OpenAI-compatible evaluation support and scoreboard migration tooling.
+fla-rwkv	fork	0	MIT License	fla-org/flash-linear-attention	2026-07-30	main	2026-08-06	MISSED	🚀 Efficient implementations for emerging model architectures
+FlashRWKV2	src	6	MIT License	-	2026-07-30	main	2026-11-02	in-handoff x4	
+hf-adapter	src	8	MIT License	-	2026-07-06	main	2026-10-25	in-handoff x1	RWKV-7 HuggingFace / Transformers adapter
+lighteval-rwkv	fork	0	MIT License	huggingface/lighteval	2026-07-30	main	2026-11-03	MISSED	Lighteval is your all-in-one toolkit for evaluating LLMs across multiple backends
+llm-compressor-rwkv	fork	0	Apache License 2.0	vllm-project/llm-compressor	2026-08-02	main	2026-07-31	MISSED	Transformers-compatible library for applying various compression algorithms to LLMs for optimized deployment with vLLM
+lm-evaluation-harness-rwkv	fork	0	MIT License	EleutherAI/lm-evaluation-harness	2026-08-09	main	2026-11-03	MISSED	A framework for few-shot evaluation of language models.
+MediaCrawler	fork	0	Other	NanmiCoder/MediaCrawler	2025-07-17	main	2025-07-16	MISSED	小红书笔记 | 评论爬虫、抖音视频 | 评论爬虫、快手视频 | 评论爬虫、B 站视频 ｜ 评论爬虫、微博帖子 ｜ 评论爬虫、百度贴吧帖子 ｜ 百度贴吧评论回复爬虫  | 知乎问答文章｜评论爬虫
+Megatrwkv-Bridge	fork	0	Apache License 2.0	NVIDIA-NeMo/Megatron-Bridge	2026-11-02	main	2026-11-02	MISSED	Training library for Megatron-based models with bidirectional Hugging Face conversion capability
+originium	src	7	NONE	-	2025-05-07	main	2025-09-05	MISSED	
+rhi	src	0	GNU General Public License v3.0	-	2024-11-07	main	2024-11-07	MISSED	
+rhine	src	0	GNU General Public License v3.0	-	2025-02-13	main	2025-09-02	MISSED	
+rhine-schema-derive	src	0	MIT License	-	2025-02-18	main	2025-02-18	MISSED	
+RWKV-AUTODECO	fork	0	Apache License 2.0	RWKV-Vibe/RWKV-LM-V7	2026-01-19	main	2026-01-27	MISSED	RWKV-LM-V7(https://github.com/BlinkDL/RWKV-LM) Under Lightning Framework with AUTODECO
+rwkv-cc	src	2	NONE	-	2025-04-11	main	2025-05-16	MISSED	Linear-RNN based biological / chemical language model
+RWKV-LH	src	4	MIT License	-	2026-08-09	main	2026-10-08	in-handoff x2	A persistent and verifiable long-horizon agent runtime powered by RWKV.
+rwkv-peft-simple	src	4	Apache License 2.0	-	2025-06-18	main	2025-07-09	MISSED	
+rwkv-rs	src	8	Apache License 2.0	-	2025-09-06	main	2026-04-14	in-handoff x6	
+rwkv-rs-stable	archive	1	Apache License 2.0	rwkv-rs/rwkv-rs	2026-04-17	main	2026-05-16	MISSED	
+rwkv-rs-test	src	0	MIT License	-	2026-04-25	main	2026-04-27	MISSED	
+RWKV-Scout	src	2	MIT License	-	2026-07-27	main	2026-08-21	in-handoff x2	
+rwkv-skills	src	8	NONE	-	2025-11-23	main	2026-08-09	in-handoff x2	
+rwkv7-ascend-npu	src	1	NONE	-	2026-07-07	main	2026-07-24	MISSED	RWKV-7 inference + serving on Ascend 910B3 NPU — consolidated NPU work (serving framework + sglang port + AscendC optimization). torch.npu.NPUGraph de
+skyrl-rwkv	fork	5	Apache License 2.0	NovaSky-AI/SkyRL	2026-08-30	main	2026-10-31	in-handoff x14	SkyRL: A Modular Full-stack RL Library for LLMs
+tokenizers-rwkv	fork	0	Apache License 2.0	huggingface/tokenizers	2026-08-07	main	2026-10-31	MISSED	💥 Fast State-of-the-Art Tokenizers optimized for Research and Production
+torchtitan-rwkv	fork	0	BSD 3-Clause "New" or "Revised" License	pytorch/torchtitan	2026-08-28	main	2026-10-31	MISSED	A PyTorch native platform for training generative AI models
+torchtitan-rwkv-old	archive	1	BSD 3-Clause "New" or "Revised" License	-	2026-06-28	main	2026-08-28	MISSED	
+transformers-rwkv	fork	1	Apache License 2.0	huggingface/transformers	2026-07-26	main	2026-10-31	in-handoff x1	🤗 Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, for both in
+verl-rwkv	fork	0	Apache License 2.0	verl-project/verl	2026-05-21	rwkv	2026-08-02	MISSED	verl/HybridFlow: A Flexible and Efficient RL Post-Training Framework
+vllm-rwkv	fork	4	Apache License 2.0	vllm-project/vllm	2026-06-16	rwkv	2026-10-31	in-handoff x3	A high-throughput and memory-efficient inference and serving engine for LLMs
+wandb-rs	fork	0	NONE	NousResearch/wandb-rs	2025-10-25	main	2026-01-31	MISSED	
+wx-cli	fork	0	Apache License 2.0	-	?	?		MISSED	WeChat local data CLI with daemon architecture

@@ -1,0 +1,24 @@
+=== §7 license final probes @ 2026-11-05T20:14:51Z ===
+--- default branches ---
+RWKV-Vibe/rwkv_lightning: ref: refs/heads/main	HEAD
+Abel2076/json2binidx_tool: ref: refs/heads/main	HEAD
+
+--- rwkv_lightning LICENSE on likely branches ---
+[404] rwkv_lightning/main/LICENSE bytes=14
+[404] rwkv_lightning/master/LICENSE bytes=14
+
+--- rwkv_lightning pyproject license / README license section ---
+14 rl_pyproject.toml
+
+--- json2binidx_tool LICENSE (main/master) + README license section ---
+[404] json2binidx_tool/main/LICENSE bytes=14
+[404] json2binidx_tool/master/LICENSE bytes=14
+1071 j2b_readme.md
+
+--- GitHub repo pages: license badge / No license (HTML grep) ---
+== https://github.com/RWKV-Vibe/rwkv_lightning ==
+== https://github.com/Abel2076/json2binidx_tool ==
+== https://github.com/xiaol/wkvm ==
+== https://github.com/rwkv-rs/rwkv-skills ==
+
+--- rwkv-skills pyproject license field ---

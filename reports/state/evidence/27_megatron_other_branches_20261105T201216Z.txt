@@ -1,0 +1,88 @@
+=== Megatron other branches @ 2026-11-05T20:12:16Z ===
+--- fetch cp + 2026-10-10 + muon shallow ---
+ * [new branch]      codex/rwkv7-cp -> origin/codex/rwkv7-cp
+ * [new branch]      2026-10-10 -> origin/2026-10-10
+ * [new branch]      muon       -> origin/muon
+--- heads/dates ---
+== origin/muon ==
+34e447cdc186a2763ae3e56f3b776772be8f719c | 2026-07-06T17:09:04+08:00 | chore: refresh README and update tracked assets
+== origin/2026-10-10 ==
+69aa22a55f2858f302bf60b42213c8b23da4c642 | 2026-10-15T14:52:36+08:00 | Update Megatron and FLA release submodules
+== origin/codex/rwkv7-cp ==
+240d9a463386b4bd07302539a25a56a2a21d0649 | 2026-10-22T16:18:50+08:00 | Archive CP validation, TP precision findings, and branch isolation records
+== origin/codex/qwen-rwkv28b-distill ==
+2fab35ce71ff1fc3d86aa4faa866bd1343879965 | 2026-10-30T09:30:24+08:00 | Revert "feat(distill): stop JSONL training at the finite epoch boundary"
+
+--- cp branch: docs tracked? 28b refs? .gitignore docs rule? ---
+3rdparty/flash-linear-attention-bak/.github/ISSUE_TEMPLATE/bug.yml
+3rdparty/flash-linear-attention-bak/.github/ISSUE_TEMPLATE/config.yml
+3rdparty/flash-linear-attention-bak/.github/ISSUE_TEMPLATE/feature-request.yml
+3rdparty/flash-linear-attention-bak/.github/ISSUE_TEMPLATE/rfc.yml
+3rdparty/flash-linear-attention-bak/.github/workflows/intel-a770-compile.yml
+3rdparty/flash-linear-attention-bak/.github/workflows/issue.yml
+3rdparty/flash-linear-attention-bak/.github/workflows/lint.yaml
+3rdparty/flash-linear-attention-bak/.github/workflows/nvidia-4090-compile.yml
+3rdparty/flash-linear-attention-bak/.github/workflows/release.yml
+--- cp branch grep 28b in tracked files (non-3rdparty) ---
+origin/codex/rwkv7-cp:BRANCH_WORKSPACES.md:6:| 蒸馏 | `/mnt/data/Codes/RWKV/RWKV-Megatron-H200/RWKV/RWKV-Megatron-distill` | `codex/qwen-rwkv28b-distill` |
+origin/codex/rwkv7-cp:BRANCH_WORKSPACES.md:16:| 主仓库生产代码 | `f8bc564`：CP+SP/recurrent接入、测试及28B布局 | `f979779`：启动路径、依赖分支声明及隔离说明 |
+origin/codex/rwkv7-cp:COMMIT_AND_PUSH.md:10:| 蒸馏主仓库路径修正 | `codex/qwen-rwkv28b-distill` | `f979779` |
+origin/codex/rwkv7-cp:COMMIT_AND_PUSH.md:11:| 蒸馏 Megatron | `codex/qwen-rwkv28b-distill` | `d65baf60`，无新增commit |
+origin/codex/rwkv7-cp:COMMIT_AND_PUSH.md:12:| 蒸馏 FLA | `codex/qwen-rwkv28b-distill` | `ff481ea6`，无新增commit |
+origin/codex/rwkv7-cp:COMMIT_AND_PUSH.md:28:本轮没有重跑28B完整训练，提交保留之前各报告中的实测范围和限制；没有实施暂停的TP精度优化。
+origin/codex/rwkv7-cp:COMMIT_AND_PUSH.md:45:git -C "$distill_repo/3rdparty/Megatron-LM-0.11.0" push -u origin codex/qwen-rwkv28b-distill
+origin/codex/rwkv7-cp:COMMIT_AND_PUSH.md:46:git -C "$distill_repo/3rdparty/flash-linear-attention-260115" push -u origin codex/qwen-rwkv28b-distill
+origin/codex/rwkv7-cp:COMMIT_AND_PUSH.md:47:git -C "$distill_repo" push -u org codex/qwen-rwkv28b-distill
+origin/codex/rwkv7-cp:TESTING_STATUS.md:3:最新提交状态：CP生产代码已分别提交（主仓库`f8bc564`、Megatron `f30bff508`、FLA `e932aadd`），测试报告另有归档提交；作者均为shiroko98。蒸馏恢复原名`codex/qwen-rwkv28b-distill`，主仓库路径隔离修正为`f979779`，两个子仓库仍是`d65baf60`/`ff481ea6`且干净。本轮未push。推送命令与未纳入的历史材料见[COMMIT_AND_PUSH.md](COMMIT_AND_PUSH.md)。下方“未提交/临时蒸馏分支名”叙述是提交前的历史检查记录，最新状态以本段和BRANCH_WORKSPACES.md为准。
+origin/codex/rwkv7-cp:TESTING_STATUS.md:9:这是本轮CP、28B显存、TP/PP试验及数值定位的固定入口。先看本文件，再按下表进入报告；执行计划见[todolist.txt](todolist.txt)。报告中的日期是测试日期，不表示后续代码自动保持相同状态。
+origin/codex/rwkv7-cp:TESTING_STATUS.md:17:## 28B实际跑通的配置
+origin/codex/rwkv7-cp:TESTING_STATUS.md:19:模型：`/hikscale/models/XiaoKe/rwkv7_28b_88_mapped.pt`（88层，hidden5120，80heads，FFN17408，日志约27.46B）。
+origin/codex/rwkv7-cp:TESTING_STATUS.md:26:| TP4/PP2/CP1 | 4096 | 全GPU，完整FP32主权重 | 75829MiB / 74.05GiB | 2.0712s | 7.497223 | [报告](training-smoke/audit/28b-oom-20261022/TP4-PP2-CP1-NO-OFFLOAD.md) |
+origin/codex/rwkv7-cp:TESTING_STATUS.md:27:| TP2/PP4/CP1 | 4096 | 全GPU，完整FP32主权重 | 79969MiB / 78.09GiB | 2.40035s | 7.499003 | [报告](training-smoke/audit/28b-oom-20261022/TP2-PP4-CP1-NO-OFFLOAD.md) |
+origin/codex/rwkv7-cp:TESTING_STATUS.md:28:| TP2/PP2/CP2 | 4096 | 50% Adam CPU offload，完整FP32主权重 | 79595MiB / 77.73GiB | 4.5298s | 7.502898 | [报告](training-smoke/audit/28b-oom-20261022/RESULTS.md) |
+origin/codex/rwkv7-cp:TESTING_STATUS.md:29:| TP2/PP2/CP2 | 2048 | 全GPU，TE int16主权重余数 | 80797MiB / 78.90GiB | 5.6694s | 7.754669 | [报告](training-smoke/audit/28b-oom-20261022/CP2-NO-OFFLOAD.md) |
+origin/codex/rwkv7-cp:TESTING_STATUS.md:36:- 50% offload已有保存step3、新进程续训step4/5的28B日志一致性验证；严格小模型状态逐位对照也通过。不能把它当作余数模式、TP2/PP4或完整28B状态的逐位认证。
+origin/codex/rwkv7-cp:TESTING_STATUS.md:37:- 这些28B短测没有上传W&B；此前2.7B长跑和质量评测有W&B记录。
+origin/codex/rwkv7-cp:TESTING_STATUS.md:47:- 所测GroupNorm/receptance backward与局部独立FP64公式最大差0.385%/0.427%，未发现本次PP/范数统计/WKV切分逻辑错误。不能证明所有路径无错、两布局长期等价，或把全部28.4%量化归因于第0层一次投影；反向数值贡献及完整28B高精度参考仍未完成。
+origin/codex/rwkv7-cp:TESTING_STATUS.md:59:| CP4半天长跑 | [报告](training-smoke/audit/cp4-longrun-20261021/RESULTS.md)：**2.7B，非28B**，TP2/PP1/CP4+SP、16K，12小时49189步、约16.118亿token，无日志NaN/跳步；固定验证loss13.49113→4.067253；不是CP1收敛等价试验 |
+origin/codex/rwkv7-cp:TESTING_STATUS.md:63:2.7B模型：`/mnt/data/Models/RWKV-7/rwkv7-qwen-vocab-2.7b-from-28b.pt`。
+origin/codex/rwkv7-cp:TESTING_STATUS.md:64:长跑W&B：[cp4-halfday-20261021](http://dian.sea-group.org:9098/mobius/Mobius-r7-28b-qwen-pretrain/runs/cp4-halfday-20261021)。
+origin/codex/rwkv7-cp:TESTING_STATUS.md:71:# 28B TP4/PP2/CP1，全GPU，30步
+origin/codex/rwkv7-cp:TESTING_STATUS.md:72:bash training-smoke/audit/28b-oom-20261022/launch.sh tp4pp2cp1-no-offload
+origin/codex/rwkv7-cp:TESTING_STATUS.md:75:# 28B TP2/PP4/CP1，全GPU，30步，自动生成时间戳phase
+origin/codex/rwkv7-cp:TESTING_STATUS.md:76:bash training-smoke/launch-rwkv7-28b-qwen-tp2-pp4-no-offload-smoke.sh
+origin/codex/rwkv7-cp:TESTING_STATUS.md:78:# 28B CP2全GPU余数模式，仅2K，30步，自动生成时间戳phase
+origin/codex/rwkv7-cp:TESTING_STATUS.md:79:bash training-smoke/launch-rwkv7-28b-qwen-cp2-no-offload-smoke.sh
+origin/codex/rwkv7-cp:TESTING_STATUS.md:82:CP2 offload正式脚本`training-smoke/launch-rwkv7-28b-qwen-cp2-offload.sh`默认含在线W&B/保存和较长运行限制，不能当作与本轮30步完全相同的短测。短测用`training-smoke/audit/28b-oom-20261022/config-cp2-offload.yaml`和该目录`launch.sh`。
+--- cp branch .gitignore training-smoke/docs rules ---
+72:docs/_build/
+101:#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
+187:/training-smoke/audit/**/*.pth
+188:/training-smoke/audit/**/*.pt
+189:/training-smoke/checkpoints/
+
+--- 2026-10-10 branch: .github/ docs? ---
+(none)
+--- 2026-10-10 training-smoke tracked files ---
+training-smoke/.gitignore
+training-smoke/COMMIT-STATE.md
+training-smoke/README.md
+training-smoke/audit/3b-reference-config-validation.json
+training-smoke/audit/3b-reference-training-validation.json
+training-smoke/audit/BLINKDL-ALIGNMENT.md
+training-smoke/audit/FIXED-EVAL.md
+training-smoke/audit/FLA-OPERATOR-OPPORTUNITIES.md
+training-smoke/audit/FLA-UPDATE-20261010.md
+training-smoke/audit/FP8.md
+training-smoke/audit/ISSUES.md
+training-smoke/audit/KEY-PRECISION-INTEGRATION.md
+training-smoke/audit/KEY-PRECISION-TRIAL.md
+training-smoke/audit/L2WRAP.md
+training-smoke/audit/LAYERNORM.md
+training-smoke/audit/MULTI-GPU-20261012.md
+training-smoke/audit/MUON.md
+training-smoke/audit/PRECISION-DIAGNOSIS.md
+training-smoke/audit/SINGLE-GPU-FINAL-20261012.md
+training-smoke/audit/SINGLE-GPU.md
+--- muon branch: 14B config + 26892 tok/s claim ---
+(none)

@@ -1,0 +1,61 @@
+=== final Megatron checks @ 2026-11-05T20:15:34Z ===
+--- muon branch: perf numbers grep ---
+origin/muon:README_EN.md:24:- Strong engineering trade-off across long-context modeling, memory efficiency, and inference throughput
+origin/muon:configs/config-mobius-r7-pretrain-14b-megatron.yaml:459:log_throughput: True
+origin/muon:configs/config-rwkv7-task1-verify-1p5b.yaml:334:log_throughput: true
+origin/muon:configs/config-rwkv7-task23-scratch-init-verify.yaml:334:log_throughput: true
+origin/muon:configs/config-rwkv7-task24-4d-smoke.yaml:334:log_throughput: true
+origin/muon:example_config.yaml:323:log_throughput: True
+
+--- muon branch configs list ---
+config-mobius-r7-pretrain-14b-megatron.yaml
+config-rwkv7-task1-verify-1p5b.yaml
+config-rwkv7-task23-scratch-init-verify.yaml
+config-rwkv7-task24-4d-smoke.yaml
+
+--- muon branch README_EN perf grep ---
+
+--- cp branch: 28B config tracked? ---
+configs/config-rwkv7-28b-qwen3.8-0056-cp2-no-offload-smoke.yaml
+configs/config-rwkv7-28b-qwen3.8-0056-cp2-offload.yaml
+configs/config-rwkv7-28b-qwen3.8-0056-cp2-smoke.yaml
+configs/config-rwkv7-28b-qwen3.8-0056-day1-cp2.yaml
+configs/config-rwkv7-28b-qwen3.8-0056-tp2-pp4-no-offload-smoke.yaml
+training-smoke/audit/28b-oom-20261022/CP2-NO-OFFLOAD.md
+training-smoke/audit/28b-oom-20261022/README.md
+training-smoke/audit/28b-oom-20261022/RESULTS.md
+training-smoke/audit/28b-oom-20261022/TP2-PP4-CP1-NO-OFFLOAD.md
+training-smoke/audit/28b-oom-20261022/TP4-PP2-CP1-NO-OFFLOAD.md
+training-smoke/audit/28b-oom-20261022/check_remainder.py
+training-smoke/audit/28b-oom-20261022/config-baseline.yaml
+training-smoke/audit/28b-oom-20261022/config-cp1-control.yaml
+training-smoke/audit/28b-oom-20261022/config-cp2-checkpoint.yaml
+training-smoke/audit/28b-oom-20261022/config-cp2-no-offload-2k.yaml
+training-smoke/audit/28b-oom-20261022/config-cp2-no-offload-4k-recompute2.yaml
+training-smoke/audit/28b-oom-20261022/config-cp2-no-offload-low-nccl.yaml
+training-smoke/audit/28b-oom-20261022/config-cp2-no-offload-remainder.yaml
+training-smoke/audit/28b-oom-20261022/config-cp2-offload.yaml
+training-smoke/audit/28b-oom-20261022/config-cp2-resume.yaml
+
+--- distill branch: 28B configs count + no docs/training-smoke ---
+3
+0
+docs/training-smoke tracked=0
+
+--- distill branch .gitignore tail 10 lines ---
+     1	/training-smoke/distill-numerics-20261023/*.yaml
+     2	
+     3	# Extended distillation validation: keep compact reports, not tensor caches or runs.
+     4	/training-smoke/distill-remaining-20261026/*/
+     5	/training-smoke/distill-remaining-20261026/*.yaml
+     6	
+     7	# Local training artifacts and planning notes
+     8	/training-smoke/
+     9	/docs/
+    10	/todolist.txt
+
+--- cp branch training-smoke total tracked count ---
+1041
+--- cp branch 2026-10-10 vs cp commit relationship (merge-base shallow N/A) ---
+240d9a463386b4bd07302539a25a56a2a21d0649
+69aa22a55f2858f302bf60b42213c8b23da4c642

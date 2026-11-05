@@ -1,0 +1,24 @@
+=== re-verify rwkv-skills README L8 + skyrl entry count @ 2026-11-05T20:20:33Z ===
+--- raw fetch code size + lines 5-10 ---
+HTTP 200 bytes=8951
+     5	An evaluation scaffold for RWKV7 that targets an external vLLM-RWKV OpenAI-compatible inference service, with dataset preppers for common benchmarks and a GPU scheduler skeleton.
+     6	
+     7	## Project structure
+     8	Third-party benchmark data and evaluation artifacts stay out of the source package. The public scoreboard is maintained separately in the Helicopter repository.
+     9	
+    10	- `src/`: backend Python package
+--- grep Helicopter with line numbers ---
+8:Third-party benchmark data and evaluation artifacts stay out of the source package. The public scoreboard is maintained separately in the Helicopter repository.
+
+--- skyrl feat/heli atom <entry> count ---
+HTTP 200 bytes=17393
+entries=20
+<updated>2026-10-28T08:54:46Z
+<updated>2026-10-28T08:54:46Z
+<updated>2026-10-24T19:45:23Z
+
+--- final tail of 41 evidence (h) ---
+Third-party benchmark data and evaluation artifacts stay out of the source package. The public scoreboard is maintained separately in the Helicopter repository.
+
+--- (h) skyrl atom entry count check (feat/heli) ---
+20

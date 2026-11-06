@@ -1,0 +1,99 @@
+owner	repo	name	category	created	updated	description
+josStorer	josStorer/RWKV-Runner	RWKV runner	聊天机器人/推理 API 服务器	2023-05-05	2026-10-19	RWKV-Runner 是一个轻量级 RWKV 模型管理和启动工具，具备友好的用户交互界面，且提供与 OpenAI API 兼容的接口。它具有诸多特性，如模型管理与一键启动、前后端分离、自动安装依赖、多语言支持、自动更新等。
+Joluck	JL-er/RWKV-PEFT	RWKV-PEFT	RWKV 微调/训练工具	2023-11-02	2026-09-12	RWKV-PEFT 是 RWKV 5/6 模型高效参数微调的官方项目，包含 LoRA、Pissa、Bone、State tuning 等多种微调方法。RWKV-PEFT 支持多种微调方法和多硬件平台，支持量化训练等特性，能通过多种方式优化内存，还支持无限上下文训练。
+RWKV	RWKV/rwkv.cpp	rwkv.cpp	RWKV 推理框架	2023-03-30	2026-10-15	rwkv.cpp 项目将 RWKV - LM 移植到 ggml，支持在 CPU 上的推理 INT4/INT5/INT8 和 FP16 等精度的模型。项目提供 C 库 rwkv.h 及 Python 包装器，支持 RWKV v5/v6/v7 模型，可加载 LoRA 检查点。
+howard-hou	howard-hou/VisualRWKV	VisualRWKV	多模态项目	2023-06-15	2026-09-21	VisualRWKV 是基于 RWKV 的视觉增强语言模型，能处理多种视觉任务。项目给出了具体的安装方法，涵盖克隆仓库、创建环境以及安装依赖等步骤，同时说明了预训练与微调的步骤。
+cryscan	cryscan/web-rwkv	web-rwkv	RWKV 推理框架	2023-07-07	2026-09-08	web-rwkv 是一个用纯 WebGPU/Rust 实现的 RWKV 模型推理引擎。具有无 CUDA/Python 依赖、支持多 GPU、多后端、WASM 支持、批处理推理、多种量化方式、快速、加载时可合并 LoRA 等特性。
+RWKV-APP	RWKV-APP/RWKV_APP	RWKV App	聊天机器人/推理 API 服务器	2025-06-09	2026-10-14	基于 Flutter 构建的跨平台本地优先 RWKV 聊天应用，覆盖 Android、iOS、Windows、macOS 与 Linux，内置模型管理与多语言界面。
+OpenGVLab	OpenGVLab/Vision-RWKV	Vision-RWKV	多模态项目	2024-02-29	2026-09-30	Vision-RWKV 是一个视觉感知项目，利用 RWKV 架构实现高效可扩展的视觉处理，在分类、检测、分割等任务表现出色，支持 RWKV 6，其 VRWKV 模型在多项指标上优于 ViT。
+MollySophia	MollySophia/rwkv-mobile	rwkv-mobile	RWKV 推理框架	2024-08-14	2026-09-27	rwkv-mobile 是一个支持多后端的 RWKV 推理运行时项目。目标是实现在不同平台（包括移动设备）、不同硬件（如高通 Hexagon NPU、CPU/GPU）推理 RWKV 模型。
+RWKV-Vibe	RWKV-Vibe/rwkv_lightning	rwkv_lightning	RWKV 推理框架	2025-10-14	2026-07-27	RWKV 批量推理后端，基于 Albatross 和 Robyn 开发，适用于在 Nvidia GPU 上使用 RWKV 进行多路并发和批量推理。
+happinesslz	happinesslz/LION	LION	多模态项目	2024-07-24	2026-10-18	LION 是用于点云 3D 目标检测的项目，在多个数据集上取得优异成绩，支持多种线性 RNN 算子。其中 LION-RWKV 模型表现突出，展示了 RWKV 在该项目中的有效性。
+xiaol	xiaol/wkvm	wkvm	RWKV 推理框架	2026-07-03	2026-10-13	面向 RWKV-7、GDN、Mamba2 与各类混合线性模型的推理框架，以每次请求固定大小的状态槽作为主要分配对象，取代分页 KV 缓存，并提供状态快照、分叉与休眠等能力。
+Jellyfish042	Jellyfish042/uncheatable_eval	Uncheatable Eval	RWKV 基准测试	2023-12-16	2026-10-14	Uncheatable Eval 是用于评估大语言模型的项目。它通过从网络获取实时新数据来测试模型，避免数据泄露影响。该项目支持评估 RWKV 模型，通过计算负对数概率评估模型语言建模能力，其评估结果稳定，能更准确反映模型价值。
+RWKV-Vibe	RWKV-Vibe/RWKV-LM-V7	RWKV-LM-V7	RWKV 微调/训练工具	2025-06-10	2026-08-30	这个项目可以帮助任何研究人员在 15 分钟内开始预训练一个完全对齐的 RWKV v7 模型。
+alipay	alipay/L3TC-leveraging-rwkv-for-learned-lossless-low-complexity-text-compression	L3TC	多模态项目	2024-12-17	2026-08-12	基于 RWKV 的可学习的无损低复杂度文本压缩
+Ai00-X	cgisky1980/ai00_rwkv_server	AI00 RWKV server	聊天机器人/推理 API 服务器	2023-07-10	2026-10-16	AI00 RWKV Server 是基于 web-rwkv 推理引擎的 RWKV 语言模型推理 API 服务器。支持 Vulkan 并行和并发批量推理，兼容 OpenAI ChatGPT API 接口。无需庞大运行时环境，可用于多种任务。
+howard-hou	howard-hou/RWKV-TS	RWKV-TS	多模态项目	2023-10-26	2026-08-25	RWKV-TS 是一个用于时间序列任务的基于 RNN 的模型，旨在解决 RNN 在时间序列领域面临的挑战。RWKV-TS 在多种任务中表现出色，性能与先进的 Transformer 或 CNN 模型相当，且延迟和内存利用率更低。
+KevlarKanou	KevlarKanou/rwkv7.c	rwkv7.c	RWKV 推理框架	2025-02-28	2026-07-08	RWKV-7 的 C 语言实现，支持 RWKV-7 模型的推理
+cahya-wirawan	cahya-wirawan/rwkv-tokenizer	rwkv-tokenizer	分词器	2024-05-29	2026-09-21	用 Rust 编写的快速 RWKV 分词器，支持 RWKV v5 和 v6 模型。性能比原分词器快约 17 倍、比 OpenAI Tiktoken 快 9.6 倍，更新后支持多线程批量编码。
+rwkv-rs	rwkv-rs/hf-adapter	RWKV-7 Hugging Face Reference	RWKV 微调/训练工具	2026-07-06	2026-09-07	为 Hugging Face Transformers 提供可读性优先的纯 PyTorch RWKV-7 实现，按 Mamba 风格分层组织配置、缓存与算子。
+deepglint	deepglint/RWKV-CLIP	RWKV-CLIP	多模态项目	2024-06-07	2026-10-03	RWKV 驱动的 CLIP （视觉 - 语言表示学习）模型，在零样本跨模态检索和分类任务上表现出色。论文已被 EMNLP2024 接收，相关代码、数据和模型已开源。
+HarborYuan	HarborYuan/ovsam	RWKV-SAM	多模态项目	2024-01-05	2026-09-22	基于 RWKV 的图像分段切割方法，项目包含独特的知识转移模块 SAM2CLIP 和 CLIP2SAM ，提供了在线演示、本地运行演示、训练和评估的方法。
+123123213weqw	123123213weqw/rwkv-agent	RWKV State Agent	RWKV Agent 与运行时	2026-07-19	2026-10-19	以 RWKV 循环状态为中心的全本地 Agent 运行时：Rust 控制面负责严格工具调用、任务身份与流式输出，状态池让一个 GPU 上并行的多个 Agent 作业各自持有独立状态，并附带 WebUI、CLI、基准与公开 Beta 版本。
+wjie98	wjie98/rosa_soft	ROSA-Soft	RWKV 微调/训练工具	2025-10-26	2026-09-13	项目提供了一个稳健的、端到端可训练的ROSA（快速在线后缀自动机）算子实现。通过采用直通估计器（STE）框架，使离散的、不可微分的 ROSA 机制与基于梯度的优化兼容。
+howard-hou	howard-hou/RWKV-X	RWKV-X	其他 RWKV 项目	2025-03-26	2026-08-26	RWKV-X是一款基于RWKV架构的线性复杂度混合语言模型，它集成了稀疏注意力机制，以增强长序列处理能力。
+yynil	yynil/RWKVInside	ARWKV	其他 RWKV 项目	2025-01-02	2026-02-05	基于 RWKV 的混合架构模型，具备更强的表达能力和状态跟踪能力，可以在低资源的情况下高效训练。
+yynil	yynil/RWKVTTS	RWKV-TTS	多模态项目	2025-02-24	2026-09-18	RWKV-TTS 是基于 RWKV 架构的音频模型，传统的音频模型包含 VQ VAE 和 LLM 两部分，该项目专注于训练基于 RWKV 架构的 LLM 来替换之前的音频模型中的 LLM 部分。
+Jellyfish042	Jellyfish042/RWKV-15Puzzle	RWKV-15Puzzle	其他 RWKV 项目	2024-11-13	2025-12-29	RWKV-15PUZZLE 基于 RWKV-6 模型使用 500k 个 15 拼图谜题样本进行训练，并使用 RWKV-LM 库进行训练，该模型型门用于解决 15 谜题问题。
+Joluck	Joluck/mod-rwkv	ModRWKV / WorldRWKV	多模态项目	2024-12-24	2026-07-27	多模态 RWKV 的训练和推理
+TimeMobius	TimeMobius/RWKV-Megatron	RWKV-Megatron	RWKV 微调/训练工具	2026-07-02	2026-10-18	基于 NVIDIA Megatron-Core 构建的 RWKV-6/RWKV-7 大模型分布式训练框架，覆盖并行切分、检查点与训练脚本。
+MollySophia	MollySophia/rwkv-qualcomm	rwkv-qualcomm	RWKV 推理框架	2024-03-20	2026-09-09	rwkv-qualcomm 旨在使用 Qualcomm AI Engine Direct SDK 推理 RWKV 模型。
+OpenMOSE	OpenMOSE/RWKV-LM-RLHF	RWKV-LM-RLHF	RWKV 微调/训练工具	2024-04-01	2026-10-04	RWKV-LM-RLHF 是针对 RWKV 的强化学习工具包，具备 SFT、对齐（DPO、ORPO），以及无限上下文压缩蒸馏训练等功能，涉及多种训练后端。
+johanwind	johanwind/wind_rwkv	wind_rwkv	RWKV 推理框架	2024-09-28	2026-08-26	一个包含 RWKV 优化算子的存储库。目前专注于 RWKV-7。
+rwkv-rs	rwkv-rs/FlashRWKV2	FlashRWKV2	RWKV 推理框架	2026-07-30	2026-10-15	面向 RWKV-7 的高性能 CUDA 算子库，对外暴露模型推理所需的语义融合算子，内核组合与形状分发保留在库内部。
+OpenMOSE	OpenMOSE/RWKV-Infer	RWKV-Infer	RWKV 推理框架	2024-06-09	2026-08-25	RWKV-Infer 是一个大规模的 RWKV v6/v7 推理项目，支持在 CUDA 以及 Rocm 环境下运行，具备多循环状态采样（MRSS）、适配器模型热插拔、量化支持以及多批次生成等多种功能，可实现高效推理。
+Nice0o0	Nice0o0/stateswap	stateswap	RWKV Agent 与运行时	2026-08-30	2026-10-12	把人格或任务模式训练成数 MB 的初始状态 S0，在冻结 RWKV-7 底座的前提下按会话热切换，并提供状态混合、低秩与 int8 压缩、多轮会话与评测工具。
+feizc	feizc/Diffusion-RWKV	Diffusion-RWKV	多模态项目	2024-03-07	2026-09-04	Diffusion-RWKV 是一个专注于将 RWKV 架构拓展应用到扩散模型的项目。项目构建了适配图像生成任务的 RWKV 架构，涵盖训练与采样代码，擅长处理高分辨率图像。
+imxcstar	imxcstar/RWKVSharp	RWKVSharp	RWKV 推理框架	2023-02-09	2026-03-18	使用 C# 封装的 RWKV 推理工具，基于 rwkv.cpp ，支持运行 RWKV4/RWKV6/RWKV6/RWKV7 World 模型。
+Alic-Li	Alic-Li/Mini_RWKV_7	Mini-RWKV-V7-LM	RWKV 微调/训练工具	2025-07-17	2026-10-18	从零训练 Mini-RWKV-7 的教学项目，提供 34.2M 参数模型、Deep Embedding 变体、训练脚本与在线演示。
+No-22-Github	No-22-Github/Preen	Preen	RWKV 微调/训练工具	2026-07-09	2026-10-09	在 Apple Silicon 上基于 MLX 的 RWKV-7 状态微调工作台，提供图形界面用于训练可挂载的初始状态。
+christianazinn	christianazinn/MIDI-RWKV	MIDI-RWKV	多模态项目	2025-03-14	2026-10-13	基于 RWKV 的音乐生成
+Alic-Li	Alic-Li/BlackGoose_Rimer	BlackGoose Rimer	多模态项目	2025-02-28	2026-07-20	BlackGoose Rimer 是一个将元学习纳入其状
+态更新机制。通过将 RWKV-7 的时间混合和通道混合组件集成到基于 Transformer 的时间序列模型 Timer 中，实现了大约 1.13 到 43.3 倍的显著性能提升。
+hithqd	hithqd/PointRWKV	PointRWKV	多模态项目	2024-05-24	2026-10-12	PointRWKV 是基于 RWKV 的 3D 点云学习框架，解决了 Transformer 在点云学习中因二次复杂度而难以处理长序列的问题。PointRWKV 在多项任务中表现出色且计算量更低。
+AUXStar	AUXStar/RWKV-Server	RWKV-Server	RWKV 推理框架	2026-05-01	2026-07-23	高性能 RWKV 批量推理服务。单卡 RTX 4090 峰值 6,373 tok/s，256 并发稳态 5,000+ tok/s。支持 OpenAI 兼容 API、SSE 流式输出、模板状态零开销 Fork 复用、2 的幂次动态扩缩容。内置任务调度器自动管理 prefill 与 decode 阶段，单线程 prefil
+Yaziwel	Yaziwel/FEAT	FEAT	多模态项目	2025-05-21	2026-10-17	基于 RWKV 的医学视频生成
+KakaruHayate	KakaruHayate/RWKV-MUSA	RWKV-MUSA	RWKV 推理框架	2026-07-26	2026-08-04	为摩尔线程 GPU 提供 RWKV-7 循环算子与模型集成，把运行时无关的递推契约与可选的 torch_musa 后端分离。
+cgisky1980	cgisky1980/rwkv-router	RWKV-Router	RWKV Agent 与运行时	2026-09-15	2026-10-12	用规则栈与常驻的小型 RWKV 分类器把请求划分为 R0–R3 层级，再路由到本地 RWKV 或云端 API 的自进化网关，提供 Rust 库、C ABI、Python 与 Node 包以及兼容 OpenAI、Anthropic 和 MCP 的服务端。
+RafaelUI	RafaelUI/rwkv-metal	rwkv-metal	RWKV 推理框架	2026-06-14	2026-10-18	在 Apple Silicon 上用 MLX 训练与推理 RWKV-7 的 Python 工具包，自带 Metal 的 WKV-7 循环算子，可通过 pip 安装。
+RWKV	RWKV/RWKV-infctx-trainer	RWKV-infctx-trainer	RWKV 微调/训练工具	2023-08-16	2026-09-04	RWKV 无限上下文训练器，支持训练 10k 及以上长度的上下文
+Hakureirm	Hakureirm/rwkv-hf-kernels	rwkv-hf-kernels	RWKV 推理框架	2026-07-28	2026-08-02	为 HuggingFace transformers 的 RWKV-7 模型提供可选融合 CUDA kernel，同时保持可移植的 PyTorch 路径。
+rwkv-rs	rwkv-rs/RWKV-Scout	RWKV-Scout	RWKV Agent 与运行时	2026-07-27	2026-08-21	以 RWKV 为决策核心的联网检索 Agent：模型负责任务拆解、工具与查询选择、证据审核与最终回答，工程层负责网页抓取清洗、证据账本、并发隔离与 trace。
+FZU-N	FZU-N/URWKV	URWKV	多模态项目	2025-03-03	2026-10-14	CVPR 2025 论文的官方实现，用多状态视角的统一 RWKV 模型处理低光图像复原，覆盖增强与去噪等任务，并提供论文、权重与评测代码。
+RafaelUI	RafaelUI/rwkv-quant	rwkv-quant	RWKV 推理框架	2026-07-14	2026-10-18	面向 Apple Silicon 的 RWKV-7 量化工具包与 Metal 推理后端，定义可移植的 .rwkvq 检查点格式并自带 Metal GEMV 内核。
+Ourboros-Alignment-Team	Ourboros-Alignment-Team/RWKV-Development-Tools	RWKV-Development-Tools	其他 RWKV 项目	2025-01-25	2026-04-10	面向 RWKV 模型的研究平台，有非常丰富的组件，提供了多种可视化组件
+No-22-Github	No-22-Github/RWKV-Agent	RWKV-Agent	RWKV Agent 与运行时	2026-07-27	2026-10-19	面向 Apple Silicon 的本地优先 RWKV Agent：Go 层负责会话、Session 持久化与终端交互，独立动态库负责分词、采样与 MLX 推理，运行时不依赖 Python 或 HTTP 服务。
+jmwang0117	jmwang0117/OccRWKV	OccRWKV	多模态项目	2024-06-10	2026-10-13	OccRWKV 是一个基于 RWKV 的高效 3D 语义占用预测项目，通过专用的 RWKV 块有效分离语义和占用，利用 BEV 空间和稀疏特征投影降低计算需求，适用于机器人系统实时自主导航，在语义场景理解方面有良好表现。
+zyaaa-ux	zyaaa-ux/ROSA-Tuning	ROSA-Tuning	其他 RWKV 项目	2025-10-13	2026-10-02	项目实现了将 ROSA 与现代大型语言模型相结合，使它们能够仅使用固定长度的注意力窗口来处理任意长的输入，同时实现接近完整全局注意力的性能。
+
+当前的实现已经支持多GPU、多节点和多核训练，并且更高效的方法正在持续开发中。
+XingQiPan	XingQiPan/rwkv-jev	rwkv-jev	RWKV Agent 与运行时	2026-09-22	2026-10-09	基于 RWKV-7 g1k-1b 的 Jev 式零生成决策引擎，在固定候选集上通过受限 softmax 直接读出 Choice、Noul 与 Score 的概率分布，兼容 TypeSafe /v1/systemone 接口，并提供本地 CUDA 与 CPU 后端。
+AUXStar	AUXStar/rwkv7-quantization	RWKV-7 Quantization Toolkit	RWKV 推理框架	2026-07-30	2026-09-28	面向 RWKV-7 的量化推理工具包，提供 FP8 量化与对应 GPU 上的解码加速路径，并以 PyPI 包 rwkv-quant-nv 发布。
+LuckySongXiao	LuckySongXiao/RWKV_document-term-translator	RWKV_document-term-translator	其他 RWKV 项目	2026-02-05	2026-07-07	基于 RWKV 翻译模型与 C# WPF 的文档术语翻译助手，支持 rwkv_lightning 与 llama.cpp 双推理引擎和 GPU/CPU 双计算模式。
+sjtu-medialab	sjtu-medialab/RwkvCompress	LALIC	多模态项目	2025-03-22	2026-09-07	首次利用线性注意力双向RWKV模型进行学习型图像压缩的研究，具备更强的压缩能力和更快的压缩效率。
+shengxia	shengxia/RWKV_Role_Playing	role play chatbot	聊天机器人/推理 API 服务器	2023-03-31	2026-10-05	RWKV_Role_Playing 是一个基于 RWKV 的角色扮演项目。可设置角色头像、设定人物性格，文档还分享了 RWKV 角色扮演的心得等，提供了在无显卡或显存、内存不足等情形下的解决办法，如使用 Google Colab。
+Alic-Li	Alic-Li/rwkv_lightning_cuda	rwkv_lightning_cuda	RWKV 推理框架	2025-11-21	2026-10-16	面向 NVIDIA CUDA 的 RWKV-7 高性能推理服务，提供 OpenAI 风格与原生批量 API、流式 SSE、会话状态缓存与量化路径。
+Abel2076	Abel2076/json2binidx_tool	JSONL to binidx	其他 RWKV 项目	2023-05-06	2026-08-11	json 2 binidx_tool 可用于将.jsonl 文件转换为 .bin 和 .idx 格式，适应于 RWKV 模型的数据集准备工作。
+cgisky1980	cgisky1980/rwkv-rsv	rwkv-rsv	RWKV 推理框架	2026-08-07	2026-10-12	用 Rust 与 Vulkan/CUDA 计算着色器实现的 RWKV-7 推理引擎，按模型文件自动选择 fp16 或 int8 量化路径，并保留 CPU fp32 参考实现用于精度对照。
+cgisky1980	cgisky1980/dspark-rwkv	dspark-rwkv	RWKV 推理框架	2026-06-27	2026-06-28	把 DSpark 半自回归推测解码适配到 RWKV-7 目标的复现项目，记录并发场景下的加速比与接受率。
+dfytensor	dfytensor/transformers-rwkv7	transformers-rwkv7	RWKV 推理框架	2026-07-01	2026-07-01	自包含、与 HuggingFace 兼容的 RWKV-7 Goose（x070）实现，面向官方推理框架适配征集。
+RWKV-APP	RWKV-APP/rwkv_mobile_flutter	rwkv_mobile_flutter	其他 RWKV 项目	2025-01-02	2026-10-14	rwkv-mobile 的 Flutter/Dart FFI 适配层，把设备端推理桥接给 Flutter 应用，是 RWKV App 与移动端运行时之间的中间层。
+szxysdt	szxysdt/VKWR	VKWR	RWKV 推理框架	2026-04-23	2026-08-21	带优化 CUDA kernel 与连续批处理能力的高性能 RWKV 推理引擎，作者标注项目仍在积极开发中。
+aierwiki	aierwiki/rwkvtune	rwkvtune	RWKV 微调/训练工具	2026-02-05	2026-08-28	RWKV 训练工具包，提供类似 HuggingFace TRL 的 Trainer 风格 API，覆盖监督微调与偏好优化流程。
+LeC-Z	LeC-Z/RWKV-nonogram	RWKV-nonogram	其他 RWKV 项目	2024-09-24	2026-04-21	RWKV-nonogram 使用 RWKV-6 + Chain Of Thought 训练了一个 20M 参数 RWKV 模型，这个模型可以做数织( nonogram )任务。
+Yaziwel	Yaziwel/Restore-RWKV	Restore-RWKV	多模态项目	2024-07-12	2026-10-11	Restore-RWKV 是一个基于 RWKV 的医疗图像恢复项目，利用 RWKV 构建高效有效的图像恢复模型，涉及 MRI 超分辨率、 CT 去噪、PET 图像合成等任务。
+cryscan	cryscan/rosalia	rosalia	RWKV 推理框架	2026-02-23	2026-08-08	用 Rust 与 Vulkan 计算着色器实现的高性能 RWKV 推理引擎，把 RWKV-LM 中的 Rosa 机制移植到独立运行时。
+Hakureirm	Hakureirm/rwkv-sglang	RWKV-7 × sglang	RWKV 推理框架	2026-07-01	2026-09-18	在 SGLang 上为 RWKV-7 提供生产级推理服务，宣称输出与参考实现逐 token 对齐，支持 int8/int4 量化，并在多代 CUDA GPU 上验证。
+Ronsor	Ronsor/rwkv-tokenizer-go	rwkv-tokenizer-go	分词器	2024-06-02	2025-07-23	Go 语言的 分词器
+txchen-USTC	txchen-USTC/Zig-RiR	Zig-RiR	多模态项目	2025-04-13	2026-10-16	IEEE TMI 2025 论文的官方实现，采用 Zigzag RWKV-in-RWKV 结构做高效医学图像分割，提供训练与评测代码。
+nkypy	nkypy/candle-rwkv	candle-rwkv	RWKV 推理框架	2024-02-21	2026-02-02	在 Rust 的极简机器学习框架 candle 中实现 RWKV 模型推理（支持量化），支持 RWKV 5、RWKV 6 模型，可进行模型转换、量化等操作。
+123123213weqw	123123213weqw/vllm-rwkv	vllm-rwkv	RWKV 推理框架	2026-08-30	2026-08-30	带原生 RWKV-7 循环状态调度与 Albatross 派生 CUDA kernel 的 vLLM 发行版，面向高吞吐推理场景。
+Jellyfish042	Jellyfish042/Sudoku-RWKV	Sudoku-RWKV	其他 RWKV 项目	2024-10-30	2026-07-09	Sudoku-RWKV 是一个使用 RWKV 来解决数独问题的项目。该模型使用 700k 条数独专用的 COT 数据进行训练，并对最高 50 个空单元格的数独实现了 100% 的准确率。
+Seikaijyu	Seikaijyu/RWKV-PEFT-Simple	RWKV-PEFT-Simple	RWKV 微调/训练工具	2024-04-19	2026-09-12	RWKV-PEFT-Simple 项目为 JL-er 的 RWKV-PEFT 项目提供快捷微调包。涵盖准备工作（含环境安装）、数据准备与分词、参数调整、模型合并及运行测试等步骤，帮助用户更简便地对 RWKV 模型进行微调操作。
+AGENDD	AGENDD/RWKV-ASR	RWKV-ASR	多模态项目	2024-08-05	2025-11-30	RWKV - ASR 项目旨在使预训练的 RWKV 语言模型能接受语音模态输入。基于 RWKV - PEFT 开发，采用类似 SLAM_ASR 的思路，通过微调 RWKV 模型初始状态，在 Librispeech 960h 测试集上取得一定成果。
+rwkv-rs	rwkv-rs/RWKV-LH	RWKV-LH	RWKV Agent 与运行时	2026-08-09	2026-10-12	面向 RWKV 的持久化长程执行运行时，用 SQLite 保存目标、任务图、执行尝试、证据与检查点，并把规划、工具调用、后置条件验证与中断恢复组合起来。
+yuunnn-w	yuunnn-w/RWKV_Pytorch	RWKV_Pytorch	RWKV 推理框架	2024-03-20	2026-09-08	RWKV_Pytorch 是一个用纯 PyTorch 原生实现的 RWKV 大语言模型推理框架。它具有支持 batch 推理、并行推理、导出和推理 ONNX 格式模型等特性，代码整洁易读和二次开发。
+Jellyfish042	Jellyfish042/rwkv_mmlu	rwkv_mmlu	RWKV 基准测试	2024-08-12	2025-11-27	RWKV 模型在 MMLU （大规模多任务语言理解）任务中的准确度表现和 prompt 格式。
+xun082	xun082/rwkv-code-completion	rwkv-code-completion	其他 RWKV 项目	2025-12-08	2026-01-20	基于 RWKV 模型的智能代码补全插件
+v3ucn	v3ucn/RWKV_Role_Playing_with_GPT-SoVITS	RWKV_Role_Playing_with_GPT-SoVITS	聊天机器人/推理 API 服务器	2024-04-08	2026-07-08	在 RWKV 角色扮演 WebUI 基础上接入 GPT-SoVITS 语音对话的中文应用。
+playaswd	playaswd/rwkv-by-hand-excel	rwkv-by-hand-excel	其他 RWKV 项目	2025-04-17	2026-05-07	旨在通过手工在 Excel 中实现 RWKV。它提供了一种独特的方式来练习和理解 RWKV 相关的操作，为对 RWKV 感兴趣的开发者提供了一种新的探索途径。
+leonardodalinky	leonardodalinky/B3D-RWKV	B3D-RWKV	多模态项目	2026-04-30	2026-08-21	EMNLP 2026 Findings 论文实现，把 RWKV 结构与三元块扩散结合，探索线性注意力在扩散语言模型中的可用性。
+diegovalsesia	diegovalsesia/linerwkv	LineRWKV	多模态项目	2024-05-14	2026-09-21	Linerwkv 是一种用于高光谱图像压缩的方法。它基于预测编码，其中神经网络采用类似 RWKV 的新型混合操作，逐行处理图像，兼具 Transformer 和 RNN 的优势。
+zhxhzy	zhxhzy/SCRWKV	SCRWKV	多模态项目	2026-05-12	2026-09-21	ICML 2026 论文实现，用超紧凑的结构校准 Vision-RWKV 完成拓扑裂缝分割，强调在极小参数规模下保持结构连通性。
+ConsciousNode	ConsciousNode/HTMLNLM	HTMLNLM	其他 RWKV 项目	2026-03-27	2026-10-11	单文件浏览器端 RWKV 神经语言模型运行时，不依赖服务端即可在网页里训练与推理。
+HSI-Lab	HSI-Lab/Hi-RWKV	Hi-RWKV	多模态项目	2025-08-12	2026-09-28	项目将基于RWKV的全局建模引入到密集的逐像素光谱-空间表示学习中，提供了一种分层高光谱图像（HSI）分类框架
+Ojiyumm	Ojiyumm/RULER_RWKV	RULER_RWKV	RWKV 基准测试	2024-07-17	2025-06-09	RULER 是用于评估长上下文语言模型真实上下文大小的项目。该项目展示了 RWKV 模型在不同 RULER 任务中的得分情况。
+nianfd	nianfd/RWKV-VG	RWKV-VG	多模态项目	2024-11-22	2026-04-10	基于 RWKV 驱动的编码器-解码器框架的目标检测
+ancorasir	ancorasir/DecisionRWKV	DecisionRWKV	多模态项目	2024-04-23	2026-08-17	Decision-RWKV 项目研究将 RWKV 框架与 Decision 和经验回放（experience replay）架构集成，以优化机器人的决策操作。
+yynil	yynil/RWKV_LM_EXT	RWKV_LM_EXT	RWKV 微调/训练工具	2024-03-29	2026-04-21	RWKV_LM_EXT 项目旨在扩展 RWKV LM 的能力，包括序列分类、嵌入、PEFT、交叉编码器、双编码器、多模态等。项目基于 RWKV(5/6)扩展了两种模型，提供了一些 LORA 检查点及相关工具，介绍了使用 LORA/PISSA/状态调整进行 SFT 训练的过程，还有波束搜索与推理编码器的使用。

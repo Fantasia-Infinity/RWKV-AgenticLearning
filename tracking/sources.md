@@ -86,3 +86,15 @@ bash tracking/check.sh --diff          # 与上一轮对比，只打印变化
 - B 层（近半年）：wjie98、shiroko98、MollySophia、cryscan、顾真牛、johanwind
 - C 层（已停更）：zhiyuan1i、yzhangcs、Blealtan、RyanLuohaha、w-zz-w-zz-w
 - 结论：v7 引擎侧退潮；v8/ROSA 最活跃；v7 的 agent/RL 层靠少数单点维持 → 依赖必须 pin + 本地镜像。
+
+## 六、2026-11-06 新增：官方项目目录（rwkv.cn）
+
+| 项 | 内容 |
+|---|---|
+| 页面 | https://www.rwkv.cn/eco/projects |
+| 数据 API | `https://www.rwkv.cn/eco/projects.json`（页面客户端 `fetch("/api/projects")` 同数据） |
+| 规模 | **95 项**，`lastUpdated=2026-10-19`；8 个类别（推理 27 / 多模态 26 / 其他 13 / 训练 12 / Agent 7 / 聊天 API 5 / 基准 3 / 分词器 2） |
+| 本地快照 | `data/rwkv-cn-eco-projects-2026-11-06.tsv` |
+| 刷新命令 | `curl -s https://www.rwkv.cn/eco/projects.json \| python3 -c "import json,sys;d=json.load(sys.stdin);print(d['count'],d['lastUpdated'])"` |
+| ⚠️ 坑 | **目录 `repo_updated_at` 不可信**（如 `RWKV/RWKV-infctx-trainer` 目录 2026-09-04，实际最后提交 2024-04-25）→ 活跃度必须用 `commits.atom` 实测；目录只作索引 |
+| 官方 org | 除 `BlinkDL/RWKV-LM` 外还有 `RWKV/` org（如 `RWKV/RWKV-infctx-trainer`），加入跟踪源 |

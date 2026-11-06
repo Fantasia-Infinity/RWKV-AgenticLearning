@@ -10,7 +10,7 @@ rwkv-rs/torchtitan-rwkv
 rwkv-rs/antidoom-rwkv
 rwkv-rs/fla-rwkv
 rwkv-rs/Megatrwkv-Bridge
-Joluck/RWKV-PEFT
+JL-er/RWKV-PEFT  # 原名 Joluck，GitHub 重定向
 OpenMOSE/RWKV-LM-RLHF
 TimeMobius/RWKV-Megatron
 howard-hou/RWKV-SFT
@@ -62,3 +62,8 @@ aabbdev/rosa
 # ===== 新增：推理/客户端侧关键单点 =====
 Alic-Li/rwkv_lightning_cuda
 RWKV-APP/RWKV_APP
+
+# ===== 2026-11-06 新增（官方目录扫描）：训练适配 / 官方 org =====
+Nice0o0/stateswap
+aierwiki/rwkvtune
+RWKV/RWKV-infctx-trainer

@@ -40,6 +40,7 @@ Before building in that gap, we audited the ecosystem. This repo is the audit: w
 │   ├── check.sh                         # zero-GitHub-API snapshot script
 │   └── runs/                            # dated snapshots
 ├── data/eco-org-repos.txt               # full 40-repo table
+├── data/rwkv-cn-eco-projects-2026-11-06.tsv  # official catalog (95 projects)
 └── ROADMAP.md                           # P0–P5 plan (revised after the audit)
 ```
 

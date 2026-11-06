@@ -133,3 +133,66 @@ git -C /tmp/rlc log --author='Claude' --format='%h %ad %s' --date=short
 ```
 
 > 采集时间：2026-11-06 09:47–10:05 CET。未消耗 GitHub API 配额。
+
+---
+
+## 7. 官方目录全量扫描：`rwkv.cn/eco/projects`（95 项）
+
+数据源：`https://www.rwkv.cn/eco/projects.json`（页面通过客户端 `fetch("/api/projects")` 加载同一份数据），
+`count=95`、`lastUpdated=2026-10-19`。全量条目已保存为
+[`data/rwkv-cn-eco-projects-2026-11-06.tsv`](../data/rwkv-cn-eco-projects-2026-11-06.tsv)
+（字段：owner / repo / name / category / created / updated / description）。
+
+### 7.1 类别分布
+
+| 类别 | 数量 |
+|---|---|
+| RWKV 推理框架 | 27 |
+| 多模态项目 | 26 |
+| 其他 RWKV 项目 | 13 |
+| RWKV 微调/训练工具 | 12 |
+| RWKV Agent 与运行时 | 7 |
+| 聊天机器人/推理 API 服务器 | 5 |
+| RWKV 基准测试 | 3 |
+| 分词器 | 2 |
+
+### 7.2 我们此前的覆盖
+
+| 指标 | 数量 |
+|---|---|
+| 官方目录条目 | 95 |
+| 已在 `tracking/repos.txt` 跟踪 | 12 |
+| 在既有报告/文档中出现 | 16 |
+| **两者都没有** | **79**（多模态 26 / 推理 23 / 其他 11 / 训练 7 / Agent 3 / 基准 3 / 聊天 API 4 / 分词器 2） |
+
+多模态 26 项超出本项目范围（我们只做文本 agent/RL）；但**训练/Agent/基准层仍有 13 项缺口**，其中 6 项值得注意。
+
+### 7.3 值得注意的新资产（均已单独核验）
+
+| 仓库 | 最后提交 (UTC) | 许可证 | 是什么 / 对我们的意义 |
+|---|---|---|---|
+| `Nice0o0/stateswap` | 2026-10-25 | LICENSE ✅ | 把人格/任务模式训练成 MB 级初始状态 S0，冻结 RWKV-7 底座热切换；带状态混合、低秩/int8 压缩、多轮会话与评测工具 → **P1.5 适配方案候选**（state tuning，不是 RL） |
+| `aierwiki/rwkvtune` | 2026-02-27 | LICENSE ✅ | 类 TRL 的 Trainer API（SFT + 偏好优化）→ SFT 预热接口参考；已停更 |
+| `cgisky1980/rwkv-router` | 2026-10-12 | LICENSE ✅ | R0–R3 分层路由（本地 RWKV / 云端 API）→ 与训练无关 |
+| `XingQiPan/rwkv-jev` | 2026-09-22 | LICENSE ✅ | 受限 softmax 的零生成决策引擎（Jev 式）→ agent 决策的替代思路 |
+| `Jellyfish042/uncheatable_eval` | 2026-09-24 | **NONE** | 动态数据防泄漏评测 → 可参考指标，不能进公开仓 |
+| `Jellyfish042/rwkv_mmlu` | 2025-11-27 | **NONE** | MMLU prompt 格式 → 无许可证 |
+| `Ojiyumm/RULER_RWKV` | 2025-06-09 | **NONE** | RULER 长上下文 → 无许可证 |
+| `RWKV/RWKV-infctx-trainer` | **2024-04-25** | LICENSE ✅ | 官方 org 的无限上下文训练器；**已严重过时** |
+
+### 7.4 修正与审计发现
+
+1. **owner 名纠正**：`Joluck/RWKV-PEFT` → **`JL-er/RWKV-PEFT`**（同一 HEAD `989d28dc6`，GitHub 重定向；官方目录用新名）。
+2. **`Seikaijyu/RWKV-PEFT-Simple`**：无 LICENSE、最后提交 2025-05-30 → 不能作为 SFT 依赖。
+3. **基准层 3/3 无许可证** → 与本文 §1 的"L5 许可断层"一致，且比此前描述的更糟。
+4. **⚠️ 官方目录 `repo_updated_at` 不可信**：`RWKV/RWKV-infctx-trainer` 目录显示 `2026-09-04`，实际最后提交
+   **2024-04-25**；`aierwiki/rwkvtune` 目录 `2026-08-28`，实际 `2026-02-27`。
+   → **活跃度必须用 `commits.atom` 实测**，不能用目录字段；目录只作索引。
+5. **官方组织不止 BlinkDL**：存在 `RWKV/` org（本目录收录其 infctx trainer）→ 应加入跟踪源。
+
+### 7.5 对计划的结论
+
+- **不改变执行路线**（仍 v7 + skyrl/vllm + G1l-1.5B）。
+- **P1.5 增加一个候选**：若 LoRA/全参 SFT 预算不够，可试 `stateswap` 式 S0 state tuning（需自行复现，非 RL）。
+- **评测清单缩窄**：3 个官方目录基准全部无许可证 → 仅本地参考；EvalScope-first 策略不变。
+- **跟踪项**：`Nice0o0/stateswap`、`aierwiki/rwkvtune`、`RWKV/RWKV-infctx-trainer` 加入 `tracking/repos.txt`。

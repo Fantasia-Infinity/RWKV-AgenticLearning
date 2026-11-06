@@ -243,3 +243,43 @@ git -C /tmp/rlc log --author='Claude' --format='%h %ad %s' --date=short
 - irwkv 的 logprob 与 vllm-rwkv 是否数值一致（logprob parity）；
 - irwkv 的 weight-update 是"权重版本热切换"还是"训练器增量同步"；
 - `rwkv-org/irwkv` 与 `skyrl-rwkv` 的集成是否已有计划（两者同源团队，可能性不低，但没有公开证据）。
+
+---
+
+## 9. 补充核验：`rwkv-agent-eval` / `dsh-rwkv-plugin` —— 公开结果显示前的最后一块拼图
+
+> 采集时间 2026-11-06 11:52–11:58 CET；方法同前（`git ls-remote`、`commits.atom`、raw LICENSE、shallow clone、README/grep）。
+
+### 9.1 事实
+
+| 项 | 实测 |
+|---|---|
+| `rwkv-org` 组织 | 新建（2026-10-27），公开仓库仅 **2 个**：`irwkv`、`rwkv-agent-eval` |
+| `rwkv-org/rwkv-agent-eval` | HEAD `0e79fa4`；最后提交 **2026-11-06T08:34:41Z（当天）**；**无 LICENSE**；541 文件 / 17 MB |
+| 评测形态 | Harbor + **Docker** task 目录；自有题 **3 个**；开源题 `datasets.lock.toml`；`bank/` 含题库转换/判分/自造题校验；逐 trial provenance（模型、插件、DSH 版本、task checksum、未提交 diff、每请求提示与输出） |
+| 训练来源 | **私有** `rwkv-agent-pipeline` 的 `mix-20261106`（GitHub 404 核实）；依赖**未发布** DSH commit `dsh-8bd07339` |
+| `No-22-Github/dsh-rwkv-plugin` | HEAD `0095c85`；最后提交 **2026-11-06T07:20:33Z**；**无 LICENSE**；55 文件；注册 RWKV-7 G1 为 DSH 模型提供方；后端 rwkv_lightning CUDA + iRWKV 续写接口；agent loop 移植自 RWKV-Agent Go harness（**XML 信封、8 个工具**、默认开思考、agent-fast 采样） |
+| 可运行性 | Harbor + Docker；无 apptainer/singularity 支持；依赖未发布 DSH 源码 commit |
+
+### 9.2 结论更新（重要）
+
+此前本仓库的判断是"**agentic RL 训练仍是公开空白**"。现在需要更精确：
+
+> **RWKV 的 agentic RL 训练管线已经在私有侧运行**（`rwkv-agent-pipeline` + `mix-20261106` 训练数据），
+> 公开的评测框架（`rwkv-agent-eval`）当天仍在提交，**公开结果尚未发布**。
+> 因此"空白"应限定为"**公开可复现的配方与结果**"，而不是"没人做"。
+
+### 9.3 对计划的含义
+
+1. **P0 不取消**：评测 ≠ 权重打通 + 训练环境 + RL 闭环；且无许可证、Docker 依赖、自有题仅 3 个、绑定私有数据与未发布 DSH commit。
+2. **P4 采用"Harbor 兼容设计 + 自建题"**：借鉴 task 目录结构、主/子 Agent 角色、heldout/seen/自造划分与 provenance 记账；**不复制其题目内容**。
+3. **P3 采纳其工具/提示格式作为参考**：8 个工具名、XML 信封、兜底策略，有利于未来与公开结果做"同格式对照"。
+4. **跟踪**：`rwkv-org/rwkv-agent-eval`、`No-22-Github/dsh-rwkv-plugin` 加入每日跟踪；监控 `rwkv-agent-pipeline` 公开（重大信号）。
+5. **风险 R12**：其评测依赖未发布 DSH commit `dsh-8bd07339` + 私有仓库 → 不可复现，我们不得依赖。
+
+### 9.4 未验证 / 二手信息
+
+- `dsh-rwkv-plugin` 的"8 个工具"仅从 README 确认，未逐行核对代码。
+- Joluck 的 RLVR×PEFT 论文结论（DoRA/AdaLoRA/MiSS 优于标准 LoRA、PiSSA 谱坍塌）为二手信息，未独立核实；
+  我们用全参 FSDP，不直接受影响。
+- `mix-20261106` 数据规模/来源不可见（私有）。

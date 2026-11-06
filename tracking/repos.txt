@@ -71,3 +71,8 @@ RWKV/RWKV-infctx-trainer
 # ===== 2026-11-06 新增：原生 RWKV-7 服务框架（Apache-2.0，含 logprobs/weight update 接口）=====
 rwkv-org/irwkv
 w1c2j3/irwkv  # 镜像；Chase 的 state-continuation/prefix-cache 分支在此
+
+# ===== 2026-11-06 晚新增：agent 评测 / DSH 集成（同优先级跟踪）=====
+rwkv-org/rwkv-agent-eval
+No-22-Github/dsh-rwkv-plugin
+# 监控（当前 404/私有）：rwkv-agent-pipeline —— 一旦公开即重大信号

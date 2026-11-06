@@ -166,3 +166,13 @@ for any product plan built on top of the ecosystem.
 3. **活跃度分层**：v7 引擎侧在退潮、v8/ROSA 最活跃；v7 的 agent/RL 层由少数单人维持（Chase Jay、shiroko98、Alic-Li、No-22）。另发现 `Alic-Li/rwkv_lightning_cuda` 有 5 个 `Claude` 提交（含 RL 相关改动），提示上游 RL 代码的数值正确性需要独立门禁。
 
 **对 §2 栈表的修正**：在 L0–L5 之外增加 **L6 前沿（v8/ROSA）**；L5 评测层补充 helicopter 作为"未公开的编排框架"。
+
+---
+
+## 9. Addendum 2（2026-11-06 晚）：agentic RL 已在私有侧运行
+
+- `rwkv-org/rwkv-agent-eval`（2026-11-04 建，当天仍在提交，**无 LICENSE**）表明公开的 agent 评测框架正在搭建，
+  但依赖 Harbor + Docker、私有 `rwkv-agent-pipeline` 与未发布 DSH commit 与训练数据 `mix-20261106`。
+- `No-22-Github/dsh-rwkv-plugin`（无 LICENSE）把 RWKV-7 注册进 DeepSeek Harness（8 工具、XML 信封）。
+- **对 §0/§4 的修正**：不是"没有 agentic RL"，而是"**公开配方与结果尚未发布；私有管线已在运行**"。
+- 详见 [`../reports/2026-11-06-ecosystem-update.md`](../reports/2026-11-06-ecosystem-update.md) §9。

@@ -105,3 +105,11 @@ bash tracking/check.sh --diff          # 与上一轮对比，只打印变化
 - 看什么：state 续接 / prefix cache / tool calling / top-k logprobs / RL weight-update 接口是否稳定，
   以及是否与 skyrl-rwkv 集成（同源团队，可能性存在）。
 - 归属注意：**irwkv 由张恺之（Cai-z-us）主导**，不是 Chase 独写；Chase 的贡献在分支。
+
+### 第 13 项信号（追加）：agent 评测与 DSH 集成
+- `rwkv-org/rwkv-agent-eval`（2026-11-04 建，当天仍在提交；**无 LICENSE**；Harbor + Docker task 格式；
+  自有题 3 个；引用私有 `rwkv-agent-pipeline` 的 `mix-20261106`；依赖未发布 DSH commit `dsh-8bd07339`）
+- `No-22-Github/dsh-rwkv-plugin`（**无 LICENSE**；把 RWKV-7 注册为 DSH 模型提供方；8 工具 + XML 信封；
+  后端 rwkv_lightning CUDA + iRWKV 续写接口）
+- 看什么：① 是否首次公开 agent 分数；② 是否补 LICENSE；③ `rwkv-agent-pipeline` 是否公开；
+  ④ 是否支持 apptainer/HPC；⑤ DSH 版本是否改为可通过 npm 安装的正式版。

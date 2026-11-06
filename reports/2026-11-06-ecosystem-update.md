@@ -196,3 +196,50 @@ git -C /tmp/rlc log --author='Claude' --format='%h %ad %s' --date=short
 - **P1.5 增加一个候选**：若 LoRA/全参 SFT 预算不够，可试 `stateswap` 式 S0 state tuning（需自行复现，非 RL）。
 - **评测清单缩窄**：3 个官方目录基准全部无许可证 → 仅本地参考；EvalScope-first 策略不变。
 - **跟踪项**：`Nice0o0/stateswap`、`aierwiki/rwkvtune`、`RWKV/RWKV-infctx-trainer` 加入 `tracking/repos.txt`。
+
+---
+
+## 8. 补充核验：`irwkv`（原生 RWKV-7 服务框架）与 authorship 修正
+
+> 采集时间 2026-11-06 10:58–11:02 CET。方法：`git ls-remote` / `commits.atom` / raw README/LICENSE / partial clone 作者统计 / `docs` grep。
+
+### 8.1 事实
+
+| 项 | 实测 |
+|---|---|
+| 仓库 | `w1c2j3/irwkv`（镜像）→ **`rwkv-org/irwkv`**（正式；13 commits；main 最后 **2026-11-02T08:36Z**） |
+| 许可证 | **Apache-2.0** ✅ |
+| 规模 | ~1,776 文件 / 30 MB（1,379 py + 268 rs），带 `tests/`、`docs/design`、`docs/usage` |
+| 能力 | 原生 RWKV-7 循环推理 + 逐请求 state 管理 + chunked prefill + FlashRWKV2 融合算子 + CUDA Graph；OpenAI 兼容 API（Chat Completions + Responses）+ 结构化输出 + **tool calling**；单卡 / 两阶段流水线并行；可选 Rust 前端 |
+| RL 接口 | `docs/design/model_runner_v2.md`：top-k / prompt logprobs 的省显存实现；`docs/usage/security.md`：RL weight updates / weight version 控制接口 |
+| 分支活跃度 | `chase/rwkv-state-continuation` **2026-11-05T05:09Z**、`chase/rwkv-integration` 2026-11-05T03:24Z、`chase/prefix-cache` 10-30、`chase/context-compaction` 10-29 |
+
+### 8.2 ⚠️ authorship 修正：irwkv 不是 Chase Jay 独写
+
+部分流传的叙述把 `irwkv` 归为 "Chase Jay 一个人造" 的产品线之一。**实测提交记录不支持**：
+
+| 仓库 | 作者统计 |
+|---|---|
+| `w1c2j3/irwkv`（镜像，5 commits） | J.L(Joluck) 2 · Cai-z-us/Caizus 3 · **Chase Jay 0** |
+| `rwkv-org/irwkv`（正式，13 commits） | **Caizus 6 · Cai-z-us 4** · J.L 2 · Chase Jay 1 |
+
+- 初始提交 `42cf7e2` 与主体实现 `dd82d66` 均由 **Cai-z-us / Caizus（张恺之，RL 负责人）** 提交。
+- **Chase Jay 的实际贡献在分支**：`chase/rwkv-state-continuation`、`chase/prefix-cache`、`chase/context-compaction`——
+  正是多轮 rollout 最需要的 state 续接/前缀缓存/上下文压缩，且 2026-11-05 仍在提交。
+- 结论：**irwkv = 张恺之主导 + Joluck/Chase 协作**，与 `skyrl-rwkv` 同源团队；"四层基建全由 Chase 一人交付"的说法应修正为
+  "**agent 运行时（RWKV-LH 323/323）与评测（helicopter 324/373）由 Chase 主导；推理/RL 由张恺之主导**"。
+
+### 8.3 对计划的含义
+
+1. **P3 推理侧出现真实候选**：irwkv 的 state continuation / prefix cache / logprob / weight-update 接口，正对"多轮 rollout 焊缝"的推理侧；
+   但**与 skyrl 训练器的 weight sync、batch 语义、token-in-token-out 契约未验证** → 不是 drop-in。
+2. **新增 P5 评估项（≤6 h）**：irwkv vs vllm-rwkv 对照；若通过，Plan B"最小 RL loop"的推理端优先用 irwkv。
+3. **P0–P2 不变**：权重打通仍以 vllm-rwkv 为主（skyrl 已集成），irwkv 并行评估。
+4. **bus factor 修正**：RL+推理层有张恺之/Joluck/Chase 三人；**agent/评测层仍是 Chase 单点**
+   （helicopter 373 commits 中 324 为其独写；RWKV-LH 323/323 全为其独写——本次已复核）。
+
+### 8.4 仍未验证
+
+- irwkv 的 logprob 与 vllm-rwkv 是否数值一致（logprob parity）；
+- irwkv 的 weight-update 是"权重版本热切换"还是"训练器增量同步"；
+- `rwkv-org/irwkv` 与 `skyrl-rwkv` 的集成是否已有计划（两者同源团队，可能性不低，但没有公开证据）。

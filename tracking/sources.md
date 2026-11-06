@@ -98,3 +98,10 @@ bash tracking/check.sh --diff          # 与上一轮对比，只打印变化
 | 刷新命令 | `curl -s https://www.rwkv.cn/eco/projects.json \| python3 -c "import json,sys;d=json.load(sys.stdin);print(d['count'],d['lastUpdated'])"` |
 | ⚠️ 坑 | **目录 `repo_updated_at` 不可信**（如 `RWKV/RWKV-infctx-trainer` 目录 2026-09-04，实际最后提交 2024-04-25）→ 活跃度必须用 `commits.atom` 实测；目录只作索引 |
 | 官方 org | 除 `BlinkDL/RWKV-LM` 外还有 `RWKV/` org（如 `RWKV/RWKV-infctx-trainer`），加入跟踪源 |
+
+### 第 12 项信号（追加）：`irwkv`（原生 RWKV-7 服务框架）
+- 正式仓 https://github.com/rwkv-org/irwkv （Apache-2.0；13 commits；main 2026-11-02）
+- 镜像 https://github.com/w1c2j3/irwkv （Chase 的 `chase/rwkv-state-continuation` / `prefix-cache` / `context-compaction` 分支）
+- 看什么：state 续接 / prefix cache / tool calling / top-k logprobs / RL weight-update 接口是否稳定，
+  以及是否与 skyrl-rwkv 集成（同源团队，可能性存在）。
+- 归属注意：**irwkv 由张恺之（Cai-z-us）主导**，不是 Chase 独写；Chase 的贡献在分支。

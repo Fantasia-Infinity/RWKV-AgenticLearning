@@ -154,3 +154,15 @@ for any product plan built on top of the ecosystem.
 - `reports/skyrl/REPORT.md`, `reports/state/REPORT.md`, `reports/eco/REPORT.md` — full evidence dossiers
 - `data/eco-org-repos.txt` — 40-repo inventory
 - `tracking/sources.md` — source layers and signals
+
+---
+
+## 8. Addendum（2026-11-06）：helicopter、v8/ROSA 与活跃度分层
+
+本文件发布后 24 小时内出现三项需要修正/补充的信息，详见 [`../reports/2026-11-06-ecosystem-update.md`](../reports/2026-11-06-ecosystem-update.md)（含证据与复现命令）：
+
+1. **`helicopter` 存在**：在 `w1c2j3/helicopter`（不是 `rwkv-rs` 下），是 5 管线 / 24 benchmark / 27 EvalScope agent 数据集的 leaderboard 编排框架 —— 但**无 LICENSE、0 star、2026-08-10 停更、从未公开分数、官方 harness 依赖 Docker**。因此"评测基建空白"应修正为"**基建存在但不可依赖、无公开成绩**"。
+2. **新增 L6 前沿层 v8/ROSA**：`RWKV-LM/RWKV-v8/README.md` 列出 8 个社区 ROSA 项目（多数 MIT/Apache，3 个无许可证），是当前最活跃的方向；但**无官方 HF 权重、无 vLLM/RL/agent 栈**，故不影响本仓库近期的 v7 执行路线。
+3. **活跃度分层**：v7 引擎侧在退潮、v8/ROSA 最活跃；v7 的 agent/RL 层由少数单人维持（Chase Jay、shiroko98、Alic-Li、No-22）。另发现 `Alic-Li/rwkv_lightning_cuda` 有 5 个 `Claude` 提交（含 RL 相关改动），提示上游 RL 代码的数值正确性需要独立门禁。
+
+**对 §2 栈表的修正**：在 L0–L5 之外增加 **L6 前沿（v8/ROSA）**；L5 评测层补充 helicopter 作为"未公开的编排框架"。

@@ -44,3 +44,21 @@ rwkv-rs/llm-compressor-rwkv
 rwkv-rs/rwkv7-ascend-npu
 rwkv-rs/wandb-rs
 rwkv-rs/wx-cli
+
+# ===== 个人关键基建（bus factor 高，需盯许可证/活跃度/是否公开分数）=====
+w1c2j3/helicopter
+# 待核实后加入: w1c2j3/RWKV-SearchReader, w1c2j3/Gsm8k_rwkv, w1c2j3/rwkv-gepa-distill
+
+# ===== 2026-11-06 新增：v8/ROSA 前沿（趋势层，非当前执行栈）=====
+zyaaa-ux/ROSA-Tuning
+wjie98/rosa_soft
+johanwind/wind_rosa
+xiaoiecc/qkv-rosa-fast-exact-backward
+Juste-Leo2/ROSA-GPU-RWKV8
+x-0D/RASP
+KakaruHayate/RWKV8-ROSA-FPGA
+aabbdev/rosa
+
+# ===== 新增：推理/客户端侧关键单点 =====
+Alic-Li/rwkv_lightning_cuda
+RWKV-APP/RWKV_APP

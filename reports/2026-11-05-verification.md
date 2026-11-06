@@ -136,3 +136,10 @@ grep -n '2852a7b1d' repos/skyrl-rwkv/pyproject.toml          # skyrl pin 真相
 sed -n '1,20p' repos/wkvm/wkvm/server.py                     # wkvm 端点（无 migrate）
 sed -n '9,13p' repos/skyrl-rwkv/examples/train/rwkv/eval/run.sh  # NUM_GPUS==8 硬门禁
 ```
+
+---
+
+## 7. 增量更新（2026-11-06）
+
+本报告发布后 24 小时内的新证据（helicopter 仓库定位、v8/ROSA 前沿层、贡献者活跃度分层、AI 提交信号）
+见 [`2026-11-06-ecosystem-update.md`](2026-11-06-ecosystem-update.md)。

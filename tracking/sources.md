@@ -65,3 +65,24 @@ bash tracking/check.sh --diff          # 与上一轮对比，只打印变化
 ```
 
 脚本零 GitHub API 调用：用 `git ls-remote`（HEAD/分支）、`commits/<branch>.atom`（最后提交时间）、`raw.githubusercontent.com`（LICENSE 探测）。
+
+## 五、2026-11-06 新增（v8/ROSA 前沿 + 活跃度分层）
+
+### 新信息源
+| 源 | 地址 | 看什么 |
+|---|---|---|
+| RWKV-v8 README | https://github.com/BlinkDL/RWKV-LM/tree/main/RWKV-v8 | 官方 ROSA 说明 + 社区 ROSA 项目列表（8 个） |
+| helicopter | https://github.com/w1c2j3/helicopter | 5 条 agent 管线 / 24 benchmark / 27 EvalScope 数据集；**无许可证、2026-08-10 停更、零公开分数** |
+| rwkv_lightning_cuda | https://github.com/Alic-Li/rwkv_lightning_cuda | 官方教程推荐推理引擎；含 No-22 与 **Claude** 的提交 |
+| ROSA 社区项目 | zyaaa-ux/ROSA-Tuning(MIT) · wjie98/rosa_soft(MIT) · johanwind/wind_rosa(MIT) · xiaoiecc/qkv-rosa-fast-exact-backward(MIT) · Juste-Leo2/ROSA-GPU-RWKV8(Apache) · x-0D/RASP(无) · KakaruHayate/RWKV8-ROSA-FPGA(无) · aabbdev/rosa(无) | 活跃度、许可证、是否出现 serving/RL 集成 |
+
+### 第 9–11 项信号（追加）
+9. **v8/ROSA**：官方是否发布 v8 HF 权重、主流 serving 是否支持 ROSA、BlinkDL 是否把 v8 设为主线。
+10. **helicopter/scoreboard**：是否首次公开分数、是否补 LICENSE、是否恢复提交。
+11. **AI 共同开发**：`Claude` 等 AI 作者提交是否出现在 RL/训练关键路径（影响数值可信度评估）。
+
+### 活跃度分层（2026-11-06 快照）
+- A 层（近 30 天）：Alic-Li、josStorer、Cai-z-us、No-22、HaloWang、Joluck、w1c2j3、xiaoiecc
+- B 层（近半年）：wjie98、shiroko98、MollySophia、cryscan、顾真牛、johanwind
+- C 层（已停更）：zhiyuan1i、yzhangcs、Blealtan、RyanLuohaha、w-zz-w-zz-w
+- 结论：v7 引擎侧退潮；v8/ROSA 最活跃；v7 的 agent/RL 层靠少数单点维持 → 依赖必须 pin + 本地镜像。

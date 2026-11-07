@@ -98,14 +98,16 @@ Apache-2.0 for this repository's own content. Third-party quotations are attribu
 
 **RWKV agentic RL 的可核验研究仓库**：生态审计、多轮 agent 评测、rollout/RL 前期准备。
 
-**为什么做**：RWKV 的单轮 RLVR 已成熟（官方 `skyrl-rwkv` + DAPO 配方，GSM8K +12.43pp）；但**多轮 agentic RL 训练**（工具使用回合、逐 token logprob、episode 级训练）仍是公开空白——没有公开配方、没有公开结果、也没有把 state 管理器和 RL 训练器焊起来的 rollout 层。本仓库先把这个生态审计清楚，并让每条结论都可复核。
+**为什么做**：RWKV 的单轮 RLVR 已成熟（官方 `skyrl-rwkv` + DAPO 配方，GSM8K +12.43pp）；多轮 agent 的**公开结果刚刚出现，但全部是 SFT**——2026-11-07 `rwkv-org/rwkv-agent-eval` 发布首批公开多轮 agent 评测（1019 题配对 **30.9%→52.8%，+21.9±3.2pp**，7.2B 基模 + NoRA SFT adapter）。而**多轮 agentic RL 训练**（工具使用回合、逐 token logprob、episode 级训练）仍是公开空白——没有公开配方、没有公开 RL 结果、也没有把 state 管理器和 RL 训练器焊起来的 rollout 层。本仓库先把这个生态审计清楚，并让每条结论都可复核。
 
 **2026-11-05 的五个核心发现**：
 1. 生态图不全：仅 `rwkv-rs` 组织就有 **40 个公开仓库**（此前审计漏 30 个），包括更早的 **verl 原生 RWKV RL 集成 `verl-rwkv`**（43 个 RWKV 文件/18 PR，2026-08-02 停更）、活跃的 `torchtitan-rwkv`、`Megatrwkv-Bridge`、评测 fork、量化与 Rust 全栈；
-2. **"没有 agentic 模型/成绩"被部分推翻**：生态外 `No-22` 公开 **568 题多轮 agent 考卷**（G1l 基模 187/568=32.9%，NoRA 适配器 320.5/568=56.4%，⚠️ 非同基模严格对照）；`browsecomp-plus-eval` 是 830 题 BrowseComp-Plus 完整评测包（但无公开分数）；
+2. **"没有 agentic 模型/成绩"已被推翻**：`rwkv-org/rwkv-agent-eval` 于 **2026-11-07** 发布首批公开多轮 agent 评测——1019 题同题配对差 **30.9% → 52.8%（+21.9 ±3.2pp）**，12 个能力块全部上涨，留出题 +22.1pp；被测是 **7.2B 基模 + NoRA SFT adapter**（`mix-20261106`，**不是 RL**）；生态外 `No-22` 另有 568 题多轮考卷（G1l 基模 32.9% → NoRA 56.4%，非同基模严格对照）；`browsecomp-plus-eval` 是 830 题 BrowseComp-Plus 完整评测包（无公开分数）；
 3. **官方口径比"不做 agentic"更细**：G1l（2026-10-31）已官方支持多轮 tool-call 模板，官方文档指向社区 agent 目录——准确说法是"官方不做 agentic RL 训练，但把接口官方化、实践交给社区"；
-4. **仍空白的是**：公开的多轮 agentic RL 训练配方/结果、标准 agent benchmark 上的 RWKV 公开分数、state-native rollout 层；
+4. **仍空白的是**：公开的多轮 **agentic RL** 训练配方与结果（现有 agent 成绩全部是 SFT/NoRA/MiSS 适配器）、标准 benchmark（τ-bench / BFCL / BrowseComp-Plus）上的 RWKV 公开分数、把 state 管理器与 RL 训练器焊起来的 rollout 层；
 5. **纠正了 12 处事实**（vLLM pin、wkvm live-migrate 未实现、Megatron 28B 只有短跑证据、Helicopter 公开不存在但契约已进公开分支等），详见 [`reports/2026-11-05-verification.md`](reports/2026-11-05-verification.md)。
+
+**2026-11-07 更新**：首批公开 agent 评测结果已发布（SFT，非 RL），见 [`reports/2026-11-06-ecosystem-update.md`](reports/2026-11-06-ecosystem-update.md) §11。
 
 **怎么用**：`bash tracking/check.sh` 约 90 秒打一份生态快照（不消耗 GitHub API 配额），`--diff` 看变化；报告里每条结论都带命令、时间戳与证据路径。**证据政策**：不重新分发第三方全文，删除的副本以 `ARCHIVED.tsv` 中的 sha256 记录，可随时重新抓取校验。规划（P0–P5）见 [`ROADMAP.md`](ROADMAP.md)。
 

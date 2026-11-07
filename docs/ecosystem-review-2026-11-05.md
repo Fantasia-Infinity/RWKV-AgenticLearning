@@ -176,3 +176,12 @@ for any product plan built on top of the ecosystem.
 - `No-22-Github/dsh-rwkv-plugin`（无 LICENSE）把 RWKV-7 注册进 DeepSeek Harness（8 工具、XML 信封）。
 - **对 §0/§4 的修正**：不是"没有 agentic RL"，而是"**公开配方与结果尚未发布；私有管线已在运行**"。
 - 详见 [`../reports/2026-11-06-ecosystem-update.md`](../reports/2026-11-06-ecosystem-update.md) §9。
+
+---
+
+## 追加（2026-11-07）：首批公开 agent 评测成绩
+
+`rwkv-org/rwkv-agent-eval` 发布 1019 题公开多轮 agent 成绩（7.2B 基模 + NoRA **SFT** adapter）：
+**30.9% → 52.8%（+21.9 ±3.2pp）**，12 个能力块全部上涨；涨分机制是"学会调工具"而非推理变强。
+→ "没有公开 agent 成绩"的旧判断作废；"没有 agentic RL"仍成立。详见
+[`reports/2026-11-06-ecosystem-update.md`](../reports/2026-11-06-ecosystem-update.md) §11。

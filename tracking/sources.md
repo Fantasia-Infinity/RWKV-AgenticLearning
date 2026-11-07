@@ -41,6 +41,8 @@
 4. **Helicopter / scoreboard**：`rwkv-rs/Helicopter` 是否出现（当前 404）；是否以别的名字存在（`browsecomp-plus-eval`、`feat/heli-r00-training-eval` 等）。
 5. **RWKV-Megatron**：`codex/qwen-rwkv28b-distill` 是否有真实 28B 训练证据（配置/脚本/日志/权重）。
 6. **评测成绩**：toolcaller-bench / τ-bench / BFCL / AgentBench / BrowseComp 是否出现新的 RWKV 数字（尤其多步类别）。
+   - **2026-11-07 已触发**：`rwkv-org/rwkv-agent-eval` 发布 1019 题公开成绩（7.2B + NoRA SFT：30.9%→52.8%，+21.9±3.2pp；报告 `docs/reports/attribution-20261107.md`）。
+   - 后续跟踪：是否出现 **RL（非 SFT）** 阶段成绩；是否补 LICENSE/可下载 adapter；是否出现标准 benchmark（τ-bench/BFCL/BrowseComp-Plus）数字。
 7. **官方口径**：rwkv.cn / 公众号是否把 agentic RL 写进路线图；是否发布 agent 相关权重/工具。
 8. **Agent 目录**：46/187 条目的增删、新增 project、许可证与活跃度变化。
 

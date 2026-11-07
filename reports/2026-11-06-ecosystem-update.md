@@ -356,6 +356,8 @@ git -C /tmp/rlc log --author='Claude' --format='%h %ad %s' --date=short
 | "多轮 agent 能力没有模型证据" | ❌ **推翻**：7.2B + NoRA SFT 达到 52.8% |
 | "没有 agentic RL" | ✅ **仍成立**：公开成绩全部来自 SFT（teacher 轨迹），无 RL 阶段结果 |
 
+**11.2b 资产盘点（2026-11-07 11:05 复核）**：评测代码、题源（约 600 道自造题 + 约 600 个网页存档）、归因报告、327 题逐题归因 JSONL **全部公开**；完整 1019 题 Harbor task 在 gitignore 的 `build/` 里（可由 `bank/convert.py` 重建）；**原始 trial（`runs/`）、训练数据（仅 `bank/mix-domains.json` 行数统计，4677 行 / 30 领域）、训练管线、adapter 权重全部不公开**。两个仓库均**无 LICENSE**（all rights reserved）→ 只能读/本地跑，不能再分发或把题目搬进训练集。一句话：**可复现的评测 + 不可复现的训练**。详见方法与失败模式评述 §10。
+
 ### 11.3 方法与可复现性评价
 
 - 方法明显高于多数工业界 agent eval 报告：同题配对差 + 95% CI、留出/已训/开源三档泛化、12 能力块拆分、Codex 逐题归因（17 批 × 16 归因码）、机械 trace 统计、判据自审（R2/R3/R4 偏差方向与影响）、超时口径披露。

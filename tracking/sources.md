@@ -43,6 +43,7 @@
 6. **评测成绩**：toolcaller-bench / τ-bench / BFCL / AgentBench / BrowseComp 是否出现新的 RWKV 数字（尤其多步类别）。
    - **2026-11-07 已触发**：`rwkv-org/rwkv-agent-eval` 发布 1019 题公开成绩（7.2B + NoRA SFT：30.9%→52.8%，+21.9±3.2pp；报告 `docs/reports/attribution-20261107.md`）。
    - 后续跟踪：是否出现 **RL（非 SFT）** 阶段成绩；是否补 LICENSE/可下载 adapter；是否出现标准 benchmark（τ-bench/BFCL/BrowseComp-Plus）数字。
+   - **2026-11-07 资产盘点**：评测代码/题源（~600 自造题 + ~600 网页存档）/归因报告/327 题 JSONL 公开；`build/` 与 `runs/` 被 gitignore；训练数据仅 `bank/mix-domains.json` 行数统计（4677 行 / 30 领域）、管线不存在、adapter 无 HF 权重；**两仓库均无 LICENSE**（all rights reserved，只能读/本地跑）。
 7. **官方口径**：rwkv.cn / 公众号是否把 agentic RL 写进路线图；是否发布 agent 相关权重/工具。
 8. **Agent 目录**：46/187 条目的增删、新增 project、许可证与活跃度变化。
 

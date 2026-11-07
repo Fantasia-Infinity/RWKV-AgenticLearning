@@ -47,6 +47,8 @@
 7. **官方口径**：rwkv.cn / 公众号是否把 agentic RL 写进路线图；是否发布 agent 相关权重/工具。
 8. **Agent 目录**：46/187 条目的增删、新增 project、许可证与活跃度变化。
 
+12.5 **harness 语义与许可证（2026-11-07 新增）**：`dsh-rwkv-plugin` 的重复调用门是否再改；
+   其 **MIT** 许可证（已补）与 `rwkv-agent-eval`（仍无 LICENSE）的许可差；Megatron-Bridge 的 RWKV7 训练是否继续演进。
 12. **state-native agent runtime（社区）**：`123123213weqw/rwkv-agent` 是否有新提交/新基准数字；是否出现与
     skyrl/vllm/irwkv 的集成；`x-harness-rs` 是否支持 RWKV 后端。重点看 README 的 state-memory 数字
     （32.5 MiB/state；31 会话 0.98 GiB@24GB）是否被官方/第三方复现或引用。

@@ -9,7 +9,7 @@ rwkv-rs/verl-rwkv
 rwkv-rs/torchtitan-rwkv
 rwkv-rs/antidoom-rwkv
 rwkv-rs/fla-rwkv
-rwkv-rs/Megatrwkv-Bridge
+rwkv-rs/Megatrwkv-Bridge  # 2026-11-07 PR#1 合入 RWKV7 训练（Megatron Bridge, Apache-2.0）
 JL-er/RWKV-PEFT  # 原名 Joluck，GitHub 重定向
 OpenMOSE/RWKV-LM-RLHF
 TimeMobius/RWKV-Megatron

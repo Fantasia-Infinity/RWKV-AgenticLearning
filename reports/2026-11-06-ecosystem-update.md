@@ -379,3 +379,45 @@ git -C /tmp/rlc log --author='Claude' --format='%h %ad %s' --date=short
 
 - 报告数字未由本仓库独立复现；判据实现（`bank/judge.py`）未审阅。
 - 作者/团队与 `mix-20261106` 数据来源不可见。
+
+---
+
+## 12. 2026-11-07 傍晚更新：插件重复调用修复（MIT）+ Megatron-Bridge 合入 RWKV7
+
+> 采集 2026-11-07 17:30 CET；GitHub API + commit patch 实测。
+
+### 12.1 `dsh-rwkv-plugin` 修复 + 补 MIT
+
+| 项 | 事实 |
+|---|---|
+| 修复提交 | `a76aba0`（author 2026-11-07T08:39:06Z，+0800 显示 16:39）：**"Reset the repeat gate after a change; read DSH time-context as a note"** |
+| 语义 | 成功的**变更类调用**（`edit`/`write`，以及看起来在写的 bash：输出重定向、`sed -i`、`tee`、`mv/cp/rm`、`git apply` 等）会清空 `successKeys`；**变更调用本身及其后续调用仍是重复**；**失败的变更不重置** |
+| 量化 | 提交信息：对 2026-11-06 评测轨迹回放，此修复放行 **797 次** adapter 拒绝（416 trials / 246 题） |
+| 附带修复 | DSH `time-context` 读数不再被当成 user turn，改为 note `Current time: <timestamp>.` |
+| ⚠️ 关键限定 | 提交信息明确：**headless profile（评测与 teacher 采集）不加载该插件** → **训练行与评测提示词不变**。因此"修复后重跑评测会改基线分数"的推测**不成立**（该修复影响的是桌面交互 trace，不是 headless 评测） |
+| 许可证 | 同日 `6dbe2e7`（10:32:55Z）**补上 MIT License**（Copyright 2026 No-22-Github）→ 成为可合法参考/复用的组件 |
+
+### 12.2 Megatron-Bridge 合入 RWKV7 训练
+
+| 项 | 事实 |
+|---|---|
+| PR | `rwkv-rs/Megatrwkv-Bridge` **PR #1 merged 2026-11-07T10:51:50Z**（merge `0f6e5ee`），作者 Cai-z-us |
+| 内容 | 通过 native Megatron Bridge 做 RWKV7 **token pretraining + continued pretraining**；全参/LoRA/NoRA；DDP、distributed optimizer、Megatron FSDP `optim_grads`、分布式 ckpt、带 adapter merge 的 HF 导出；8×RTX PRO 6000 Blackwell 默认配方（4K/16K/64K） |
+| 验证 | 86 个测试（54 unit + 32 CUDA functional）通过；PR 描述称已验证 13.3B/64K 的 20-update 全参与 NoRA 续训 + 新进程 HF 导出 |
+| 技术栈 | 复用 `transformers-rwkv` 计算 + FlashRWKV2 算子 + tokenizer fork（**与我们同一套底层**） |
+| 许可 | 仓库 Apache-2.0（NVIDIA Megatron-Bridge fork） |
+
+### 12.3 对判断与计划的影响
+
+| 原判断 | 更新 |
+|---|---|
+| "插件逻辑是 agent 能力的隐藏变量" | ✅ 被其自身修复与量化证实；但**对 headless 评测分数无直接影响**（插件不参与 headless） |
+| "训练与推理环境必须一致" | ✅ 仍是我们的 P3/P4 设计原则；其"headless 不加载插件"正好说明**评测开销与交互 harness 解耦** |
+| "RWKV 没有规模化训练路径" | ⚠️ 进一步削弱：Megatron-Bridge 原生 RWKV7 训练（含 13.3B/64K 验证）已公开合入；但**不在我们 4×A100-40G 的适用硬件范围** |
+| 许可证状况 | `dsh-rwkv-plugin` → **MIT**；`rwkv-agent-eval` **仍无 LICENSE**（不变） |
+
+对本仓库计划：**P0–P5 路线、预算、门禁均不变**；具体调整见 `private/plan-research/PLAN-v8-addendum-2026-11-07.md`（v8.3）：
+1. P3 环境约束按 `a76aba0` 的精确语义实现（变更成功 → 重置；失败 → 不重置；变更后的调用仍是重复）
+2. P4 新增"harness policy 消融"（headless 下重复调用门在/不在对 rollout 行为的影响），但**不预期**外部评测分数变化
+3. 许可：`dsh-rwkv-plugin`（MIT）可参考/复用（保留版权声明）；`rwkv-agent-eval` 仍然只读
+4. Megatron-Bridge 加入跟踪；P5 可选探针，不进 140h 关键路径

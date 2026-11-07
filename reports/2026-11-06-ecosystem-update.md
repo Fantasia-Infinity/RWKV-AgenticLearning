@@ -362,6 +362,8 @@ git -C /tmp/rlc log --author='Claude' --format='%h %ad %s' --date=short
 - **可复现性仍受限**：仓库**无 LICENSE**；评测依赖 Harbor + Docker；adapter 与 `mix-20261106` 数据在私有 `rwkv-agent-pipeline`，**不可下载**。→ 只能作为"公开证据"引用，不能作为可复现基线。
 - 我们的 P4 应**借鉴方法而非复制内容**：配对差 + CI、三档泛化、能力块、trace 机械统计、归因码、判据自审；题库自建（Harbor 兼容格式）。
 
+> 方法与失败模式的详细评述见 [`reports/2026-11-07-agent-eval-methodology-review.md`](2026-11-07-agent-eval-methodology-review.md)。
+
 ### 11.4 对本仓库计划的影响（详见 `private/plan-research/PLAN-v8-addendum-2026-11-07.md`）
 
 1. **P1.5（SFT 基座）证据强化 → 建议前移**：外部结果说明 agent 能力主要来自 **SFT 阶段学会调工具**（RL 未参与）。我们应把 P1.5（SFT/NoRA 基座）放在 P2 多轮 RL 之前，而不是之后。

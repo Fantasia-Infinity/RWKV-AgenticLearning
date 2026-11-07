@@ -44,11 +44,16 @@
 7. **官方口径**：rwkv.cn / 公众号是否把 agentic RL 写进路线图；是否发布 agent 相关权重/工具。
 8. **Agent 目录**：46/187 条目的增删、新增 project、许可证与活跃度变化。
 
+12. **state-native agent runtime（社区）**：`123123213weqw/rwkv-agent` 是否有新提交/新基准数字；是否出现与
+    skyrl/vllm/irwkv 的集成；`x-harness-rs` 是否支持 RWKV 后端。重点看 README 的 state-memory 数字
+    （32.5 MiB/state；31 会话 0.98 GiB@24GB）是否被官方/第三方复现或引用。
+
 ## 三、失真登记（已知坑，别重复踩）
 
 | 类型 | 案例 | 处理 |
 |---|---|---|
 | 目录标错许可 | `123123213weqw/rwkv-agent` 目录 MIT 实为 AGPL-3.0 | 关键决策前回源读 LICENSE |
+| 描述与主体不符 | `123123213weqw/rwkv-agent` 的 GitHub description 写 retrieval/benchmarks，README 主体实为 **state-native Agent runtime** | 以 README + 代码结构为准，description 不可信 |
 | 目录未标归档 | `1cyberlangke1/rwkv-jev-like` 已 archived | 查 `archived` / 最后推送 |
 | 名不副实 | `xiaol/WuNeng` 零行 RWKV 代码；`Ai00-X/ai00_server` 无 agent 能力 | 读代码再下结论 |
 | 仓库迁移 | `FlashRWKV2` 从 BlinkDL/ 迁到 rwkv-rs/（2026-11-05 实测 BlinkDL 路径 404） | 用 org 清单校准 owner |

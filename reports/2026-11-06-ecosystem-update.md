@@ -283,3 +283,42 @@ git -C /tmp/rlc log --author='Claude' --format='%h %ad %s' --date=short
 - Joluck 的 RLVR×PEFT 论文结论（DoRA/AdaLoRA/MiSS 优于标准 LoRA、PiSSA 谱坍塌）为二手信息，未独立核实；
   我们用全参 FSDP，不直接受影响。
 - `mix-20261106` 数据规模/来源不可见（私有）。
+
+---
+
+## 10. 2026-11-07 追加核验：社区 state-native Agent runtime `rwkv-agent`（重要更新）
+
+> 采集时间 2026-11-07 01:10 CET；来源 GitHub API + raw README（对外部内容只做事实摘录）。
+
+### 10.1 事实
+
+| 项 | 实测 |
+|---|---|
+| `123123213weqw/rwkv-agent` | 2026-07-19 创建；最后推送 **2026-11-01**；Python + Rust；**9★ / 3 forks**；**AGPL-3.0-or-later** |
+| 自我描述 | **"RWKV State Agent — A local, state-native Agent runtime for RWKV models"**：跨轮复用 RWKV 循环状态、严格工具调用、**一个 GPU 调度器推进大量隔离 agent 状态**、bubblewrap 沙箱、HTTP/NDJSON API（`owner_id`/`session_id`/state 生命周期） |
+| README 报告的数字（**作者自报，未独立复现**） | 单会话状态 **34,078,724 B（≈32.5 MiB）**，与历史长度无关；**31 会话 = 0.98 GiB，可放进 24 GB 卡**（同构 attention 约 31 GiB）；state 拷贝 3.8 ms；快照恒定 32.63 MiB；18K tokens 时 restore 比重算快 11.9×；100 会话下推理状态内存省 4.3×（对照 attention：49.5 MiB 固定 + 32 MiB/1K tokens） |
+| 模型/后端 | RWKV-7 7.2B（HF recurrent sidecar）；NVIDIA CUDA / AMD ROCm；**没有 RL/训练接口**（无 logprobs 训练契约、无 weight sync、无 GRPO） |
+| 关联仓库 | `123123213weqw/x-harness-rs`：跨平台 agent harness（Rust，durable loop/原生工具/沙箱/Tauri+Web），16★，**Apache-2.0**；`rwkv-rs/hf-adapter`：MIT，2026-07-06 创建（与作者 GitHub 账号同日），组织内仓库 |
+
+### 10.2 对既有判断的修正
+
+1. **此前**：本仓库 §9 判断"agentic RL 训练管线在私有侧"；并在早期笔记里说"缺少能消费 state-native 引擎的多 agent rollout 层"。
+2. **修正**：**面向推理的 state-native 多会话 agent runtime 已经公开存在**（`rwkv-agent`），且给出了量化的状态内存优势。仍然缺失的是
+   **把它接进 RL 训练回路**的那一层：逐轮 loss mask / per-token logprob / 权重同步 / GRPO-DAPO 批语义。
+   `skyrl-rwkv` 已覆盖 HF+vLLM 路径；`rwkv-agent` 是**服务侧**参考，不是训练侧 drop-in。
+3. 因此"空白"的准确表述应为：**公开可复现的、带训练回路的 RWKV agentic RL 配方与结果**。
+
+### 10.3 对计划的影响（详见 `private/plan-research/PLAN-v8-addendum-2026-11-07.md`）
+
+- **P0/P1/P2：不变**（环境、权重、单轮 RL 门禁与它无关）。
+- **P3：参考实现增至 4 个**：irwkv、Chase 的 RWKV-LH、No-22 的 dsh-rwkv-plugin、**rwkv-agent（新增，最贴近多会话 rollout 需求）**。
+  可借鉴的设计（只借思路）：state pool + 统一 ready 队列、state 快照/恢复做分支与断点、严格单信封工具协议 + 控制器校验、
+  `owner/session/state` 三级生命周期。
+- **P4：新增 Apache-2.0 设计参考** `x-harness-rs`（工具循环/沙箱/持久化），我们自建，不复制。
+- **P5：可新增一项"状态内存扩展性"对照**（会话数 vs 显存），引用其公开数字时明确标注"作者自报"。
+- **许可证红线**：`rwkv-agent` 为 **AGPL-3.0-or-later** → **只做设计参考，不拷贝代码、不链接**；`x-harness-rs` 为 Apache-2.0，如需拷贝须保留 NOTICE。
+
+### 10.4 未验证 / 风险
+
+- README 数字未独立复现（无第三方引用、无 benchmark 日志可核）；引用一律标注 author-reported。
+- 作者身份/组织关系（与元始智能、rwkv-rs 的关系）**仅有公开提交痕迹**，不做事实断言；本仓库不收录个人身份推测。

@@ -76,3 +76,7 @@ w1c2j3/irwkv  # 镜像；Chase 的 state-continuation/prefix-cache 分支在此
 rwkv-org/rwkv-agent-eval
 No-22-Github/dsh-rwkv-plugin
 # 监控（当前 404/私有）：rwkv-agent-pipeline —— 一旦公开即重大信号
+
+# ===== Agent 运行时（社区，非 rwkv-rs/rwkv-org） =====
+123123213weqw/rwkv-agent   # RWKV State Agent: state-native 多会话 runtime；**AGPL-3.0-or-later**（目录标 MIT 是错的）；README 实测 31 会话/24GB
+123123213weqw/x-harness-rs # XHarness: 跨平台 coding-agent harness（Rust，durable loop/工具/沙箱/Tauri+Web）；Apache-2.0

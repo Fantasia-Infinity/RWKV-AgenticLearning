@@ -111,6 +111,9 @@ def main() -> None:
     Path(args.out).write_text(json.dumps({"summary": summary, "records": records},
                                          ensure_ascii=False, indent=2))
     print(json.dumps(summary, ensure_ascii=False, indent=2))
+    # vLLM/shutdown can hang on MIG after generation; force exit once results are durable.
+    import os
+    os._exit(0)
 
 
 if __name__ == "__main__":

@@ -123,3 +123,23 @@ bash tracking/check.sh --diff          # 与上一轮对比，只打印变化
   后端 rwkv_lightning CUDA + iRWKV 续写接口）
 - 看什么：① 是否首次公开 agent 分数；② 是否补 LICENSE；③ `rwkv-agent-pipeline` 是否公开；
   ④ 是否支持 apptainer/HPC；⑤ DSH 版本是否改为可通过 npm 安装的正式版。
+
+## 2026-11-09 核验：`Alic-Li/rwkv_lightning_cuda` 在线 RL server（此前严重低估）
+
+**核验方式**：`web_fetch` 拉取仓库页与 `docs/online-rl.zh-CN.md`（HTTP 200），根 `LICENSE` 返回 404。
+
+**实证能力（文档原文可查）**
+- 三个常驻 HTTP 在线 RL server：`rwkv_miss_tune_server`（训 MiSS 的 D，冻结初始 State）、`rwkv_state_tune_server`（训初始 time_state，冻结 Adapter）、`rwkv_nora_tune_server`（训 NoRA A/B）
+- `--keep-versions 2` 策略版本快照；actor 与 learner 共享同一 BF16 backbone
+- 客户端 `--algorithm grpo|dr_grpo`：GRPO 除 std；Dr.GRPO 不除 std、把服务端 1/N 换成常数 1/(G·max_tokens·turns)
+- token 级 `loss_mask`（prompt/观察=0、生成=1，首 token 无前驱不计 loss）；`/v1/logprobs` 教师强制 + 启动策略作为永久 reference（KL 折进 Advantage，k1）
+- CPU 前缀缓存：共享 Radix Trie + LRU，缓存完整 WKV State/shift/next-token logits；多轮只 prefill 新增 token
+- `/v1/completions` 合批解码；stop 默认 `["</tool_call>", "</answer>", "\n\nUser:"]`
+- `policy_version` 同时约束 completions 与 train；`/v1/publish` 以 `expected_step` 做 CAS
+- **temperature 后采样策略的 FP32 logprob**；无 top-k/top-p/greedy（避免截断采样与 CE 不一致）——文档明确"若以后加入截断采样，训练端需同时按相同截断计算 CE 和 logprob"
+- **限制**：纯 on-policy REINFORCE，无 PPO clipping/内置 KL；单 GPU worker、请求串行；**PEFT-only**（MiSS/State/NoRA，无全参）；C++/CUDA，无 PyTorch
+- 多轮工具：文档给 Python 客户端骨架（token-id 历史拼接、观察单独 tokenize、turns 拼接），**server 本身不执行工具**
+
+**结论**：此前"没有 agentic RL 基建"的判断被推翻（基建 2026-10-23 起已存在，但**无 LICENSE**）。
+仍成立：**没有公开的多轮 RL 训练结果**；我们的公开空白 = ①多轮 RL 结果 ②许可证干净的可复现 recipe。
+参考：[repo](https://github.com/Alic-Li/rwkv_lightning_cuda) / [online-rl docs](https://github.com/Alic-Li/rwkv_lightning_cuda/blob/main/docs/online-rl.zh-CN.md)

@@ -60,7 +60,7 @@ KakaruHayate/RWKV8-ROSA-FPGA
 aabbdev/rosa
 
 # ===== 新增：推理/客户端侧关键单点 =====
-Alic-Li/rwkv_lightning_cuda
+Alic-Li/rwkv_lightning_cuda  # 无 LICENSE（根 LICENSE 404, 2026-11-09 复核）；docs/online-rl.zh-CN.md 实证：MiSS/State/NoRA 三个常驻在线 RL server、GRPO/Dr.GRPO、token loss_mask、/v1/logprobs 教师强制、policy_version CAS、多轮 tool 客户端示例；纯 C++/CUDA、PEFT-only、单 GPU worker
 RWKV-APP/RWKV_APP
 
 # ===== 2026-11-06 新增（官方目录扫描）：训练适配 / 官方 org =====

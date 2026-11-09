@@ -143,3 +143,16 @@ bash tracking/check.sh --diff          # 与上一轮对比，只打印变化
 **结论**：此前"没有 agentic RL 基建"的判断被推翻（基建 2026-10-23 起已存在，但**无 LICENSE**）。
 仍成立：**没有公开的多轮 RL 训练结果**；我们的公开空白 = ①多轮 RL 结果 ②许可证干净的可复现 recipe。
 参考：[repo](https://github.com/Alic-Li/rwkv_lightning_cuda) / [online-rl docs](https://github.com/Alic-Li/rwkv_lightning_cuda/blob/main/docs/online-rl.zh-CN.md)
+
+## 2026-11-09 10:20 复查（日检 2 条变化；周检 8 项信号仍全部未触发）
+
+**核验方式**：GitHub API（PR #22）、仓库页（404）。
+
+1. ✅ `Alic-Li/rwkv_lightning_cuda` **PR #22 已合并**（2026-11-09T00:38:55Z，merge `cab5d84`，+4786/−775，88 文件）：
+   `perf(adapter): 恢复 MiSS/NoRA 请求级热切换，不同 adapter 合批解码`（No-22 提交，Alic-Li 合并；No-22 的 fork 仓无 LICENSE，主仓 `license: null` 依旧无许可证）
+   - 关键：不同 adapter/基模请求**合在同一解码批次**（5 个 NoRA 各 100 请求：408→1628 tok/s，纯基模 1761）；冷切换不阻塞（1.6s→45ms）→ **异步 RL 的多策略版本同批 rollout 使能件**
+2. ⚠️ `w1c2j3/rwkv-pi` 已 **404（转私有/删除）**——11-08 建仓当天推送、次日收回；再次印证"公开仓只放代码、数据/轨迹/报告私有"的模式
+3. 周检 8 项（标准 agent benchmark 分数、skyrl-rwkv 多轮工具、28B 文档化训练、wkvm LICENSE、多轮 SFT 进官方 PEFT、G1 进 OpenMOSE、TLPO 进 skyrl-rwkv、v8 新代际）**全部未触发**
+4. 待核实（第三方周检报告提及）：`RWKV-v8/` ROSA 实验文件最晚 2026-02-22（停滞 8 个月）——本轮未独立核验，按待验证信号跟踪
+
+**对我们的含义**：外部 RL 基建在快速迭代（合批 adapter、异步），但**仍无公开多轮 RL 结果**；我们的公开空白判断不变，且 license-clean 的可复现结果更有价值。

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07） · RWKV-AgenticLearning · 报告站</title>
+<link rel="stylesheet" href="../assets/style.css">
+
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="brand" href="../index.html">RWKV-AgenticLearning · 报告站</a>
+<span class="built">built 2026-11-10 21:03 UTC</span></div></header>
+<div class="layout wrap">
+<nav class="sidebar"><a href="../index.html">首页</a>
+<span class="nav-cat">核心报告</span>
+<a href="../reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
+<a href="../reports/2026-11-10-rl-results-summary.html">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)</a>
+<a href="../reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a>
+<a href="../reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
+<a href="../reports/2026-11-07-agent-eval-methodology-review.html" class="active">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
+<a href="../reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
+<a href="../reports/2026-11-05-verification.html">RWKV 生态核验报告（2026-11-05 接续 session）</a>
+<span class="nav-cat">专题报告</span>
+<a href="../reports/state/evidence/CITATIONS.html">Evidence citations — state/</a>
+<a href="../reports/state/REPORT.html">状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告</a>
+<a href="../reports/skyrl/evidence/CITATIONS.html">Evidence citations — skyrl/</a>
+<a href="../reports/skyrl/evidence/00-env.html">环境与时间快照</a>
+<a href="../reports/skyrl/REPORT.html">skyrl-rwkv 深度核验报告（任务 task-1）</a>
+<a href="../reports/eco/evidence/CITATIONS.html">Evidence citations — eco/</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html">Evidence: rwkv.cn /tutorials/basic/Prompt-Format</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html">RWKV Native Model Templates</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html">RWKV MaxRL configuration</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html">Native rwkv-lm Engine</a>
+<a href="../reports/eco/REPORT.html">RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）</a>
+<a href="../reports/EVIDENCE.html">Evidence — policy, layout, and how to re-verify</a>
+<span class="nav-cat">文档</span>
+<a href="../docs/ecosystem-review-2026-11-05.html">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a>
+<a href="../docs/methodology.html">Methodology — how claims in this repository are produced and checked</a>
+<span class="nav-cat">项目</span>
+<a href="../THIRD_PARTY_NOTICES.html">Third-party notices</a>
+<a href="../ROADMAP.html">ROADMAP — RWKV agentic RL</a>
+<a href="../index.html">RWKV-AgenticLearning</a>
+<a class="ext" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">GitHub ↗</a></nav>
+<main class="content">
+<article class="report">
+<div class="crumb"><a href="../index.html">首页</a> / reports/2026-11-07-agent-eval-methodology-review.md</div>
+<h1 class="report-title">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</h1>
+<div class="meta"><span class="badge">核心报告</span><span class="badge date">2026-11-07</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/reports/2026-11-07-agent-eval-methodology-review.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
+<ul>
+<li><a href="#0">0. 证据与抓取元信息</a></li>
+<li><a href="#1">1. 实验设计（原文摘要）</a></li>
+<li><a href="#2">2. 主要公开数字（引自原文）</a></li>
+<li><a href="#3">3. 归因：涨分来自"工具调用行为"，不是推理</a></li>
+<li><a href="#4">4. 失败模式分类（原文数据）</a></li>
+<li><a href="#5">5. 报告给出的补数据优先级（原文）</a></li>
+<li><a href="#6">6. 方法评估</a></li>
+<li><a href="#7-rwkv-agent">7. 对 RWKV agent 训练/评测的直接启示（我们的设计清单）</a></li>
+<li><a href="#8">8. 可复现性边界与引用方式</a></li>
+<li><a href="#9">9. 待观察</a></li>
+<li><a href="#10-2026-11-07-1105">10. 追加盘点（2026-11-07 11:05）：评测全公开、训练全不公开</a><ul>
+<li><a href="#101">10.1 公开 / 不公开</a></li>
+<li><a href="#102">10.2 训练混合的领域分布（公开统计，可作为我们数据规格的覆盖参考）</a></li>
+<li><a href="#103">10.3 法律边界（重要）</a></li>
+<li><a href="#104">10.4 后续观察点（更新）</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</details><div class="md-body"><h1 id="rwkv-agent-rwkv-agent-eval2026-11-07"><a class="toclink" href="#rwkv-agent-rwkv-agent-eval2026-11-07">方法评述：首批公开 RWKV 多轮 Agent 评测（<code>rwkv-agent-eval</code>，2026-11-07）</a></h1>
+<blockquote>
+<p><strong>性质</strong>：对第三方公开报告的<strong>方法与失败模式评述</strong>，不是本仓库的复现。数字引自原文并署名；不重新分发全文。
+本文档只包含我们自己的分析与公开事实引用；第三方内容版权归其作者。</p>
+</blockquote>
+<h2 id="0"><a class="toclink" href="#0">0. 证据与抓取元信息</a></h2>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>报告仓库</td>
+<td><code>rwkv-org/rwkv-agent-eval</code>（公开）</td>
+</tr>
+<tr>
+<td>抓取时间</td>
+<td>2026-11-07T09:48:33Z</td>
+</tr>
+<tr>
+<td>来源文件</td>
+<td><code>docs/reports/attribution-20261107.md</code>（14,064 B，sha256 <code>deed3c22…</code>）<br><code>docs/reports/attribution-20261107-tables.md</code>（13,885 B，sha256 <code>79707bcb…</code>）<br><code>docs/reports/hard-tasks-20261107.md</code>（13,266 B，sha256 <code>aee1881c…</code>）</td>
+</tr>
+<tr>
+<td>许可证</td>
+<td><strong>无 LICENSE 文件（HTTP 404）</strong> → 只做短引用 + 署名，不转载全文、不复制题目内容</td>
+</tr>
+<tr>
+<td>可复现性</td>
+<td>评测依赖 Harbor + Docker；被测 adapter 与训练数据 <code>mix-20261106</code> 在<strong>私有</strong> pipeline，不可下载</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1"><a class="toclink" href="#1">1. 实验设计（原文摘要）</a></h2>
+<ul>
+<li><strong>题库 1019 题</strong> = 首版 435 + 留出补题 135 + 第二轮自造 449；每题每个模型跑 <strong>2 次</strong>。</li>
+<li>统计：先求每题平均，再在题目层面算误差；比较用<strong>同题配对差 ±95% CI</strong>。</li>
+<li>泛化三档：已训回测 28 题 / 留出 951 题 / 开源 humanevalfix 40 题。</li>
+<li>自造题由 Codex 生成、另一个 Codex 逐题审；参考答案在评测同款 Debian 容器 449/449 通过。</li>
+<li>判分器修复：<code>required_tools</code> 中新工具名（read/grep/glob/bash）不能互相替代（旧工具名可以）→ 修 <code>bank/judge.py</code> 并用 <code>runner/rescore.py</code> 重判。</li>
+<li>超时口径：adapter 推理慢约 4.5×，两边统一 <strong>5 倍时限</strong>（单轮 25 分钟），1 倍时限超时的 trial 用 5 倍补跑。</li>
+<li>判据自审：R2（只读题偏宽）、R3（全角数字/千分位误判）、R4（名称局部命中偏宽）；报告估计对总分影响 &lt;1pp。</li>
+</ul>
+<h2 id="2"><a class="toclink" href="#2">2. 主要公开数字（引自原文）</a></h2>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th style="text-align: right;">基模</th>
+<th style="text-align: right;">adapter（NoRA r16 SFT）</th>
+<th style="text-align: right;">差值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>总分（1019 题）</strong></td>
+<td style="text-align: right;">30.9%</td>
+<td style="text-align: right;">52.8%</td>
+<td style="text-align: right;"><strong>+21.9 ±3.2 pp</strong></td>
+</tr>
+<tr>
+<td>留出 951 题</td>
+<td style="text-align: right;">30.3%</td>
+<td style="text-align: right;">52.4%</td>
+<td style="text-align: right;">+22.1 ±3.3</td>
+</tr>
+<tr>
+<td>已训回测 28 题</td>
+<td style="text-align: right;">42.9%</td>
+<td style="text-align: right;">71.4%</td>
+<td style="text-align: right;">+28.6 ±21.6</td>
+</tr>
+<tr>
+<td>开源 humanevalfix 40 题</td>
+<td style="text-align: right;">37.5%</td>
+<td style="text-align: right;">50.0%</td>
+<td style="text-align: right;">+12.5 ±18.8</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>12 个能力块<strong>全部上涨</strong>；最大：网页+本地 +56.2、代码修复 +36.3、网页+代码 +24.0。</li>
+<li>被测：<code>rwkv7-g1l-7.2b-20261031-ctx34304</code> + <code>g1l-nora-r16-lr2e-5-e2</code>（NoRA r16、lr 2e-5、2 epochs、<code>mix-20261106</code> 上 <strong>SFT</strong>）。</li>
+</ul>
+<h2 id="3"><a class="toclink" href="#3">3. 归因：涨分来自"工具调用行为"，不是推理</a></h2>
+<table>
+<thead>
+<tr>
+<th>行为指标</th>
+<th>基模</th>
+<th>adapter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>网页题打开网页比例</td>
+<td>~35%</td>
+<td><strong>~99%</strong></td>
+</tr>
+<tr>
+<td>代码修复"一个工具都不调"</td>
+<td>19%</td>
+<td><strong>0%</strong></td>
+</tr>
+<tr>
+<td>工具报错率</td>
+<td>22%</td>
+<td><strong>8%</strong></td>
+</tr>
+<tr>
+<td>改测试文件次数</td>
+<td>39</td>
+<td>8</td>
+</tr>
+<tr>
+<td>剩余失败"做了但做错"</td>
+<td>—</td>
+<td><strong>基本没减少</strong></td>
+</tr>
+</tbody>
+</table>
+<p>→ 该报告的核心结论是：SFT 教会了"按题面调对的工具"，但没有提升"做完之后做对"的能力。后者是 RL/在线优化的空间。</p>
+<h2 id="4"><a class="toclink" href="#4">4. 失败模式分类（原文数据）</a></h2>
+<table>
+<thead>
+<tr>
+<th>失败模式</th>
+<th>规模</th>
+<th>训练数据缺口（原文）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>没打开题面给的网页</td>
+<td>网页+本地失败 70%、网页+代码 76%（基模）</td>
+<td>网页样本 1781 行，充分</td>
+</tr>
+<tr>
+<td>一个工具都不调</td>
+<td>代码修复 19%、网页+代码 39%（基模）</td>
+<td>—</td>
+</tr>
+<tr>
+<td>改完文件重复 read → 撞重复调用保护 → 收尾</td>
+<td>adapter 245 次收尾中 <strong>104 次</strong></td>
+<td>290 条"改完再读"目标步，<strong>0 条"被拒后怎么答"</strong></td>
+</tr>
+<tr>
+<td>思考中逐行抄日志手工计数</td>
+<td>adapter 超时 <strong>79 次</strong>（统计块 19 次）</td>
+<td>统计样本思考中位数 ~240 字符</td>
+</tr>
+<tr>
+<td>能答就不搜</td>
+<td>搜索失败 <strong>69%</strong> 未调 <code>web_search</code></td>
+<td>网络查询数据 69 行</td>
+</tr>
+<tr>
+<td>做不到类：拒答前先探环境被判错</td>
+<td><strong>-14.7 pp</strong></td>
+<td>做不到数据仅 25 行</td>
+</tr>
+<tr>
+<td>追问轮不再查看文件</td>
+<td>查找阅读-代码 17 次</td>
+<td>—</td>
+</tr>
+<tr>
+<td>改测试文件让测试通过</td>
+<td>基模 39 次 / adapter 8 次</td>
+<td>题面普遍写"不改测试"</td>
+</tr>
+</tbody>
+</table>
+<p>报告还指出：<strong>最大单一问题在 harness 不在数据</strong>——插件 <code>dsh-rwkv-plugin</code> 的 <code>gateToolCall</code> 重复调用保护在文件被 edit/write 后不重置，拦掉 <strong>472 次</strong>合理的"改完复检"。</p>
+<h2 id="5"><a class="toclink" href="#5">5. 报告给出的补数据优先级（原文）</a></h2>
+<table>
+<thead>
+<tr>
+<th>优先级</th>
+<th>方向</th>
+<th>条数</th>
+<th>预期影响</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P0</td>
+<td>改完文件后的收尾（含"被拒后直接作答"目标步）</td>
+<td>300–400</td>
+<td>相关块 +5–10pp</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>统计计数用工具，不在思考里抄数据</td>
+<td>200–300</td>
+<td>消除统计块超时；统计/日志 +10pp</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>要求搜索就必须搜（+不该搜对照）</td>
+<td>150–200</td>
+<td>搜索块 +5–8pp</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>做不到类：零工具直答（+先查对照）</td>
+<td>80–120</td>
+<td>修复 -14.7pp 掉分</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>网页+代码：读完文档把代码改对</td>
+<td>200</td>
+<td>当前 25–29%，空间最大</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>终端操作（无训练数据）</td>
+<td>150–200</td>
+<td>11% 起步，+10pp</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>多轮追问按需重新查看</td>
+<td>100</td>
+<td>17 次失败</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6"><a class="toclink" href="#6">6. 方法评估</a></h2>
+<p><strong>可借鉴（7 条）</strong>
+1. 同题配对差 + 95% CI（避免不同题集比较的伪增益）。
+2. 三档泛化（已训/留出/开源异构）。
+3. 能力块 + 训练领域双维拆分（数据量 vs 涨幅）。
+4. 机械 trace 统计（工具调用率、报错率、超时、收尾原因）。
+5. 逐题归因码（17 批 × 16 类）。
+6. 判据自审（偏差方向 + 影响估计）。
+7. 超时口径明示（倍数 + 补跑）。</p>
+<p><strong>局限</strong>
+- 无 LICENSE、Docker 依赖、私有 adapter/数据 → 不可复现，只能引用。
+- 判据仍有偏宽/偏严项（已披露，估计 &lt;1pp）。
+- 自造题对 7B 区分度不足（327 题两边 0 分：easy 243 / medium 84 / hard 1）。
+- 单模型、单 adapter、无 RL 对照。</p>
+<h2 id="7-rwkv-agent"><a class="toclink" href="#7-rwkv-agent">7. 对 RWKV agent 训练/评测的直接启示（我们的设计清单）</a></h2>
+<p><strong>Harness / 工具协议</strong>
+1. 重复调用保护必须在 write/edit <strong>之后重置</strong>（否则"改完复检"被误杀）。
+2. 工具错误要可恢复：报错信息应引导下一步（不同调用/不同参数），而不是直接收尾。
+3. 思考长度预算：限制 <code>&lt;think&gt;</code> 长度，计数/过滤强制用工具（bash/awk/grep/python3 -c）。
+4. "要求搜必搜"策略：题面要求搜索时必须调用检索；同时提供"不该搜"的对照样本，避免过度搜索。
+5. "做不到"路径：零工具直答 + 替代建议；同时配"需先查本地再判断"的对照。
+6. 多轮追问语义：追问涉及前轮未读内容时应重新查看；只复述时不必调用。</p>
+<p><strong>数据</strong>
+7. 收尾数据要教"被拒后怎么答"（目标步为 0 是已知缺陷）。
+8. 统计/日志类数据用工具计数，思考保持短。
+9. 改写测试文件行为需要负样本约束。</p>
+<p><strong>评测报告模板</strong>
+10. 配对差 + CI、三档泛化、能力块、trace 机械统计、逐题归因、判据自审、超时口径——这些应成为我们公开报告的最低标准。</p>
+<h2 id="8"><a class="toclink" href="#8">8. 可复现性边界与引用方式</a></h2>
+<ul>
+<li>引用本报告数字时注明：来源 <code>rwkv-org/rwkv-agent-eval</code> <code>docs/reports/attribution-20261107.md</code>（2026-11-07），作者自报、未独立复现。</li>
+<li>不转载全文、不复制题库内容（无 LICENSE）。</li>
+<li>若后续该仓库补 LICENSE/公开 adapter/数据，再评估能否作为可复现基线。</li>
+</ul>
+<h2 id="9"><a class="toclink" href="#9">9. 待观察</a></h2>
+<ol>
+<li>是否出现 <strong>RL（而非 SFT）</strong> 阶段的成绩。</li>
+<li>是否补 LICENSE、公开 adapter 权重、公开 <code>mix-20261106</code> 数据或可下载评测包。</li>
+<li>是否出现标准 benchmark（τ-bench / BFCL / BrowseComp-Plus）上的 RWKV 公开数字。</li>
+<li>其补数据后各能力块是否如预期 +5–10pp（可验证其归因是否成立）。</li>
+</ol>
+<hr>
+<h2 id="10-2026-11-07-1105"><a class="toclink" href="#10-2026-11-07-1105">10. 追加盘点（2026-11-07 11:05）：<strong>评测全公开、训练全不公开</strong></a></h2>
+<blockquote>
+<p>复核方式：GitHub API（仓库元信息、<code>license=null</code>）、raw <code>.gitignore</code>、<code>bank/mix-domains.json</code>、目录清单。抽查通过；逐文件计数未做。</p>
+</blockquote>
+<h3 id="101"><a class="toclink" href="#101">10.1 公开 / 不公开</a></h3>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>内容</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>评测代码</td>
+<td>Harbor 适配器、归因/诊断/报告/重判工具、题目生成与判分、跑分脚本</td>
+<td>✅ 公开</td>
+</tr>
+<tr>
+<td>题源</td>
+<td>自造题 <code>bank/own/cases/*.json</code>（约 600 道，含 <code>files</code>/<code>turns</code>/<code>expect</code>/<code>reference</code>/<code>provenance</code>）、网页存档 <code>bank/web-archive/</code>（约 600 文件 / 33 MB）、选题配额 JSON</td>
+<td>✅ 公开</td>
+</tr>
+<tr>
+<td>结果</td>
+<td>归因报告、难题分析、看板 HTML、327 题逐题归因 JSONL</td>
+<td>✅ 公开</td>
+</tr>
+<tr>
+<td>完整 1019 题 Harbor task</td>
+<td><code>build/</code>（<strong>被 .gitignore</strong>）→ 可由 <code>bank/convert.py</code> 重建</td>
+<td>⚠️ 需自行重建</td>
+</tr>
+<tr>
+<td>原始 trial 结果</td>
+<td><code>runs/</code>（<strong>被 .gitignore</strong>，含每次请求提示/输出）</td>
+<td>❌ 不公开</td>
+</tr>
+<tr>
+<td>训练数据</td>
+<td><code>mix-20261106</code>（<strong>4677 行 / 30 个领域</strong>）只有 <code>bank/mix-domains.json</code> 行数统计，<strong>零样本</strong></td>
+<td>❌ 不公开</td>
+</tr>
+<tr>
+<td>训练管线</td>
+<td><code>rwkv-agent-pipeline</code>（三个 owner 下均 404）</td>
+<td>❌ 不公开</td>
+</tr>
+<tr>
+<td>adapter 权重</td>
+<td><code>g1l-nora-r16-lr2e-5-e2</code> 在 HuggingFace 无结果</td>
+<td>❌ 不公开</td>
+</tr>
+<tr>
+<td>基模 / 插件代码</td>
+<td>G1l 权重公开；<code>No-22-Github/dsh-rwkv-plugin</code> 代码公开</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>摘要：<strong>这是一份"可复现的评测 + 不可复现的训练"</strong>。评测方法与题库设计可读、可谈；训练数据/管线/权重全部留在内部。</p>
+</blockquote>
+<h3 id="102"><a class="toclink" href="#102">10.2 训练混合的领域分布（公开统计，可作为我们数据规格的覆盖参考）</a></h3>
+<p><code>bank/mix-domains.json</code>（<code>source: rwkv-agent-pipeline/runs/mix-20261106/blocks</code>，<code>rows</code> 合计 <strong>4677</strong>，<code>chat_rows: 2911</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th style="text-align: right;">行数</th>
+<th style="text-align: right;">占比</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>外部信息-真实网页（编程文档 1119 / 系统与数据 662 / Coding验收 171 / Coding混合 48）</td>
+<td style="text-align: right;">2000</td>
+<td style="text-align: right;">42.8%</td>
+</tr>
+<tr>
+<td>代码任务（Python 317 / Node 190 / 多模块 130 / Node 多模块 32）</td>
+<td style="text-align: right;">669</td>
+<td style="text-align: right;">14.3%</td>
+</tr>
+<tr>
+<td>改文件写产物（代码 355 / 跨类 85 / 文件系统 81 / 表格 72 / 文档配置 62 / 日志 5）</td>
+<td style="text-align: right;">660</td>
+<td style="text-align: right;">14.1%</td>
+</tr>
+<tr>
+<td>直接回答（知识直答 450 / 闲聊 81 / 做不到 25）</td>
+<td style="text-align: right;">556</td>
+<td style="text-align: right;">11.9%</td>
+</tr>
+<tr>
+<td>查找阅读（代码 116 / 文档配置 80 / 日志 63 / 跨类 56 / 文件系统 42）</td>
+<td style="text-align: right;">357</td>
+<td style="text-align: right;">7.6%</td>
+</tr>
+<tr>
+<td>统计计算（日志 71 / 文件系统 69 / 表格 60 / 跨类 52 / 代码 5 / 文档配置 3）</td>
+<td style="text-align: right;">260</td>
+<td style="text-align: right;">5.6%</td>
+</tr>
+<tr>
+<td>外部信息-网络（网络加本地 109 / 网络查询 69）</td>
+<td style="text-align: right;">178</td>
+<td style="text-align: right;">3.8%</td>
+</tr>
+</tbody>
+</table>
+<p>→ 我们自建 SFT 数据若只覆盖"算术/计算器"一类，与这份真实混合的分布差距极大（真实网页 42.8%、代码任务 14.3% 均无覆盖）。</p>
+<h3 id="103"><a class="toclink" href="#103">10.3 法律边界（重要）</a></h3>
+<ul>
+<li>两个仓库（<code>rwkv-agent-eval</code>、<code>dsh-rwkv-plugin</code>）<strong>均无 LICENSE</strong>，GitHub API <code>license=null</code> → 默认 <strong>all rights reserved</strong>。</li>
+<li>允许：阅读、本地运行、学习；<strong>不允许</strong>：再分发、修改后发布、作为产品一部分、把其题目直接搬进训练集。</li>
+<li>我们的处理：</li>
+<li>公开仓库<strong>不复制</strong>其代码/题目/报告全文；只做短引用 + 署名 + sha256 记录；</li>
+<li>内部可读其公开题源/统计作为<strong>设计参考</strong>（分类法、题目结构、领域分布），<strong>不拷贝内容</strong>；</li>
+<li>不把其题库用于训练；若要用于内部对标，需先取得书面许可（当前不做）。</li>
+<li>集群侧限制：Harbor 依赖 Docker，Snellius 只有 apptainer → <strong>无法直接跑其 harness</strong>；我们用自建 Harbor 兼容 schema。</li>
+</ul>
+<h3 id="104"><a class="toclink" href="#104">10.4 后续观察点（更新）</a></h3>
+<ol>
+<li>是否补 LICENSE（若补，评估能否公开对标/引用题库）。</li>
+<li>是否公开 adapter 权重或 <code>mix-20261106</code> 样本/管线。</li>
+<li>是否公开 <code>runs/</code>（原始 trial）或 <code>build/</code> 完整 1019 题。</li>
+<li>是否出现 RL 阶段成绩（当前全部 SFT）。</li>
+</ol></div></article>
+<footer class="foot">Generated from the repository Markdown sources · <a href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">source on GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>

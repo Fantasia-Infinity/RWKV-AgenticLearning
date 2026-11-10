@@ -1,0 +1,207 @@
+{
+  "site": "RWKV-AgenticLearning · 报告站",
+  "repo": "https://github.com/Fantasia-Infinity/RWKV-AgenticLearning",
+  "built": "2026-11-10T21:03:24.471445+00:00",
+  "reports": [
+    {
+      "rel": "README.md",
+      "html": "index.html",
+      "title": "RWKV-AgenticLearning",
+      "category": "项目",
+      "date": "",
+      "chars": 9577
+    },
+    {
+      "rel": "ROADMAP.md",
+      "html": "ROADMAP.html",
+      "title": "ROADMAP — RWKV agentic RL",
+      "category": "项目",
+      "date": "",
+      "chars": 4077
+    },
+    {
+      "rel": "THIRD_PARTY_NOTICES.md",
+      "html": "THIRD_PARTY_NOTICES.html",
+      "title": "Third-party notices",
+      "category": "项目",
+      "date": "",
+      "chars": 3842
+    },
+    {
+      "rel": "docs/ecosystem-review-2026-11-05.md",
+      "html": "docs/ecosystem-review-2026-11-05.html",
+      "title": "The RWKV ecosystem for agentic RL — a verified review (2026-11-05)",
+      "category": "文档",
+      "date": "2026-11-05",
+      "chars": 13161
+    },
+    {
+      "rel": "docs/methodology.md",
+      "html": "docs/methodology.html",
+      "title": "Methodology — how claims in this repository are produced and checked",
+      "category": "文档",
+      "date": "",
+      "chars": 3476
+    },
+    {
+      "rel": "reports/2026-11-05-verification.md",
+      "html": "reports/2026-11-05-verification.html",
+      "title": "RWKV 生态核验报告（2026-11-05 接续 session）",
+      "category": "核心报告",
+      "date": "2026-11-05",
+      "chars": 12680
+    },
+    {
+      "rel": "reports/2026-11-06-ecosystem-update.md",
+      "html": "reports/2026-11-06-ecosystem-update.html",
+      "title": "RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层",
+      "category": "核心报告",
+      "date": "2026-11-06",
+      "chars": 20685
+    },
+    {
+      "rel": "reports/2026-11-07-agent-eval-methodology-review.md",
+      "html": "reports/2026-11-07-agent-eval-methodology-review.html",
+      "title": "方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）",
+      "category": "核心报告",
+      "date": "2026-11-07",
+      "chars": 6501
+    },
+    {
+      "rel": "reports/2026-11-09-verified-update.md",
+      "html": "reports/2026-11-09-verified-update.html",
+      "title": "2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正",
+      "category": "核心报告",
+      "date": "2026-11-09",
+      "chars": 1553
+    },
+    {
+      "rel": "reports/2026-11-10-dapo-gsm8k-rlvr.md",
+      "html": "reports/2026-11-10-dapo-gsm8k-rlvr.html",
+      "title": "DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)",
+      "category": "核心报告",
+      "date": "2026-11-10",
+      "chars": 4491
+    },
+    {
+      "rel": "reports/2026-11-10-rl-results-summary.md",
+      "html": "reports/2026-11-10-rl-results-summary.html",
+      "title": "RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)",
+      "category": "核心报告",
+      "date": "2026-11-10",
+      "chars": 5028
+    },
+    {
+      "rel": "reports/2026-11-10-verified-update.md",
+      "html": "reports/2026-11-10-verified-update.html",
+      "title": "2026-11-10 生态核验更新（含对日检摘要的修正）",
+      "category": "核心报告",
+      "date": "2026-11-10",
+      "chars": 7018
+    },
+    {
+      "rel": "reports/EVIDENCE.md",
+      "html": "reports/EVIDENCE.html",
+      "title": "Evidence — policy, layout, and how to re-verify",
+      "category": "专题报告",
+      "date": "",
+      "chars": 1851
+    },
+    {
+      "rel": "reports/eco/REPORT.md",
+      "html": "reports/eco/REPORT.html",
+      "title": "RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）",
+      "category": "专题报告",
+      "date": "",
+      "chars": 40640
+    },
+    {
+      "rel": "reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.md",
+      "html": "reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html",
+      "title": "Native rwkv-lm Engine",
+      "category": "专题报告",
+      "date": "",
+      "chars": 672
+    },
+    {
+      "rel": "reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.md",
+      "html": "reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html",
+      "title": "RWKV MaxRL configuration",
+      "category": "专题报告",
+      "date": "",
+      "chars": 3873
+    },
+    {
+      "rel": "reports/eco/evidence/04-verl-rwkv/models-rwkv-README.md",
+      "html": "reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html",
+      "title": "RWKV Native Model Templates",
+      "category": "专题报告",
+      "date": "",
+      "chars": 645
+    },
+    {
+      "rel": "reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.md",
+      "html": "reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html",
+      "title": "Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning",
+      "category": "专题报告",
+      "date": "",
+      "chars": 1984
+    },
+    {
+      "rel": "reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.md",
+      "html": "reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html",
+      "title": "Evidence: rwkv.cn /tutorials/basic/Prompt-Format",
+      "category": "专题报告",
+      "date": "",
+      "chars": 698
+    },
+    {
+      "rel": "reports/eco/evidence/CITATIONS.md",
+      "html": "reports/eco/evidence/CITATIONS.html",
+      "title": "Evidence citations — eco/",
+      "category": "专题报告",
+      "date": "",
+      "chars": 6012
+    },
+    {
+      "rel": "reports/skyrl/REPORT.md",
+      "html": "reports/skyrl/REPORT.html",
+      "title": "skyrl-rwkv 深度核验报告（任务 task-1）",
+      "category": "专题报告",
+      "date": "",
+      "chars": 26173
+    },
+    {
+      "rel": "reports/skyrl/evidence/00-env.md",
+      "html": "reports/skyrl/evidence/00-env.html",
+      "title": "环境与时间快照",
+      "category": "专题报告",
+      "date": "",
+      "chars": 711
+    },
+    {
+      "rel": "reports/skyrl/evidence/CITATIONS.md",
+      "html": "reports/skyrl/evidence/CITATIONS.html",
+      "title": "Evidence citations — skyrl/",
+      "category": "专题报告",
+      "date": "",
+      "chars": 2977
+    },
+    {
+      "rel": "reports/state/REPORT.md",
+      "html": "reports/state/REPORT.html",
+      "title": "状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告",
+      "category": "专题报告",
+      "date": "",
+      "chars": 32415
+    },
+    {
+      "rel": "reports/state/evidence/CITATIONS.md",
+      "html": "reports/state/evidence/CITATIONS.html",
+      "title": "Evidence citations — state/",
+      "category": "专题报告",
+      "date": "",
+      "chars": 6036
+    }
+  ]
+}

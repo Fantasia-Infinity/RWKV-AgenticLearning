@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp) · RWKV-AgenticLearning · 报告站</title>
+<link rel="stylesheet" href="../assets/style.css">
+
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="brand" href="../index.html">RWKV-AgenticLearning · 报告站</a>
+<span class="built">built 2026-11-10 21:03 UTC</span></div></header>
+<div class="layout wrap">
+<nav class="sidebar"><a href="../index.html">首页</a>
+<span class="nav-cat">核心报告</span>
+<a href="../reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
+<a href="../reports/2026-11-10-rl-results-summary.html">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)</a>
+<a href="../reports/2026-11-10-dapo-gsm8k-rlvr.html" class="active">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a>
+<a href="../reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
+<a href="../reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
+<a href="../reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
+<a href="../reports/2026-11-05-verification.html">RWKV 生态核验报告（2026-11-05 接续 session）</a>
+<span class="nav-cat">专题报告</span>
+<a href="../reports/state/evidence/CITATIONS.html">Evidence citations — state/</a>
+<a href="../reports/state/REPORT.html">状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告</a>
+<a href="../reports/skyrl/evidence/CITATIONS.html">Evidence citations — skyrl/</a>
+<a href="../reports/skyrl/evidence/00-env.html">环境与时间快照</a>
+<a href="../reports/skyrl/REPORT.html">skyrl-rwkv 深度核验报告（任务 task-1）</a>
+<a href="../reports/eco/evidence/CITATIONS.html">Evidence citations — eco/</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html">Evidence: rwkv.cn /tutorials/basic/Prompt-Format</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html">RWKV Native Model Templates</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html">RWKV MaxRL configuration</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html">Native rwkv-lm Engine</a>
+<a href="../reports/eco/REPORT.html">RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）</a>
+<a href="../reports/EVIDENCE.html">Evidence — policy, layout, and how to re-verify</a>
+<span class="nav-cat">文档</span>
+<a href="../docs/ecosystem-review-2026-11-05.html">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a>
+<a href="../docs/methodology.html">Methodology — how claims in this repository are produced and checked</a>
+<span class="nav-cat">项目</span>
+<a href="../THIRD_PARTY_NOTICES.html">Third-party notices</a>
+<a href="../ROADMAP.html">ROADMAP — RWKV agentic RL</a>
+<a href="../index.html">RWKV-AgenticLearning</a>
+<a class="ext" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">GitHub ↗</a></nav>
+<main class="content">
+<article class="report">
+<div class="crumb"><a href="../index.html">首页</a> / reports/2026-11-10-dapo-gsm8k-rlvr.md</div>
+<h1 class="report-title">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</h1>
+<div class="meta"><span class="badge">核心报告</span><span class="badge date">2026-11-10</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/reports/2026-11-10-dapo-gsm8k-rlvr.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
+<ul>
+<li><a href="#tldr">TL;DR</a></li>
+<li><a href="#setup">Setup</a></li>
+<li><a href="#learning-curve-avg4-pass4-200-questions">Learning curve (avg@4 / pass@4, 200 questions)</a></li>
+<li><a href="#interpretation">Interpretation</a></li>
+<li><a href="#artifacts">Artifacts</a></li>
+<li><a href="#limitations">Limitations</a></li>
+</ul>
+</div>
+</details><div class="md-body"><h1 id="dapo-on-gsm8k-for-rwkv-7-g1l-15b-first-positive-rl-result-avg4-10pp"><a class="toclink" href="#dapo-on-gsm8k-for-rwkv-7-g1l-15b-first-positive-rl-result-avg4-10pp">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a></h1>
+<blockquote>
+<p>Date: 2026-11-10. Status: complete. All numbers are from our own runs on Snellius
+(A100-40GB), license-clean: code in this repo, weights Apache-2.0, eval data from GSM8K.</p>
+</blockquote>
+<h2 id="tldr"><a class="toclink" href="#tldr">TL;DR</a></h2>
+<ul>
+<li>Started from a plain-math SFT warm start (GSM8K train, 7,473 trajectories, 234 steps).</li>
+<li>Ran <strong>DAPO for 1,000 steps</strong> (16 rollouts/step, single policy + reference-free-style setup,
+  no dynamic-sampling filter) on 2×A100 in ~16 h (~4.1k SBU incl. evaluations).</li>
+<li><strong>avg@4 (200 GSM8K test questions, temperature 1.0, k=4): 21.0% → 31.0% (+10.0pp,
+  paired t=3.99, p=6.6e-05; per-question wins/losses/ties 74/40/86).</strong></li>
+<li>pass@4 unchanged (50.0% → 50.5%, McNemar p=1.0): RL improves per-sample accuracy, not coverage.</li>
+<li>Checkpoint-to-checkpoint variance is ±5pp (small batch), so treat single checkpoints with care;
+  mean of the last five checkpoints (600–1000) is 29.5% (+8.5pp over base).</li>
+</ul>
+<h2 id="setup"><a class="toclink" href="#setup">Setup</a></h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base model</td>
+<td>RWKV-7 <strong>G1l-1.5B</strong> (2026-10-31, Apache-2.0; the latest G1 generation at 1.5B)</td>
+</tr>
+<tr>
+<td>SFT warm start</td>
+<td>GSM8K train solutions → plain-math trajectories (bot chat template), 234 steps, batch 32, lr 1e-6</td>
+</tr>
+<tr>
+<td>RL data</td>
+<td>GSM8K train (7,473 prompts), answer reward from <code>#### &lt;number&gt;</code> exact match (non-strict extraction)</td>
+</tr>
+<tr>
+<td>Algorithm</td>
+<td>DAPO: GRPO advantage, dual-clip (ε_low 0.2 / ε_high 0.28), token-mean loss, overlong filtering; <code>dynamic_sampling=null</code> (filter crashed on all-zero-variance batches in early attempts)</td>
+</tr>
+<tr>
+<td>Rollouts</td>
+<td>4 prompts × 4 samples = 16 rollouts/step; max generation 1,280 tokens; sampling temperature 1.0 (RWKV raw-logprobs backend requires an unmodified rollout distribution)</td>
+</tr>
+<tr>
+<td>Training</td>
+<td>1,000 steps, lr 1e-6, FSDP on 2×A100-40GB, ~16 h; checkpoints every 100 steps</td>
+</tr>
+<tr>
+<td>Evaluation</td>
+<td>200 GSM8K test questions, <strong>avg@4 / pass@4 at temperature 1.0</strong> (same protocol as the official RWKV RLVR talk), <code>tools/eval_gsm8k_avgk.py</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="learning-curve-avg4-pass4-200-questions"><a class="toclink" href="#learning-curve-avg4-pass4-200-questions">Learning curve (avg@4 / pass@4, 200 questions)</a></h2>
+<table>
+<thead>
+<tr>
+<th>step</th>
+<th style="text-align: right;">100</th>
+<th style="text-align: right;">200</th>
+<th style="text-align: right;">300</th>
+<th style="text-align: right;">400</th>
+<th style="text-align: right;">500</th>
+<th style="text-align: right;">600</th>
+<th style="text-align: right;">700</th>
+<th style="text-align: right;">800</th>
+<th style="text-align: right;">900</th>
+<th style="text-align: right;">1000</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>avg@4</td>
+<td style="text-align: right;">21.5</td>
+<td style="text-align: right;">25.6</td>
+<td style="text-align: right;">27.9</td>
+<td style="text-align: right;">30.3</td>
+<td style="text-align: right;">25.3</td>
+<td style="text-align: right;">29.8</td>
+<td style="text-align: right;">27.1</td>
+<td style="text-align: right;">30.6</td>
+<td style="text-align: right;">29.0</td>
+<td style="text-align: right;"><strong>31.0</strong></td>
+</tr>
+<tr>
+<td>pass@4</td>
+<td style="text-align: right;">45.0</td>
+<td style="text-align: right;">46.0</td>
+<td style="text-align: right;">46.0</td>
+<td style="text-align: right;">48.5</td>
+<td style="text-align: right;">43.5</td>
+<td style="text-align: right;">53.5</td>
+<td style="text-align: right;">51.5</td>
+<td style="text-align: right;">51.0</td>
+<td style="text-align: right;">52.5</td>
+<td style="text-align: right;">50.5</td>
+</tr>
+</tbody>
+</table>
+<p>Reference points (same metric/protocol): base 21.0%, math-SFT 17.5%, earlier FlashREINFORCE run (50 steps) 26.0%.</p>
+<h2 id="interpretation"><a class="toclink" href="#interpretation">Interpretation</a></h2>
+<ol>
+<li><strong>The gain is real on this metric</strong>: +10pp avg@4 with p≈7e-05 under paired comparison.
+   The improvement is in <em>per-sample reliability</em> (more of the 4 samples are correct), not in
+   the probability that at least one sample is correct (pass@4 was already 50% for base).</li>
+<li><strong>SFT warm start alone hurt</strong> (17.5% avg@4 vs base 21.0%): a 234-step GSM8K SFT mostly taught
+   output format (<code>####</code> rate 65% → 97%) without improving math accuracy. DAPO then recovered
+   and exceeded the base model.</li>
+<li><strong>Small-batch DAPO is noisy</strong>: checkpoints oscillate ±5pp; the final point (31.0%) is at the
+   high end of the 27–31% band. We report both the final checkpoint and the mean of the last five.</li>
+<li><strong>Scale caveat vs the official claim</strong>: the official talk reports g1k + 155 SFT + 1,000 DAPO
+   steps: GSM8K avg@4 59.42→71.85 (+12.4pp). Their run is ~320× larger per step than ours
+   (upstream DAPO reference uses 1,024 prompts × 5 samples per step ≈ 5.12M rollouts for 1,000
+   steps; ours is 16k). Absolute numbers are therefore not comparable — but the <strong>direction
+   agrees</strong>, and our result is public, reproducible, and license-clean.</li>
+</ol>
+<h2 id="artifacts"><a class="toclink" href="#artifacts">Artifacts</a></h2>
+<ul>
+<li>Checkpoints: <code>global_step_100 … 1000</code> exported as HF policy dirs (on Snellius scratch)</li>
+<li>Eval JSONs: <code>results/b1-{100,200,…,1000}-*.json</code>, <code>results/avg-{base,mathsft,rl50}-*.json</code></li>
+<li>Scripts: <code>tools/eval_gsm8k_avgk.py</code>, <code>tools/build_gsm8k_math_sft.py</code>; training recipe in the
+  skyrl-rwkv fork (DAPO variant)</li>
+<li>Ecosystem context (verified): <code>reports/2026-11-10-verified-update.md</code></li>
+</ul>
+<h2 id="limitations"><a class="toclink" href="#limitations">Limitations</a></h2>
+<ul>
+<li>200-question eval subset; pass@4 saturates at ~50% (100/200 questions unsolved by 4 samples for
+  both models), so avg@4 is the informative metric.</li>
+<li>Single seed per configuration; small-batch variance means the exact +10pp point estimate is
+  optimistic relative to the last-5 mean (+8.5pp).</li>
+<li>g1l-1.5B only; scaling to 2.9B/7.2B untested here.</li>
+<li><code>dynamic_sampling=null</code> deviates from the DAPO paper; the filter was disabled after an
+  all-zero-variance-batch crash, so this is DAPO minus dynamic sampling.</li>
+</ul></div></article>
+<footer class="foot">Generated from the repository Markdown sources · <a href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">source on GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>

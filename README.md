@@ -43,6 +43,7 @@ Before building in that gap, we audited the ecosystem. This repo is the audit: w
 │   ├── repos.txt                        # 35 tracked repositories
 │   ├── check.sh                         # zero-GitHub-API snapshot script
 │   └── runs/                            # dated snapshots
+├── site/                               # 全部报告的 HTML 版本（由 tools/build_report_site.py 生成）
 ├── tools/
 │   ├── sync_rwkv_chat_template.py       # sync post-PR#20 chat template (pinned sha256)
 │   ├── test_chat_template.py            # CPU regression: tool-call history rendering
@@ -51,6 +52,8 @@ Before building in that gap, we audited the ecosystem. This repo is the audit: w
 ├── data/rwkv-cn-eco-projects-2026-11-06.tsv  # official catalog (95 projects)
 └── ROADMAP.md                           # P0–P5 plan (revised after the audit)
 ```
+
+> 所有报告的 HTML 版本见 [`site/index.html`](site/index.html)（Markdown 源文件仍是事实来源）。
 
 > The original internal handoff is kept in a private archive and is **not** part of the public repository. `docs/ecosystem-review-2026-11-05.md` is the public, neutral rewrite.
 

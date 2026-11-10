@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10) · RWKV-AgenticLearning · 报告站</title>
+<link rel="stylesheet" href="../assets/style.css">
+
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="brand" href="../index.html">RWKV-AgenticLearning · 报告站</a>
+<span class="built">built 2026-11-10 21:03 UTC</span></div></header>
+<div class="layout wrap">
+<nav class="sidebar"><a href="../index.html">首页</a>
+<span class="nav-cat">核心报告</span>
+<a href="../reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
+<a href="../reports/2026-11-10-rl-results-summary.html" class="active">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)</a>
+<a href="../reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a>
+<a href="../reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
+<a href="../reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
+<a href="../reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
+<a href="../reports/2026-11-05-verification.html">RWKV 生态核验报告（2026-11-05 接续 session）</a>
+<span class="nav-cat">专题报告</span>
+<a href="../reports/state/evidence/CITATIONS.html">Evidence citations — state/</a>
+<a href="../reports/state/REPORT.html">状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告</a>
+<a href="../reports/skyrl/evidence/CITATIONS.html">Evidence citations — skyrl/</a>
+<a href="../reports/skyrl/evidence/00-env.html">环境与时间快照</a>
+<a href="../reports/skyrl/REPORT.html">skyrl-rwkv 深度核验报告（任务 task-1）</a>
+<a href="../reports/eco/evidence/CITATIONS.html">Evidence citations — eco/</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html">Evidence: rwkv.cn /tutorials/basic/Prompt-Format</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html">RWKV Native Model Templates</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html">RWKV MaxRL configuration</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html">Native rwkv-lm Engine</a>
+<a href="../reports/eco/REPORT.html">RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）</a>
+<a href="../reports/EVIDENCE.html">Evidence — policy, layout, and how to re-verify</a>
+<span class="nav-cat">文档</span>
+<a href="../docs/ecosystem-review-2026-11-05.html">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a>
+<a href="../docs/methodology.html">Methodology — how claims in this repository are produced and checked</a>
+<span class="nav-cat">项目</span>
+<a href="../THIRD_PARTY_NOTICES.html">Third-party notices</a>
+<a href="../ROADMAP.html">ROADMAP — RWKV agentic RL</a>
+<a href="../index.html">RWKV-AgenticLearning</a>
+<a class="ext" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">GitHub ↗</a></nav>
+<main class="content">
+<article class="report">
+<div class="crumb"><a href="../index.html">首页</a> / reports/2026-11-10-rl-results-summary.md</div>
+<h1 class="report-title">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)</h1>
+<div class="meta"><span class="badge">核心报告</span><span class="badge date">2026-11-10</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/reports/2026-11-10-rl-results-summary.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
+<ul>
+<li><a href="#1-what-was-tested">1. What was tested</a></li>
+<li><a href="#2-headline-results">2. Headline results</a><ul>
+<li><a href="#dapo-on-plain-gsm8k-is-the-first-positive-rl-result">✅ DAPO on plain GSM8K is the first positive RL result</a></li>
+<li><a href="#flashreinforce-rlvr-50-steps-is-not-significant">⚠️ FlashREINFORCE RLVR (50 steps) is not significant</a></li>
+<li><a href="#multi-turn-tool-rl-p3p3c-underperforms-sft">❌ Multi-turn tool RL (P3/P3c) underperforms SFT</a></li>
+<li><a href="#sft-tool-call-ability-generalizes">✅ SFT tool-call ability generalizes</a></li>
+</ul>
+</li>
+<li><a href="#3-interpretation">3. Interpretation</a></li>
+<li><a href="#4-artifacts">4. Artifacts</a></li>
+<li><a href="#5-caveats">5. Caveats</a></li>
+</ul>
+</div>
+</details><div class="md-body"><h1 id="rwkv-7-g1l-15b-agentic-rl-consolidated-results-2026-11-08-2026-11-10"><a class="toclink" href="#rwkv-7-g1l-15b-agentic-rl-consolidated-results-2026-11-08-2026-11-10">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)</a></h1>
+<blockquote>
+<p>All numbers from our own runs on Snellius (A100-40GB). Code: this repo (Apache-2.0).
+Weights: RWKV-7 G1l-1.5B-20261031 (Apache-2.0). GSM8K used for evaluation/training only.
+Machine-readable copy: <a href="data/2026-11-10-summary.json"><code>reports/data/2026-11-10-summary.json</code></a>.</p>
+</blockquote>
+<h2 id="1-what-was-tested"><a class="toclink" href="#1-what-was-tested">1. What was tested</a></h2>
+<table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Setup</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P1.5 SFT v3</td>
+<td>2,242 synthetic tool-call trajectories (6 categories), 3 iterations</td>
+<td>teach fenced-JSON tool calls + tool discipline</td>
+</tr>
+<tr>
+<td>G3 tool-call eval</td>
+<td>258 single-step tasks (held-in style)</td>
+<td>did SFT learn tool selection?</td>
+</tr>
+<tr>
+<td>held-out tool benchmark</td>
+<td>120 self-built tasks (calc/search/stats/direct, independent seed)</td>
+<td>generalization of tool selection</td>
+</tr>
+<tr>
+<td>GSM8K-calc</td>
+<td>7,473 GSM8K train → tool-call trajectories; 262 eval (multi-turn, <code>calc</code> tool)</td>
+<td>does tool RL help math?</td>
+</tr>
+<tr>
+<td>P3 / P3c tool RL</td>
+<td>FlashREINFORCE multi-turn, answer-only reward (P3), +min-tool-calls shaping (P3c)</td>
+<td>RL on multi-turn tool use</td>
+</tr>
+<tr>
+<td>P2 plain GSM8K RLVR</td>
+<td>math-SFT warm start → FlashREINFORCE 50 steps</td>
+<td>RLVR without tools</td>
+</tr>
+<tr>
+<td><strong>B1 DAPO</strong></td>
+<td>math-SFT warm start → DAPO 1,000 steps (16 rollouts/step, 2×A100, ~16h)</td>
+<td>RLVR with a stronger recipe</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-headline-results"><a class="toclink" href="#2-headline-results">2. Headline results</a></h2>
+<h3 id="dapo-on-plain-gsm8k-is-the-first-positive-rl-result"><a class="toclink" href="#dapo-on-plain-gsm8k-is-the-first-positive-rl-result">✅ DAPO on plain GSM8K is the first positive RL result</a></h3>
+<ul>
+<li><strong>avg@4 (200 questions, k=4, temp 1.0): 21.0% → 31.0% (+10.0pp, paired t=3.99, p=6.6e-05)</strong></li>
+<li>pass@4 unchanged (50.0% → 50.5%, p=1.0) → RL improves per-sample reliability, not coverage</li>
+<li>last-5-checkpoint mean 29.5%; checkpoint variance ±5pp (small-batch DAPO)</li>
+<li>Report: <a href="2026-11-10-dapo-gsm8k-rlvr.html"><code>2026-11-10-dapo-gsm8k-rlvr.md</code></a></li>
+</ul>
+<h3 id="flashreinforce-rlvr-50-steps-is-not-significant"><a class="toclink" href="#flashreinforce-rlvr-50-steps-is-not-significant">⚠️ FlashREINFORCE RLVR (50 steps) is not significant</a></h3>
+<ul>
+<li>greedy pass@1: base 39.58% (1,319 q) → RL 41.39%; <strong>+1.81pp, McNemar p=0.29</strong> — not significant</li>
+<li>format rate 60.2% → 98.4% (the real, deterministic gain)</li>
+<li>avg@4 metric: base 21.0% → 26.0% (suggestive but same small-sample caveat)</li>
+</ul>
+<h3 id="multi-turn-tool-rl-p3p3c-underperforms-sft"><a class="toclink" href="#multi-turn-tool-rl-p3p3c-underperforms-sft">❌ Multi-turn tool RL (P3/P3c) underperforms SFT</a></h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th style="text-align: right;">GSM8K-calc accuracy (262)</th>
+<th style="text-align: right;">avg tool calls</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>base</td>
+<td style="text-align: right;">3.4%</td>
+<td style="text-align: right;">0.03</td>
+</tr>
+<tr>
+<td><strong>SFT warm start</strong></td>
+<td style="text-align: right;"><strong>42.0%</strong></td>
+<td style="text-align: right;">3.15</td>
+</tr>
+<tr>
+<td>P3 RL (100 steps)</td>
+<td style="text-align: right;">35.9%</td>
+<td style="text-align: right;">1.44</td>
+</tr>
+<tr>
+<td>P3c RL (50 steps, min-call shaping)</td>
+<td style="text-align: right;">38.6%</td>
+<td style="text-align: right;">2.97</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Answer-only RL learns a <strong>tool-call shortcut</strong> (calls per sample drop 3.15 → 1.44) and loses accuracy</li>
+<li>Held-out benchmark confirms degradation: tool-name accuracy <strong>98.9% (SFT) → 82.2% (P3c)</strong>, direct no-call rate 3.3% → 0%</li>
+<li>No-KL constraint of FlashREINFORCE blocked the usual KL-regularized fix; reward shaping only partially recovered</li>
+</ul>
+<h3 id="sft-tool-call-ability-generalizes"><a class="toclink" href="#sft-tool-call-ability-generalizes">✅ SFT tool-call ability generalizes</a></h3>
+<ul>
+<li>G3 tool-call tool-name accuracy: 21.6% (base) → <strong>92.96%</strong> (SFT v3), parse rate 100%</li>
+<li>held-out 120 tasks: tool-name <strong>98.9%</strong>, argument validity 100%</li>
+</ul>
+<h2 id="3-interpretation"><a class="toclink" href="#3-interpretation">3. Interpretation</a></h2>
+<ol>
+<li><strong>RLVR can work on RWKV-1.5B — but the recipe matters.</strong> FlashREINFORCE at 50 steps gave no
+   significant greedy gain; DAPO at 1,000 steps gave a significant avg@4 gain (+10pp). The
+   difference is consistent with the official report (g1k + 155 SFT + 1,000 DAPO steps:
+   GSM8K avg@4 59.42 → 71.85, +12.4pp), though their scale is ~320× ours per step
+   (upstream DAPO reference: 1,024 prompts × 5 samples = 5,120 rollouts/step vs our 16).</li>
+<li><strong>SFT teaches format and tool selection extremely well</strong> (G3 +71pp, held-out 98.9%) but a
+   short math SFT does not improve math accuracy (avg@4 21 → 17.5). RL then recovers and exceeds
+   the base on sampling reliability.</li>
+<li><strong>Multi-turn tool RL is the hard part.</strong> Answer-only rewards create shortcuts; no-KL
+   FlashREINFORCE limits stabilizing tricks; held-out tool selection degrades. This is the
+   clearest public negative result in the RWKV agentic-RL space and motivates process rewards /
+   tool-call constraints / KL-capable algorithms for future work.</li>
+<li><strong>Small-batch DAPO is noisy (±5pp)</strong>. Report both final checkpoint and last-5 mean; do not
+   over-read a single checkpoint.</li>
+</ol>
+<h2 id="4-artifacts"><a class="toclink" href="#4-artifacts">4. Artifacts</a></h2>
+<p>Local (Snellius scratch): archive manifest at
+<code>/scratch-shared/szhang2/rwkv-agentic/archive/2026-11-10/MANIFEST.md</code> — all 39 eval JSONs,
+training logs, run directories and export checkpoints, plus deletable-obsolete list.
+Key models: B1 final <code>runs/p2b-dapo-29048910/exports/global_step_1000/policy</code>; math-SFT
+<code>runs/p15-sft-29014001/hf_exports/global_step_234/policy</code>; P2 RL
+<code>runs/p2-gsm8k-rlvr-29019986/exports/global_step_50/policy</code>.</p>
+<p>Scripts: <code>tools/eval_gsm8k_avgk.py</code>, <code>tools/eval_gsm8k.py</code>, <code>tools/build_gsm8k_math_sft.py</code>,
+<code>tools/build_gsm8k_calc.py</code>, <code>tools/gen_sft_traj/</code>, <code>tools/build_heldout_tool_eval.py</code>,
+<code>tools/sync_rwkv_chat_template.py</code> + regression test.</p>
+<h2 id="5-caveats"><a class="toclink" href="#5-caveats">5. Caveats</a></h2>
+<ul>
+<li>200-question eval subset for avg@4 (1319 for greedy pass@1); single seed per configuration.</li>
+<li>g1l-1.5B only; 2.9B/7.2B untested.</li>
+<li>DAPO ran with <code>dynamic_sampling=null</code> (filter crashed on all-zero-variance batches); i.e. DAPO
+  minus dynamic sampling.</li>
+<li>External official numbers (59.42 → 71.85) are talk-level claims with undisclosed batch/GPU
+  settings; not reproduced here.</li>
+</ul></div></article>
+<footer class="foot">Generated from the repository Markdown sources · <a href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">source on GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>

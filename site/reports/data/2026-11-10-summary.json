@@ -1,0 +1,111 @@
+{
+  "date": "2026-11-10",
+  "model": "RWKV-7 G1l-1.5B (2026-10-31, Apache-2.0)",
+  "benchmarks": {
+    "g3_tool_call_258": {
+      "base_tool_name_acc": 0.2161,
+      "sft_v3_tool_name_acc": 0.9296,
+      "sft_v3_parse_rate": 1.0,
+      "note": "single-step tool selection; base can't emit fenced JSON, SFT learns it"
+    },
+    "heldout_tool_120": {
+      "sft_warm": {
+        "tool_name_acc": 0.9889,
+        "arg_valid_rate": 1.0,
+        "direct_no_call_rate": 0.0333,
+        "direct_answer_acc": 0.0
+      },
+      "p3_rl_best": {
+        "tool_name_acc": 0.8222,
+        "arg_valid_rate": 1.0,
+        "direct_no_call_rate": 0.0,
+        "direct_answer_acc": 0.0
+      },
+      "note": "RL over-tools and degrades held-out tool selection vs SFT"
+    },
+    "gsm8k_calc_262_multiturn": {
+      "base": {
+        "accuracy": 0.0344,
+        "format_rate": 0.0725,
+        "avg_tool_calls": 0.03
+      },
+      "sft_warm": {
+        "accuracy": 0.4198,
+        "format_rate": 0.9275,
+        "avg_tool_calls": 3.15
+      },
+      "p3_rl_50": {
+        "accuracy": 0.2481,
+        "avg_tool_calls": 2.37
+      },
+      "p3_rl_100": {
+        "accuracy": 0.3588,
+        "avg_tool_calls": 1.44
+      },
+      "p3c_c25": {
+        "accuracy": 0.3092,
+        "avg_tool_calls": 3.37
+      },
+      "p3c_c50": {
+        "accuracy": 0.3855,
+        "avg_tool_calls": 2.97
+      },
+      "note": "answer-only RL causes tool-call shortcut; best RL 38.6% < SFT 42.0%"
+    },
+    "plain_gsm8k": {
+      "base_greedy_200": {
+        "pass@1": 0.44,
+        "format_rate": 0.65
+      },
+      "base_greedy_1319": {
+        "pass@1": 0.3958,
+        "format_rate": 0.602
+      },
+      "math_sft_greedy_200": {
+        "pass@1": 0.405,
+        "format_rate": 0.97
+      },
+      "flashreinforce_50_greedy_200": {
+        "pass@1": 0.415,
+        "format_rate": 0.975
+      },
+      "flashreinforce_50_greedy_1319": {
+        "pass@1": 0.4139,
+        "format_rate": 0.9841
+      },
+      "avg4_200": {
+        "base": 0.21,
+        "math_sft": 0.175,
+        "flashreinforce_50": 0.26
+      },
+      "dapo_1000_final_avg4_200": 0.31,
+      "dapo_1000_pass4_200": 0.505,
+      "dapo_1000_plus10pp_paired_p": 6.6e-05,
+      "dapo_1000_last5_mean_avg4": 0.295,
+      "note": "FlashREINFORCE +1.8pp greedy not significant (p=0.29); DAPO +10.0pp avg@4 significant (p=6.6e-05), pass@4 unchanged"
+    }
+  },
+  "dapo_b1_curve_avg4": {
+    "100": 0.215,
+    "200": 0.2562,
+    "300": 0.2787,
+    "400": 0.3025,
+    "500": 0.2525,
+    "600": 0.2975,
+    "700": 0.2712,
+    "800": 0.3063,
+    "900": 0.29,
+    "1000": 0.31
+  },
+  "compute": {
+    "b1_training": "2xA100-40GB, 1000 steps, ~16h, ~4.1k SBU incl evals",
+    "cumulative_project_used_sbu": 10836,
+    "remaining_sbu": 109816
+  },
+  "artifacts": {
+    "archive_manifest": "scratch:/scratch-shared/szhang2/rwkv-agentic/archive/2026-11-10/MANIFEST.md",
+    "b1_final_policy": "scratch:runs/p2b-dapo-29048910/exports/global_step_1000/policy",
+    "eval_script": "tools/eval_gsm8k_avgk.py"
+  },
+  "license_notes": "Our code Apache-2.0; RWKV-7 weights Apache-2.0; GSM8K used for evaluation only. External claims cited, not reused."
+}

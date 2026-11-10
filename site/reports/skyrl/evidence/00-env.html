@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>环境与时间快照 · RWKV-AgenticLearning · 报告站</title>
+<link rel="stylesheet" href="../../../assets/style.css">
+
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="brand" href="../../../index.html">RWKV-AgenticLearning · 报告站</a>
+<span class="built">built 2026-11-10 21:03 UTC</span></div></header>
+<div class="layout wrap">
+<nav class="sidebar"><a href="../../../index.html">首页</a>
+<span class="nav-cat">核心报告</span>
+<a href="../../../reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
+<a href="../../../reports/2026-11-10-rl-results-summary.html">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)</a>
+<a href="../../../reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a>
+<a href="../../../reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
+<a href="../../../reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
+<a href="../../../reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
+<a href="../../../reports/2026-11-05-verification.html">RWKV 生态核验报告（2026-11-05 接续 session）</a>
+<span class="nav-cat">专题报告</span>
+<a href="../../../reports/state/evidence/CITATIONS.html">Evidence citations — state/</a>
+<a href="../../../reports/state/REPORT.html">状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告</a>
+<a href="../../../reports/skyrl/evidence/CITATIONS.html">Evidence citations — skyrl/</a>
+<a href="../../../reports/skyrl/evidence/00-env.html" class="active">环境与时间快照</a>
+<a href="../../../reports/skyrl/REPORT.html">skyrl-rwkv 深度核验报告（任务 task-1）</a>
+<a href="../../../reports/eco/evidence/CITATIONS.html">Evidence citations — eco/</a>
+<a href="../../../reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html">Evidence: rwkv.cn /tutorials/basic/Prompt-Format</a>
+<a href="../../../reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</a>
+<a href="../../../reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html">RWKV Native Model Templates</a>
+<a href="../../../reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html">RWKV MaxRL configuration</a>
+<a href="../../../reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html">Native rwkv-lm Engine</a>
+<a href="../../../reports/eco/REPORT.html">RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）</a>
+<a href="../../../reports/EVIDENCE.html">Evidence — policy, layout, and how to re-verify</a>
+<span class="nav-cat">文档</span>
+<a href="../../../docs/ecosystem-review-2026-11-05.html">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a>
+<a href="../../../docs/methodology.html">Methodology — how claims in this repository are produced and checked</a>
+<span class="nav-cat">项目</span>
+<a href="../../../THIRD_PARTY_NOTICES.html">Third-party notices</a>
+<a href="../../../ROADMAP.html">ROADMAP — RWKV agentic RL</a>
+<a href="../../../index.html">RWKV-AgenticLearning</a>
+<a class="ext" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">GitHub ↗</a></nav>
+<main class="content">
+<article class="report">
+<div class="crumb"><a href="../../../index.html">首页</a> / reports/skyrl/evidence/00-env.md</div>
+<h1 class="report-title">环境与时间快照</h1>
+<div class="meta"><span class="badge">专题报告</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/reports/skyrl/evidence/00-env.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
+<ul>
+<li><a href="#_2">补充：仓库规模与远端</a></li>
+<li><a href="#2026-11-05t202513z">末次快照 2026-11-05T20:25:13Z</a></li>
+</ul>
+</div>
+</details><div class="md-body"><h1 id="_1"><a class="toclink" href="#_1">环境与时间快照</a></h1>
+<p>host: Snellius login node
+user: user
+pwd: ~/AlchemyRepos/RWKV-AgenticLearning
+date-utc: 2026-11-05T20:08:57Z
+date-local: 2026-11-05T21:08:57+0100
+git: git version 2.52.0
+disk: home1           121T   77T   45T  64% /gpfs/home1</p>
+<h2 id="_2"><a class="toclink" href="#_2">补充：仓库规模与远端</a></h2>
+<ul>
+<li>skyrl-rwkv: 72M (filter=blob:none, 完整历史)</li>
+<li>vllm-rwkv: 271M (filter=blob:none, rwkv 分支完整历史)</li>
+<li>remote skyrl: origin=https://github.com/rwkv-rs/skyrl-rwkv upstream=https://github.com/NovaSky-AI/SkyRL</li>
+</ul>
+<h2 id="2026-11-05t202513z"><a class="toclink" href="#2026-11-05t202513z">末次快照 2026-11-05T20:25:13Z</a></h2>
+<ul>
+<li>skyrl main: 04a5c9856830e0862eb33b67f6d8924e33aaceee 2026-10-31T03:47:56-07:00</li>
+<li>heli: 785a231aa346ff2920df10af303bf2cd403ea9eb 2026-10-28T01:54:46-07:00</li>
+<li>vllm: 7a6adcc6a02482552a426c64f5e68da061043a05 2026-10-31T18:56:01+08:00</li>
+</ul></div></article>
+<footer class="foot">Generated from the repository Markdown sources · <a href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">source on GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>

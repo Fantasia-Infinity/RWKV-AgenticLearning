@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The RWKV ecosystem for agentic RL — a verified review (2026-11-05) · RWKV-AgenticLearning · 报告站</title>
+<link rel="stylesheet" href="../assets/style.css">
+
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="brand" href="../index.html">RWKV-AgenticLearning · 报告站</a>
+<span class="built">built 2026-11-10 21:03 UTC</span></div></header>
+<div class="layout wrap">
+<nav class="sidebar"><a href="../index.html">首页</a>
+<span class="nav-cat">核心报告</span>
+<a href="../reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
+<a href="../reports/2026-11-10-rl-results-summary.html">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)</a>
+<a href="../reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a>
+<a href="../reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
+<a href="../reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
+<a href="../reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
+<a href="../reports/2026-11-05-verification.html">RWKV 生态核验报告（2026-11-05 接续 session）</a>
+<span class="nav-cat">专题报告</span>
+<a href="../reports/state/evidence/CITATIONS.html">Evidence citations — state/</a>
+<a href="../reports/state/REPORT.html">状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告</a>
+<a href="../reports/skyrl/evidence/CITATIONS.html">Evidence citations — skyrl/</a>
+<a href="../reports/skyrl/evidence/00-env.html">环境与时间快照</a>
+<a href="../reports/skyrl/REPORT.html">skyrl-rwkv 深度核验报告（任务 task-1）</a>
+<a href="../reports/eco/evidence/CITATIONS.html">Evidence citations — eco/</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html">Evidence: rwkv.cn /tutorials/basic/Prompt-Format</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html">RWKV Native Model Templates</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html">RWKV MaxRL configuration</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html">Native rwkv-lm Engine</a>
+<a href="../reports/eco/REPORT.html">RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）</a>
+<a href="../reports/EVIDENCE.html">Evidence — policy, layout, and how to re-verify</a>
+<span class="nav-cat">文档</span>
+<a href="../docs/ecosystem-review-2026-11-05.html" class="active">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a>
+<a href="../docs/methodology.html">Methodology — how claims in this repository are produced and checked</a>
+<span class="nav-cat">项目</span>
+<a href="../THIRD_PARTY_NOTICES.html">Third-party notices</a>
+<a href="../ROADMAP.html">ROADMAP — RWKV agentic RL</a>
+<a href="../index.html">RWKV-AgenticLearning</a>
+<a class="ext" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">GitHub ↗</a></nav>
+<main class="content">
+<article class="report">
+<div class="crumb"><a href="../index.html">首页</a> / docs/ecosystem-review-2026-11-05.md</div>
+<h1 class="report-title">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</h1>
+<div class="meta"><span class="badge">文档</span><span class="badge date">2026-11-05</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/docs/ecosystem-review-2026-11-05.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
+<ul>
+<li><a href="#abstract">Abstract</a></li>
+<li><a href="#1-scope-method">1. Scope &amp; method</a></li>
+<li><a href="#2-the-stack-l0l5-and-its-license-slope">2. The stack (L0–L5) and its license slope</a></li>
+<li><a href="#3-what-is-verified">3. What is verified</a><ul>
+<li><a href="#31-single-turn-rlvr-mature-official">3.1 Single-turn RLVR (mature, official)</a></li>
+<li><a href="#32-earlier-rwkv-rl-integration-verl-rwkv">3.2 Earlier RWKV RL integration: verl-rwkv</a></li>
+<li><a href="#33-multi-turn-tooling-code-exists-training-does-not">3.3 Multi-turn tooling: code exists, training does not</a></li>
+<li><a href="#34-state-layer-primitives-exist-integration-does-not">3.4 State layer: primitives exist, integration does not</a></li>
+<li><a href="#35-scale-rwkv-megatron">3.5 Scale: RWKV-Megatron</a></li>
+<li><a href="#36-evaluation-layer">3.6 Evaluation layer</a></li>
+<li><a href="#37-official-positioning">3.7 Official positioning</a></li>
+</ul>
+</li>
+<li><a href="#4-what-is-still-missing-the-actual-gap">4. What is still missing (the actual gap)</a></li>
+<li><a href="#5-corrections-to-the-prior-internal-audit-2026-11-05">5. Corrections to the prior internal audit (2026-11-05)</a></li>
+<li><a href="#6-implications">6. Implications</a></li>
+<li><a href="#7-references">7. References</a></li>
+<li><a href="#8-addendum2026-11-06helicopterv8rosa">8. Addendum（2026-11-06）：helicopter、v8/ROSA 与活跃度分层</a></li>
+<li><a href="#9-addendum-22026-11-06-agentic-rl">9. Addendum 2（2026-11-06 晚）：agentic RL 已在私有侧运行</a></li>
+<li><a href="#2026-11-07-agent">追加（2026-11-07）：首批公开 agent 评测成绩</a></li>
+</ul>
+</div>
+</details><div class="md-body"><h1 id="the-rwkv-ecosystem-for-agentic-rl-a-verified-review-2026-11-05"><a class="toclink" href="#the-rwkv-ecosystem-for-agentic-rl-a-verified-review-2026-11-05">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a></h1>
+<blockquote>
+<p>Public, neutral version of the internal 2026-11-05 handoff. Every claim below is traceable to
+<code>reports/skyrl/</code>, <code>reports/state/</code>, <code>reports/eco/</code> and their <code>evidence/</code> directories. Confidence marks:
+✅ verified by source · ⚠️ partially verified / needs qualification · ❌ refuted or corrected.</p>
+</blockquote>
+<h2 id="abstract"><a class="toclink" href="#abstract">Abstract</a></h2>
+<p>RWKV's <strong>single-turn RLVR is mature</strong> and officially organized. <strong>Multi-turn agentic RL training is still a public
+gap</strong>: no public recipe, no public training result, no state-native rollout layer. But the ecosystem is fuller than
+earlier audits suggested: the <code>rwkv-rs</code> organization alone publishes 40 repositories, including an earlier native
+<code>verl</code> integration; community projects already publish a 568-question multi-turn agent exam with scores, and an
+830-question BrowseComp-Plus evaluation package exists. Official G1l (2026-10-31) ships tool-call / multi-turn chat
+templates and points users to the community agent catalog. The accurate framing is therefore: <em>the official
+organization does not train agentic RL, but has standardized the agentic interface and delegated practice to the
+community</em> — while public multi-turn RL training remains absent.</p>
+<h2 id="1-scope-method"><a class="toclink" href="#1-scope-method">1. Scope &amp; method</a></h2>
+<ul>
+<li>Snapshot date: 2026-11-05. Sources: primary repositories, model cards, official docs; zero-API-quota method
+  (<code>git ls-remote</code>, commit atom feeds, raw files, HTML).</li>
+<li>Three parallel workstreams: (a) <code>skyrl-rwkv</code> deep-dive, (b) state layer (<code>wkvm</code>) + Megatron scale, (c) ecosystem
+  inventory (<code>rwkv-rs</code> org) + official channels.</li>
+<li>Confidence marks are used per claim; corrections to the prior audit are listed in §5.</li>
+</ul>
+<h2 id="2-the-stack-l0l5-and-its-license-slope"><a class="toclink" href="#2-the-stack-l0l5-and-its-license-slope">2. The stack (L0–L5) and its license slope</a></h2>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Representative projects</th>
+<th>License trend</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L0 architecture / weights</td>
+<td>RWKV-LM (G1/G1l), official weights, RWKV-X</td>
+<td>permissive</td>
+</tr>
+<tr>
+<td>L1 kernels / serving</td>
+<td>FlashRWKV2 (MIT), vllm-rwkv (Apache-2.0), transformer/tokenizer forks, fla-rwkv (MIT)</td>
+<td>mostly permissive</td>
+</tr>
+<tr>
+<td>L2 training / RL</td>
+<td>RWKV-PEFT (Apache-2.0), OpenMOSE RLHF (Apache-2.0), RWKV-Megatron (Apache-2.0), <code>skyrl-rwkv</code> (Apache-2.0), <code>verl-rwkv</code> (Apache-2.0), <code>torchtitan-rwkv</code> (BSD-3), <code>Megatrwkv-Bridge</code></td>
+<td>mostly permissive</td>
+</tr>
+<tr>
+<td>L3 inference / state</td>
+<td><code>rwkv_lightning</code> (<strong>no license</strong>), <code>wkvm</code> (<strong>no license</strong>), ai00_server (MIT), web-rwkv / rwkv.cpp</td>
+<td>mixed</td>
+</tr>
+<tr>
+<td>L4 agent runtimes</td>
+<td>RWKV-Agent, RWKV-LH (MIT), RWKV-Scout (MIT)</td>
+<td>mixed</td>
+</tr>
+<tr>
+<td>L5 evaluation</td>
+<td>toolcaller-bench (Apache-2.0), <code>rwkv-skills</code> (<strong>no license</strong>), <code>primitive-bench</code> (<strong>no license</strong>), <code>browsecomp-plus-eval</code> (<strong>no license</strong>)</td>
+<td><strong>licensing gap widens toward the agent layer</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Implication:</strong> the closer a component is to agents, the less likely it is to be commercially usable. This matters
+for any product plan built on top of the ecosystem.</p>
+<h2 id="3-what-is-verified"><a class="toclink" href="#3-what-is-verified">3. What is verified</a></h2>
+<h3 id="31-single-turn-rlvr-mature-official"><a class="toclink" href="#31-single-turn-rlvr-mature-official">3.1 Single-turn RLVR (mature, official)</a></h3>
+<ul>
+<li><code>rwkv-rs/skyrl-rwkv</code> — fork of NovaSky-AI/SkyRL, created 2026-08-30, active through 2026-10-31, Apache-2.0.
+  Five launchers (antidoom/FTPO, flashreinforce, opd, sao, sft), algorithms GRPO/DAPO/CISPO/SAO/OPD/Anti-Doom/FTPO.
+  Evaluation is math-only (<code>eval/prepare.py</code>: gsm8k / math_500 / aime24 / aime25 / aimo_progress_prize_1). ✅</li>
+<li>Official 2026-10-26 seminar numbers: GSM8K avg@4 59.42%→71.85% (+12.43 pp) with 155-step warm-up + 1000-step DAPO;
+  MATH500 avg@8 39.88%→49.75%; anti-doom repetition 63→0; async OPD +29.4% throughput. ✅</li>
+<li>vLLM fork pin: <code>rwkv-rs/vllm-rwkv@2852a7b1d</code> (<code>pyproject.toml:584</code>), <strong>public</strong> repository, 2 commits behind
+  HEAD <code>7a6adcc6</code>. The previously assumed <code>67f0c599</code> is an old commit (2026-08-04) not in the branch history. ✅</li>
+<li>CI: the fork inherits 16 workflows, <strong>all</strong> gated on <code>github.repository == 'NovaSky-AI/SkyRL'</code>; so the fork has no
+  CI at all (the 3,354 lines of RWKV tests are real but never executed in CI). ✅</li>
+</ul>
+<h3 id="32-earlier-rwkv-rl-integration-verl-rwkv"><a class="toclink" href="#32-earlier-rwkv-rl-integration-verl-rwkv">3.2 Earlier RWKV RL integration: <code>verl-rwkv</code></a></h3>
+<ul>
+<li>Fork of <code>verl-project/verl</code>, branch <code>rwkv</code>, created 2026-05-21 (101 days before <code>skyrl-rwkv</code>), last commit
+  2026-08-02, Apache-2.0. Native <code>rwkv_lm</code> engine (EngineRegistry), RWKV7 GRPO launcher, MaxRL entry point, daily
+  upstream rebase workflow; 43 RWKV files, 18 PRs. ✅</li>
+<li>Same main contributor as <code>skyrl-rwkv</code> (<code>Cai-z-us</code>) → the history reads as "verl-rwkv stopped, work moved to
+  skyrl-rwkv". <code>skyrl-rwkv</code> is the <em>current</em> base, not the <em>only</em> one. ✅</li>
+</ul>
+<h3 id="33-multi-turn-tooling-code-exists-training-does-not"><a class="toclink" href="#33-multi-turn-tooling-code-exists-training-does-not">3.3 Multi-turn tooling: code exists, training does not</a></h3>
+<ul>
+<li><code>skyrl-rwkv</code> has <code>use_conversation_multi_turn</code>, per-turn <code>loss_mask</code> (observation excluded), and
+  <code>RWKVTrajectoryLogger</code>; <strong>but <code>max_turns</code> is never set in RWKV recipes (default 1)</strong>, and <code>skyrl-agent/</code> has zero
+  RWKV references. ✅</li>
+<li>The <code>feat/heli-r00-training-eval</code> branch (8 commits, 2026-10-24→28, +516/−48) adds bounded training/evaluation
+  phases and a scoreboard callback <code>python -m helicopter checkpoint-result &lt;spec&gt; train</code> in its README. The
+  <code>rwkv-rs/Helicopter</code> repository itself is publicly <strong>404</strong> (GitHub, Codeberg, HF all checked). ✅</li>
+<li><code>skyrl-rwkv</code> evaluation is math-only — <strong>no agent tasks</strong>. ✅</li>
+</ul>
+<h3 id="34-state-layer-primitives-exist-integration-does-not"><a class="toclink" href="#34-state-layer-primitives-exist-integration-does-not">3.4 State layer: primitives exist, integration does not</a></h3>
+<ul>
+<li><code>xiaol/wkvm</code> (Apache-2.0 declared in <code>pyproject.toml</code>, <strong>no LICENSE file</strong>): per-request state slots with
+  create/snapshot/fork/hibernate/resume; RWKV-7 state enumerated per layer (<code>recurrent_state</code> fp32, <code>conv_state</code>,
+  <code>ffn_state</code>). Documented RWKV-7 numbers: 8,077 tok/s @B256 (1.5B), 2,000 hibernated sessions @2.29 MiB, p50 8.2 ms
+  warm resume (⚠️ p99 explicitly excluded by the authors; single-run measurements; no independent reproduction).</li>
+<li><strong><code>live-migrate</code> is not implemented</strong> (<code>wkvm/server.py</code> exposes only <code>/v1/states</code> + <code>/v1/generate</code>; ROADMAP lists
+  migration as deferred). ✅</li>
+<li>Chat API hard-rejects <strong>tools / logprobs / custom stop</strong> (<code>wkvm/gemma_server.py</code>), which blocks RL rollout use
+  without a state-service integration. ✅</li>
+<li>Main branch froze after the technical-report publication (2026-08-02); the <code>m4-qwen35-hybrid</code> branch stayed active
+  until 2026-09-10 (+12k lines, Qwen3.5 hybrid guest allocator). ✅</li>
+</ul>
+<h3 id="35-scale-rwkv-megatron"><a class="toclink" href="#35-scale-rwkv-megatron">3.5 Scale: <code>RWKV-Megatron</code></a></h3>
+<ul>
+<li>Real Megatron-Core integration (ModuleSpec injection, TP/PP/SP/CP), Apache-2.0, default branch <code>muon</code> (last commit
+  2026-07-06); branches <code>2026-10-10</code> (10-15), <code>codex/rwkv7-cp</code> (10-22), <code>codex/qwen-rwkv28b-distill</code> (10-30). ✅</li>
+<li><strong>28B evidence exists but is short-run capacity only</strong>: on <code>codex/rwkv7-cp</code>, 4 layouts × 30 steps with machine-
+  readable JSON (TP4/PP2/CP1: 75,829 MiB, 2.0712 s/step, final val CE 7.497223, no NaN/skip/OOM); the distill branch
+  has 3 × 28B configs plus a capacity probe that explicitly "<em>does not save checkpoints or certify model quality</em>";
+  <code>docs/</code>, <code>training-smoke/</code> are gitignored (0 files); the only 12-hour run in the org is <strong>2.7B</strong>, not 28B. ✅
+  → Scale path = <strong>exists + engineering partially proven; training effectiveness unproven</strong>.</li>
+</ul>
+<h3 id="36-evaluation-layer"><a class="toclink" href="#36-evaluation-layer">3.6 Evaluation layer</a></h3>
+<ul>
+<li><code>lm-evaluation-harness-rwkv</code> / <code>lighteval-rwkv</code> / <code>evalscope-rwkv</code> forks form a production evaluation pipeline
+  (scoreboard publishing branches, resumable orchestration, HTTP backends). <code>benchmarks.toml</code> lists 16 benchmarks,
+  with the <strong><code>agentic</code> category empty</strong>. ✅</li>
+<li><code>rwkv-rs/browsecomp-plus-eval</code> — reproducible 830-question BrowseComp-Plus package (search top-5 / get_document /
+  final_answer, 100 steps, 3-way candidate router, vendored vLLM-RWKV, official judge). <strong>No scores, no root LICENSE.</strong> ✅</li>
+<li><code>No-22-Github/RWKV-Agent</code> (outside the org) — public 568-question multi-turn agent exam (15 scenarios, per-question
+  <code>verify.py</code>) with public baseline numbers: G1l base 187/568 = <strong>32.9%</strong>, NoRA adapter 320.5/568 = <strong>56.4%</strong>
+  (⚠️ the NoRA number comes from a different/earlier base model — not a strict same-base comparison). Assets are
+  <strong>unlicensed</strong>. ✅</li>
+<li><code>rwkv-rs/rwkv-skills</code> mentions a public scoreboard in the "Helicopter repository" (which does not exist publicly);
+  dashboard code exists in-repo but no public score data. ✅</li>
+</ul>
+<h3 id="37-official-positioning"><a class="toclink" href="#37-official-positioning">3.7 Official positioning</a></h3>
+<ul>
+<li>G1l (<code>rwkv7-g1l-13.3b-20261031</code>) chat template supports multi-turn and strict model-generated <strong>tool-call</strong>
+  prompts; the official prompt-format documentation has a <code>function call</code> section; the official hub card and
+  RWKV-LM README point to the community agent catalog as "<em>latest best practices for agentic work</em>". ✅</li>
+<li>At the same time, the official 2026-10-26 seminar describes a <strong>single-turn RLVR</strong> roadmap (math/reasoning/code),
+  and the rwkv_lightning tutorial notes that real agent RL requires running tools yourself. ✅</li>
+<li>Correct framing: <strong>official does not train agentic RL; it standardizes the interface and points to the community.</strong></li>
+</ul>
+<h2 id="4-what-is-still-missing-the-actual-gap"><a class="toclink" href="#4-what-is-still-missing-the-actual-gap">4. What is still missing (the actual gap)</a></h2>
+<ol>
+<li><strong>Public multi-turn agentic RL training recipe/results</strong> — current agent models are SFT/NoRA/MiSS adapters, not RL.</li>
+<li><strong>Public scores on standard agent benchmarks</strong> — BrowseComp-Plus 830 / τ-bench / BFCL have no RWKV numbers; the
+   <code>agentic</code> category in the evaluation pipeline is empty.</li>
+<li><strong>State-native rollout layer</strong> — connect <code>wkvm</code> state slots → episode → per-token log-probs → reward, or use
+   <code>skyrl-rwkv</code> re-prefill as the pragmatic first step.</li>
+</ol>
+<h2 id="5-corrections-to-the-prior-internal-audit-2026-11-05"><a class="toclink" href="#5-corrections-to-the-prior-internal-audit-2026-11-05">5. Corrections to the prior internal audit (2026-11-05)</a></h2>
+<table>
+<thead>
+<tr>
+<th>Prior claim</th>
+<th>Verified state</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>skyrl-rwkv binds a <strong>private</strong> vLLM fork at <code>67f0c599</code></td>
+<td>public <code>rwkv-rs/vllm-rwkv@2852a7b1d</code>; <code>67f0c599</code> is an old commit not in history</td>
+</tr>
+<tr>
+<td>wkvm README only has Gemma numbers</td>
+<td>RWKV-7 numbers are in-repo (<code>experiments/results/m2/m3</code>, <code>paper/CLAIMS.md</code>); but p99 is excluded by the authors</td>
+</tr>
+<tr>
+<td>wkvm supports live-migrate</td>
+<td>not implemented (deferred/refused in ROADMAP)</td>
+</tr>
+<tr>
+<td>Megatron branch <code>codex/rwkv28b-distill</code></td>
+<td>actual name <code>codex/qwen-rwkv28b-distill</code>; 28B = short-run capacity only</td>
+</tr>
+<tr>
+<td><code>rwkv-rs/Helicopter</code> does not exist (404)</td>
+<td>still 404 publicly, but the scoreboard contract appears in a public skyrl-rwkv branch; treated as internal/unpublished</td>
+</tr>
+<tr>
+<td>"No agentic models, no scores"</td>
+<td>No-22 publishes a 568-q exam with scores; browsecomp package exists (no scores)</td>
+</tr>
+<tr>
+<td>"Official deliberately does not do agentic"</td>
+<td>official standardized tool-call/multi-turn and points to the community; still no agentic RL training</td>
+</tr>
+<tr>
+<td>only <code>howard-hou/RWKV-SFT</code> supports multi-turn SFT</td>
+<td>No-22 trained multi-turn agent adapters with <code>rwkv_lightning_cuda</code>; skyrl code is multi-turn capable</td>
+</tr>
+<tr>
+<td>FlashRWKV2 under <code>BlinkDL/</code></td>
+<td>moved to <code>rwkv-rs/FlashRWKV2</code>, MIT</td>
+</tr>
+<tr>
+<td><code>rwkv-rs</code> org has ~10 relevant repos</td>
+<td>40 public repos (17 source + 21 forks + 2 archived); 30 were missing from the prior map</td>
+</tr>
+<tr>
+<td>skyrl-rwkv is the <em>only/best</em> RL base</td>
+<td><code>verl-rwkv</code> was an earlier native verl integration (2026-05→08); skyrl is the <em>current</em> one</td>
+</tr>
+<tr>
+<td>CI missing only for RWKV tests</td>
+<td>the whole fork has no CI (16/16 workflows gate on the upstream repo)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6-implications"><a class="toclink" href="#6-implications">6. Implications</a></h2>
+<ul>
+<li><strong>If the goal is a stronger RWKV on verifiable tasks</strong>: use <code>skyrl-rwkv</code> + DAPO, copy the official 155+1000 recipe.
+  No need to touch the agent layer.</li>
+<li><strong>If the goal is agentic RL</strong>: the parts exist but the assembly does not. Start by reusing the public evaluation
+  assets (P0), then take the official single-turn RL path (P1–P2), then build the multi-turn rollout (P3: re-prefill
+  first, state slots later). See <a href="../ROADMAP.html"><code>ROADMAP.md</code></a>.</li>
+</ul>
+<h2 id="7-references"><a class="toclink" href="#7-references">7. References</a></h2>
+<ul>
+<li><code>reports/2026-11-05-verification.md</code> — summary table + 12 corrections</li>
+<li><code>reports/skyrl/REPORT.md</code>, <code>reports/state/REPORT.md</code>, <code>reports/eco/REPORT.md</code> — full evidence dossiers</li>
+<li><code>data/eco-org-repos.txt</code> — 40-repo inventory</li>
+<li><code>tracking/sources.md</code> — source layers and signals</li>
+</ul>
+<hr>
+<h2 id="8-addendum2026-11-06helicopterv8rosa"><a class="toclink" href="#8-addendum2026-11-06helicopterv8rosa">8. Addendum（2026-11-06）：helicopter、v8/ROSA 与活跃度分层</a></h2>
+<p>本文件发布后 24 小时内出现三项需要修正/补充的信息，详见 <a href="../reports/2026-11-06-ecosystem-update.html"><code>../reports/2026-11-06-ecosystem-update.md</code></a>（含证据与复现命令）：</p>
+<ol>
+<li><strong><code>helicopter</code> 存在</strong>：在 <code>w1c2j3/helicopter</code>（不是 <code>rwkv-rs</code> 下），是 5 管线 / 24 benchmark / 27 EvalScope agent 数据集的 leaderboard 编排框架 —— 但<strong>无 LICENSE、0 star、2026-08-10 停更、从未公开分数、官方 harness 依赖 Docker</strong>。因此"评测基建空白"应修正为"<strong>基建存在但不可依赖、无公开成绩</strong>"。</li>
+<li><strong>新增 L6 前沿层 v8/ROSA</strong>：<code>RWKV-LM/RWKV-v8/README.md</code> 列出 8 个社区 ROSA 项目（多数 MIT/Apache，3 个无许可证），是当前最活跃的方向；但<strong>无官方 HF 权重、无 vLLM/RL/agent 栈</strong>，故不影响本仓库近期的 v7 执行路线。</li>
+<li><strong>活跃度分层</strong>：v7 引擎侧在退潮、v8/ROSA 最活跃；v7 的 agent/RL 层由少数单人维持（Chase Jay、shiroko98、Alic-Li、No-22）。另发现 <code>Alic-Li/rwkv_lightning_cuda</code> 有 5 个 <code>Claude</code> 提交（含 RL 相关改动），提示上游 RL 代码的数值正确性需要独立门禁。</li>
+</ol>
+<p><strong>对 §2 栈表的修正</strong>：在 L0–L5 之外增加 <strong>L6 前沿（v8/ROSA）</strong>；L5 评测层补充 helicopter 作为"未公开的编排框架"。</p>
+<hr>
+<h2 id="9-addendum-22026-11-06-agentic-rl"><a class="toclink" href="#9-addendum-22026-11-06-agentic-rl">9. Addendum 2（2026-11-06 晚）：agentic RL 已在私有侧运行</a></h2>
+<ul>
+<li><code>rwkv-org/rwkv-agent-eval</code>（2026-11-04 建，当天仍在提交，<strong>无 LICENSE</strong>）表明公开的 agent 评测框架正在搭建，
+  但依赖 Harbor + Docker、私有 <code>rwkv-agent-pipeline</code> 与未发布 DSH commit 与训练数据 <code>mix-20261106</code>。</li>
+<li><code>No-22-Github/dsh-rwkv-plugin</code>（无 LICENSE）把 RWKV-7 注册进 DeepSeek Harness（8 工具、XML 信封）。</li>
+<li><strong>对 §0/§4 的修正</strong>：不是"没有 agentic RL"，而是"<strong>公开配方与结果尚未发布；私有管线已在运行</strong>"。</li>
+<li>详见 <a href="../reports/2026-11-06-ecosystem-update.html"><code>../reports/2026-11-06-ecosystem-update.md</code></a> §9。</li>
+</ul>
+<hr>
+<h2 id="2026-11-07-agent"><a class="toclink" href="#2026-11-07-agent">追加（2026-11-07）：首批公开 agent 评测成绩</a></h2>
+<p><code>rwkv-org/rwkv-agent-eval</code> 发布 1019 题公开多轮 agent 成绩（7.2B 基模 + NoRA <strong>SFT</strong> adapter）：
+<strong>30.9% → 52.8%（+21.9 ±3.2pp）</strong>，12 个能力块全部上涨；涨分机制是"学会调工具"而非推理变强。
+→ "没有公开 agent 成绩"的旧判断作废；"没有 agentic RL"仍成立。详见
+<a href="../reports/2026-11-06-ecosystem-update.html"><code>reports/2026-11-06-ecosystem-update.md</code></a> §11。</p></div></article>
+<footer class="foot">Generated from the repository Markdown sources · <a href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">source on GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>

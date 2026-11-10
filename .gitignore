@@ -13,3 +13,6 @@ __pycache__/
 
 # SLURM 日志（本地运行产物）
 slurm-*.out
+
+# 本地 markdown 依赖副本（不提交）
+.mdlib/

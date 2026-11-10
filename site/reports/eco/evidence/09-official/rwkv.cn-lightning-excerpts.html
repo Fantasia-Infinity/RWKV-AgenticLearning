@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning · RWKV-AgenticLearning · 报告站</title>
+<link rel="stylesheet" href="../../../../assets/style.css">
+
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="brand" href="../../../../index.html">RWKV-AgenticLearning · 报告站</a>
+<span class="built">built 2026-11-10 21:03 UTC</span></div></header>
+<div class="layout wrap">
+<nav class="sidebar"><a href="../../../../index.html">首页</a>
+<span class="nav-cat">核心报告</span>
+<a href="../../../../reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
+<a href="../../../../reports/2026-11-10-rl-results-summary.html">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)</a>
+<a href="../../../../reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a>
+<a href="../../../../reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
+<a href="../../../../reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
+<a href="../../../../reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
+<a href="../../../../reports/2026-11-05-verification.html">RWKV 生态核验报告（2026-11-05 接续 session）</a>
+<span class="nav-cat">专题报告</span>
+<a href="../../../../reports/state/evidence/CITATIONS.html">Evidence citations — state/</a>
+<a href="../../../../reports/state/REPORT.html">状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告</a>
+<a href="../../../../reports/skyrl/evidence/CITATIONS.html">Evidence citations — skyrl/</a>
+<a href="../../../../reports/skyrl/evidence/00-env.html">环境与时间快照</a>
+<a href="../../../../reports/skyrl/REPORT.html">skyrl-rwkv 深度核验报告（任务 task-1）</a>
+<a href="../../../../reports/eco/evidence/CITATIONS.html">Evidence citations — eco/</a>
+<a href="../../../../reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html">Evidence: rwkv.cn /tutorials/basic/Prompt-Format</a>
+<a href="../../../../reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html" class="active">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</a>
+<a href="../../../../reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html">RWKV Native Model Templates</a>
+<a href="../../../../reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html">RWKV MaxRL configuration</a>
+<a href="../../../../reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html">Native rwkv-lm Engine</a>
+<a href="../../../../reports/eco/REPORT.html">RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）</a>
+<a href="../../../../reports/EVIDENCE.html">Evidence — policy, layout, and how to re-verify</a>
+<span class="nav-cat">文档</span>
+<a href="../../../../docs/ecosystem-review-2026-11-05.html">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a>
+<a href="../../../../docs/methodology.html">Methodology — how claims in this repository are produced and checked</a>
+<span class="nav-cat">项目</span>
+<a href="../../../../THIRD_PARTY_NOTICES.html">Third-party notices</a>
+<a href="../../../../ROADMAP.html">ROADMAP — RWKV agentic RL</a>
+<a href="../../../../index.html">RWKV-AgenticLearning</a>
+<a class="ext" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">GitHub ↗</a></nav>
+<main class="content">
+<article class="report">
+<div class="crumb"><a href="../../../../index.html">首页</a> / reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.md</div>
+<h1 class="report-title">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</h1>
+<div class="meta"><span class="badge">专题报告</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
+<ul>
+<li><a href="#meta-description">归档说明 (meta description)</a></li>
+<li><a href="#agent-rl">Agent RL 相关原文</a></li>
+<li><a href="#agentrl">页面导航（教程目录，无 agent/RL 独立教程）</a></li>
+</ul>
+</div>
+</details><div class="md-body"><h1 id="evidence-rwkvcn-tutorialsintermediaterwkv_lightning"><a class="toclink" href="#evidence-rwkvcn-tutorialsintermediaterwkv_lightning">Evidence: rwkv.cn /tutorials/intermediate/rwkv_lightning</a></h1>
+<p>fetched: 2026-11-05 (UTC) via curl -sL</p>
+<p><title>: rwkv_lightning_cuda 高并发推理与后训练微调教程 - RWKV
+<meta description>: rwkv_lightning 已归档，推荐使用 rwkv_lightning_cuda。介绍 C++ GPU 高并发推理、State / MiSS / NoRA Tuning，以及 GRPO / Dr.GRPO 在线强化学习的部署与使用。</p>
+<h2 id="meta-description"><a class="toclink" href="#meta-description">归档说明 (meta description)</a></h2>
+<ul>
+<li>rwkv_lightning 已归档，推荐使用 rwkv_lightning_cuda。介绍 C++ GPU 高并发推理、State / MiSS / NoRA Tuning，以及 GRPO / Dr.GRPO 在线强化学习的部署与使用。</li>
+</ul>
+<h2 id="agent-rl"><a class="toclink" href="#agent-rl">Agent RL 相关原文</a></h2>
+<blockquote>
+<p>示例客户端回放数据集中的工具观察；真实 Agent RL 需要自行执行工具动作并提供新观察。</p>
+</blockquote>
+<h2 id="agentrl"><a class="toclink" href="#agentrl">页面导航（教程目录，无 agent/RL 独立教程）</a></h2>
+<ul>
+<li>/tutorials/basic/How-To-Play</li>
+<li>/tutorials/basic/Model-Download</li>
+<li>/tutorials/basic/Prompt-Format</li>
+<li>/tutorials/basic/RWKV-Parameters</li>
+<li>/tutorials/basic/State</li>
+<li>/tutorials/intermediate/rwkv_lightning</li>
+<li>/tutorials/intermediate/RWKV-FLA</li>
+<li>/tutorials/intermediate/RWKVpip</li>
+<li>/tutorials/intermediate/llamacpp</li>
+<li>/tutorials/intermediate/RWKV-Runner/Introduction</li>
+<li>/tutorials/intermediate/RWKV-Runner/Simple-Usage</li>
+<li>/tutorials/intermediate/RWKV-Runner/Advanced-Usage</li>
+<li>/tutorials/intermediate/RWKV-Runner/API-Usage</li>
+<li>/tutorials/intermediate/RWKV-Runner/LoRA</li>
+<li>/tutorials/intermediate/RWKV-Runner/Connect-MIDI</li>
+<li>/tutorials/intermediate/RWKV-Runner/FAQ</li>
+<li>/tutorials/intermediate/ai00/Introduction</li>
+<li>/tutorials/intermediate/ai00/Simple-Usage</li>
+<li>/tutorials/intermediate/ai00/Ai00-Features</li>
+<li>/tutorials/intermediate/ai00/Ai00-API</li>
+<li>/tutorials/intermediate/ai00/FAQ</li>
+<li>/tutorials/intermediate/RWKV-Inference/Ollama</li>
+<li>/tutorials/intermediate/RWKV-Inference/text-generation-webui</li>
+<li>/tutorials/intermediate/RWKV-Inference/KoboldCpp</li>
+<li>/tutorials/intermediate/RWKV-Inference/SillyTavern</li>
+<li>/tutorials/advanced/pretrain</li>
+<li>/tutorials/advanced/Fine-Tune/Introduction</li>
+<li>/tutorials/advanced/Fine-Tune/FT-Environment</li>
+<li>/tutorials/advanced/Fine-Tune/FT-Dataset</li>
+<li>/tutorials/advanced/Fine-Tune/RWKV-PEFT/State-Tuning</li>
+<li>/tutorials/advanced/Fine-Tune/RWKV-PEFT/MiSS</li>
+<li>/tutorials/advanced/Fine-Tune/RWKV-PEFT/LoRA</li>
+<li>/tutorials/advanced</li>
+<li>/tutorials/basic</li>
+<li>/tutorials/intermediate</li>
+</ul></div></article>
+<footer class="foot">Generated from the repository Markdown sources · <a href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">source on GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>

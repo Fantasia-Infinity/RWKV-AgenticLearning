@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026-11-10 生态核验更新（含对日检摘要的修正） · RWKV-AgenticLearning · 报告站</title>
+<link rel="stylesheet" href="../assets/style.css">
+
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="brand" href="../index.html">RWKV-AgenticLearning · 报告站</a>
+<span class="built">built 2026-11-10 21:03 UTC</span></div></header>
+<div class="layout wrap">
+<nav class="sidebar"><a href="../index.html">首页</a>
+<span class="nav-cat">核心报告</span>
+<a href="../reports/2026-11-10-verified-update.html" class="active">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
+<a href="../reports/2026-11-10-rl-results-summary.html">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)</a>
+<a href="../reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a>
+<a href="../reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
+<a href="../reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
+<a href="../reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
+<a href="../reports/2026-11-05-verification.html">RWKV 生态核验报告（2026-11-05 接续 session）</a>
+<span class="nav-cat">专题报告</span>
+<a href="../reports/state/evidence/CITATIONS.html">Evidence citations — state/</a>
+<a href="../reports/state/REPORT.html">状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告</a>
+<a href="../reports/skyrl/evidence/CITATIONS.html">Evidence citations — skyrl/</a>
+<a href="../reports/skyrl/evidence/00-env.html">环境与时间快照</a>
+<a href="../reports/skyrl/REPORT.html">skyrl-rwkv 深度核验报告（任务 task-1）</a>
+<a href="../reports/eco/evidence/CITATIONS.html">Evidence citations — eco/</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html">Evidence: rwkv.cn /tutorials/basic/Prompt-Format</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html">RWKV Native Model Templates</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html">RWKV MaxRL configuration</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html">Native rwkv-lm Engine</a>
+<a href="../reports/eco/REPORT.html">RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）</a>
+<a href="../reports/EVIDENCE.html">Evidence — policy, layout, and how to re-verify</a>
+<span class="nav-cat">文档</span>
+<a href="../docs/ecosystem-review-2026-11-05.html">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a>
+<a href="../docs/methodology.html">Methodology — how claims in this repository are produced and checked</a>
+<span class="nav-cat">项目</span>
+<a href="../THIRD_PARTY_NOTICES.html">Third-party notices</a>
+<a href="../ROADMAP.html">ROADMAP — RWKV agentic RL</a>
+<a href="../index.html">RWKV-AgenticLearning</a>
+<a class="ext" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">GitHub ↗</a></nav>
+<main class="content">
+<article class="report">
+<div class="crumb"><a href="../index.html">首页</a> / reports/2026-11-10-verified-update.md</div>
+<h1 class="report-title">2026-11-10 生态核验更新（含对日检摘要的修正）</h1>
+<div class="meta"><span class="badge">核心报告</span><span class="badge date">2026-11-10</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/reports/2026-11-10-verified-update.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
+<ul>
+<li><a href="#_1">一、已核验事实</a><ul>
+<li><a href="#1-rwkv-rstransformers-rwkv-pr-20">1. rwkv-rs/transformers-rwkv PR #20 —— 工具调用历史的渲染修复</a></li>
+<li><a href="#2-rwkv-rstransformers-rwkv-pr-21-flashrwkv2-010a18">2. rwkv-rs/transformers-rwkv PR #21 —— FlashRWKV2 0.1.0a18</a></li>
+<li><a href="#3-rwkv-orgirwkvapache-20-open-pr">3. rwkv-org/irwkv（Apache-2.0）—— open PR 清单</a></li>
+<li><a href="#4-interactive-active-ainexttransformermit400">4. Interactive-Active-AI/NextTransformer（MIT，400★）</a></li>
+</ul>
+</li>
+<li><a href="#_2">二、对日检摘要的修正</a></li>
+<li><a href="#_3">三、我们的对应动作</a></li>
+<li><a href="#_4">四、引用</a></li>
+<li><a href="#1400_1">五、已核验事实（14:00 日检）</a><ul>
+<li><a href="#1-no-22-githubdsh-rwkv-plugin-pr-1-adapter-adapterpicker">1. No-22-Github/dsh-rwkv-plugin PR #1 —— 请求级 adapter 恢复 + AdapterPicker</a></li>
+<li><a href="#2-rwkv-rstransformers-rwkv-c62a794-update-sampling-defaults-and-agent-guidance">2. rwkv-rs/transformers-rwkv 后续提交 c62a794 —— "update sampling defaults and agent guidance"</a></li>
+<li><a href="#3-interactive-active-ainexttransformer-pr-41-dense-200b-scaling">3. Interactive-Active-AI/NextTransformer PR #41 —— Dense 200B scaling 参考跑</a></li>
+<li><a href="#4-x-harness-rs-wordcraft">4. x-harness-rs WordCraft 插件</a></li>
+</ul>
+</li>
+<li><a href="#1400_2">六、对 14:00 判定的修正</a></li>
+<li><a href="#_5">七、我们自己的对照进展（同时段）</a></li>
+<li><a href="#_6">八、引用</a></li>
+</ul>
+</div>
+</details><div class="md-body"><h1 id="2026-11-10"><a class="toclink" href="#2026-11-10">2026-11-10 生态核验更新（含对日检摘要的修正）</a></h1>
+<blockquote>
+<p>核验时间：2026-11-10 10:00–10:30 CET。方式：GitHub API 逐 PR 核对（merged_at / state / author / body）+ 本地环境实测。
+本文只记录<strong>已回源确认</strong>的事实；二手摘要中的措辞问题在「修正」小节单列。</p>
+</blockquote>
+<h2 id="_1"><a class="toclink" href="#_1">一、已核验事实</a></h2>
+<h3 id="1-rwkv-rstransformers-rwkv-pr-20"><a class="toclink" href="#1-rwkv-rstransformers-rwkv-pr-20">1. <code>rwkv-rs/transformers-rwkv</code> PR #20 —— 工具调用历史的渲染修复</a></h3>
+<ul>
+<li>标题（原文）：<strong><code>fix(rwkv): render tool-call history in the instructed format</code></strong></li>
+<li>作者 <code>w1c2j3</code>；<strong>merged 2026-11-10T07:48:36Z</strong>，merge commit <code>6d0d57af</code>，+23/−3，2 文件</li>
+<li>内容（PR body 原文要点）：
+  1. <strong>崩溃修复</strong>：带工具调用历史 + system 消息 + <strong>无 <code>tools</code></strong> 的对话会抛 <code>TypeError: 'NoneType' object is not iterable</code>；模板从 <code>tools | default([])</code> 改为 <code>tools or []</code>（vLLM / irwkv 会传 <code>tools=None</code>）
+  2. <strong>参数格式修复</strong>：过去的工具调用原先渲染成缩进 JSON，且 OpenAI 风格字符串 <code>arguments</code> 被转义成 <code>"arguments": "{\"city\": ...}"</code>；现改为 system prompt 要求的一行格式：<code>{"name": "weather", "arguments": {"city": "Paris"}}</code></li>
+<li>PR 明言：<strong>不含工具调用的对话与 main 渲染字节级一致</strong> → 这是对既有渲染的格式/崩溃修复，不是"首次支持"。</li>
+<li>我们的现状：HF 导出 <code>weights/g1l-1.5b-hf/chat_template.jinja</code> 是 <strong>pre-#20</strong> 版本（实测：<code>payload | tojson(indent=2)</code> 渲染历史工具调用；<code>tools | default([])</code> 存在崩溃边）。我们渲染时都传了 <code>tools</code>，故未触发崩溃；但多轮工具历史是缩进 JSON，与 system prompt 要求的一行格式不一致。</li>
+</ul>
+<h3 id="2-rwkv-rstransformers-rwkv-pr-21-flashrwkv2-010a18"><a class="toclink" href="#2-rwkv-rstransformers-rwkv-pr-21-flashrwkv2-010a18">2. <code>rwkv-rs/transformers-rwkv</code> PR #21 —— FlashRWKV2 0.1.0a18</a></h3>
+<ul>
+<li>作者 <code>Cai-z-us</code>；<strong>merged 2026-11-10T08:28:33Z</strong>，merge commit <code>46bb5d26</code></li>
+<li>内容：RWKV extra / weight-publisher 依赖升到 <code>FlashRWKV2 0.1.0a18</code>；移除生成与 benchmark 中已废弃的 <code>legacy_dir</code> 调优参数；运行时版本检查继续钉版本</li>
+<li>我们的 stack 仍 pin <strong>0.1.0a17</strong>（skyrl-rwkv + vllm-rwkv），未跟随；升级需重跑 kernel/数值对齐验证，暂不动。</li>
+</ul>
+<h3 id="3-rwkv-orgirwkvapache-20-open-pr"><a class="toclink" href="#3-rwkv-orgirwkvapache-20-open-pr">3. <code>rwkv-org/irwkv</code>（Apache-2.0）—— open PR 清单</a></h3>
+<ul>
+<li><strong>open</strong>：#7（<code>w1c2j3</code>，structured-output 保持 Rapid-Sampling CUDA graphs；11-10 07:01 有更新）、#12（<code>Triang-jyed-driung</code>，state LRU cache + 上下文 sha1；<strong>11-07</strong> 创建）、#14（<code>Cai-z-us</code>，原生 RWKV-7 checkpoint 权重热重载；<strong>11-10 05:03</strong> 创建）</li>
+<li><strong>#13</strong>（<code>Cai-z-us</code>，"Expose the upstream router through irwkv"）：created 11-10 03:53，<strong>closed 11-10 08:28 但 <code>merged_at = null</code></strong> → 关闭未合并</li>
+<li><code>mtp</code>（Joluck 投机解码）分支仍未并入 <code>main</code></li>
+</ul>
+<h3 id="4-interactive-active-ainexttransformermit400"><a class="toclink" href="#4-interactive-active-ainexttransformermit400">4. <code>Interactive-Active-AI/NextTransformer</code>（MIT，400★）</a></h3>
+<ul>
+<li>PR <strong>#38</strong> "Add Gated Attention (elementwise and headwise) with audited formal results"：<strong>merged 2026-11-09T12:08:56Z</strong>（不是 11-10），作者 <code>euyis1019</code>，+4794/−94，33 文件</li>
+<li>正式结果（update 46,875, seed 42）：Dense BPB 0.664460 / headwise 0.664678 / elementwise 0.666731 → <strong>gated attention 未超 Dense</strong>；CORE 增益主要来自 CommonsenseQA（其余 21 任务均值 34.43 / 34.28 / 33.73）</li>
+<li>RWKV 仍不在该架构擂台上</li>
+</ul>
+<h2 id="_2"><a class="toclink" href="#_2">二、对日检摘要的修正</a></h2>
+<table>
+<thead>
+<tr>
+<th>日检说法</th>
+<th>核对结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"PR #20 是 w1c2j3 的工具调用历史渲染"</td>
+<td>✅ 作者/主题正确；但应表述为<strong>格式修复 + tools=None 崩溃修复</strong>，"HF 集成层终于开始正确渲染多轮工具调用"是夸大（此前已渲染，只是格式不对）</td>
+</tr>
+<tr>
+<td>"同日 Cai-z-us 还有 PR #21（FlashRWKV2 0.1.0a18）"</td>
+<td>✅ 正确（08:28:33Z 合并）</td>
+</tr>
+<tr>
+<td>"irwkv 出现 3 个 open PR（#12/#13/#14）"</td>
+<td>❌ <strong>#13 已关闭未合并</strong>；实际 open 是 <strong>#7 / #12 / #14</strong>；且 #12 是 11-07 创建，不是今天新增</td>
+</tr>
+<tr>
+<td>"#12 社区新面孔 Triang-jyed-driung"</td>
+<td>✅ 作者正确</td>
+</tr>
+<tr>
+<td>"NextTransformer PR #38 已合"</td>
+<td>✅ 已合，但合入时间是 <strong>11-09 12:08Z</strong>（非 11-10）</td>
+</tr>
+<tr>
+<td>"基线文件积压 8 处过期"</td>
+<td>属日检自身文档卫生问题，与公开事实无关；本仓库 tracking 基线（2026-11-09 报告）另行刷新</td>
+</tr>
+<tr>
+<td>"六层里五层就位，唯一空着的是真训一轮 RL 并出分"</td>
+<td>⚠️ 需限定：评测层数据/代码<strong>无 LICENSE</strong>（不可复用，只能引用数字）；mtp 未并入 main、router PR 未合并；公开可复现链仍缺（训练数据私有、adapter 无公开权重、evaluator 无 LICENSE）。"出分"缺口限定在<strong>多轮 agentic RL</strong>；单轮数学 RL 我们正在出分（见下）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3"><a class="toclink" href="#_3">三、我们的对应动作</a></h2>
+<ol>
+<li><strong>模板</strong>：P4 多轮数据重渲染前，从 <code>rwkv-rs/transformers-rwkv</code> main 取 post-#20 <code>chat_template.jinja</code> 覆盖 HF 导出模板；补 tests：tools=None + 工具历史 + system 的渲染回归。</li>
+<li><strong>训练数据</strong>：已有 P1.5/P3 数据是 pre-#20 模板渲染（历史工具调用缩进 JSON），保留作历史；新数据用新模板。</li>
+<li><strong>B1（DAPO 1000 步，单轮 GSM8K RLVR）</strong>：step100/200/300/400 avg@4 = 21.5 / 25.6 / 27.9 / <strong>30.25%</strong>（base 21.0%）→ 正在填"真实训 RL 并公开出分"的空缺（单轮；多轮 agentic RL 仍是空白）。</li>
+<li><strong>公开交付</strong>：继续坚持 license-clean：只引用 <code>rwkv-agent-eval</code> 数字，不复制其数据/代码；adapter 无权重的情况在报告中注明。</li>
+</ol>
+<h2 id="_4"><a class="toclink" href="#_4">四、引用</a></h2>
+<ul>
+<li>transformers-rwkv #20: https://github.com/rwkv-rs/transformers-rwkv/pull/20 （merged 2026-11-10T07:48:36Z）</li>
+<li>transformers-rwkv #21: https://github.com/rwkv-rs/transformers-rwkv/pull/21 （merged 2026-11-10T08:28:33Z）</li>
+<li>irwkv PR #7/#12/#13/#14: https://github.com/rwkv-org/irwkv/pulls</li>
+<li>NextTransformer #38: https://github.com/Interactive-Active-AI/NextTransformer/pull/38 （merged 2026-11-09T12:08:56Z）</li>
+</ul>
+<hr>
+<h1 id="1400"><a class="toclink" href="#1400">14:00 批次核验（当日第二轮）</a></h1>
+<blockquote>
+<p>核验时间：2026-11-10 14:10–14:25 CET。GitHub API 逐条核对。</p>
+</blockquote>
+<h2 id="1400_1"><a class="toclink" href="#1400_1">五、已核验事实（14:00 日检）</a></h2>
+<h3 id="1-no-22-githubdsh-rwkv-plugin-pr-1-adapter-adapterpicker"><a class="toclink" href="#1-no-22-githubdsh-rwkv-plugin-pr-1-adapter-adapterpicker">1. <code>No-22-Github/dsh-rwkv-plugin</code> PR #1 —— 请求级 adapter 恢复 + AdapterPicker</a></h3>
+<ul>
+<li>作者 <code>Alic-Li</code>，<strong>merged 2026-11-10T08:30:36Z</strong>（由 <code>No-22-Github</code> 合并），+1218/−396，14 文件</li>
+<li>正文覆盖：LightningClient 恢复 <code>adapter_id</code>（<code>/v1/batch/completions</code>）与 <code>listAdapters / uploadAdapter / deleteAdapter</code>（<code>/v1/adapters</code>）、Host 恢复 <code>/api/rwkv/adapters</code> 中继、Settings UI 在 StatePicker 下新增 AdapterPicker（自动拉取/手填 ID/上传 <code>.pth</code>）、"Task-specific contract" 文本域、<code>--adapter</code> 脚本参数与单测</li>
+<li>判断：<strong>属实</strong>。注意标题是 "Restore"，即恢复此前被移除的能力；插件本体 MIT，但底层 <code>rwkv_lightning_cuda</code> 仍无 LICENSE</li>
+</ul>
+<h3 id="2-rwkv-rstransformers-rwkv-c62a794-update-sampling-defaults-and-agent-guidance"><a class="toclink" href="#2-rwkv-rstransformers-rwkv-c62a794-update-sampling-defaults-and-agent-guidance">2. <code>rwkv-rs/transformers-rwkv</code> 后续提交 <code>c62a794</code> —— "update sampling defaults and agent guidance"</a></h3>
+<ul>
+<li>作者 <code>Cai-z-us</code>，direct commit <strong>2026-11-10T09:01:41Z</strong>，+55/−30，6 文件</li>
+<li>实际改动（API 文件清单）：
+  1. <code>.ai/AGENTS.md</code>（+36/−24）：仓库开发指引翻译/补充（含 non-pollution principle）——<strong>是"给 AI coding agent 的仓库开发规范"，不是 RWKV 模型 agent 使用指南</strong>
+  2. <code>temp/rwkv_pth2st.py</code>：<code>generation_config.json</code> 默认值改为 temperature 0.96 / top_p <strong>0.90</strong>（原 0.76）/ top_k <strong>-1</strong>（原 32）/ frequency_penalty <strong>0.09</strong>（原 0.1）/ penalty_decay <strong>0.994</strong>（原 0.988）
+  3. <code>src/transformers/models/rwkv/generation_rwkv.py</code>：<code>top_k == -1</code> 规范化 + logits processor 校验
+  4. 两个测试文件同步更新</li>
+<li><strong>修正日检</strong>："HF 集成开始带 agent 专用采样默认值"不准确：改的是<strong>对话通用</strong> <code>generation_config.json</code>；<strong>agent/工具用的 <code>tools_generation_config.json</code> 未变</strong>（仍 0.96 / 0.76 / 32 / 0 / 0 / 0.996）</li>
+</ul>
+<h3 id="3-interactive-active-ainexttransformer-pr-41-dense-200b-scaling"><a class="toclink" href="#3-interactive-active-ainexttransformer-pr-41-dense-200b-scaling">3. <code>Interactive-Active-AI/NextTransformer</code> PR #41 —— Dense 200B scaling 参考跑</a></h3>
+<ul>
+<li>作者 <code>Enderfga</code>，<strong>merged 2026-11-10T12:49:07Z</strong>，5 commits，+1710/−1，17 文件</li>
+<li>内容：40 层 / width 2560 / 200B tokens / 4k ctx（协议 <code>nextt-scale-200b-4k-v1</code>）；<strong>final val BPB 0.5748，CORE 0.4618（22 任务）</strong>；checkpoint 发在 HF（<code>Enderfga/nextt-scaling-dense-200b-4k</code>）</li>
+<li>明言：<strong>不属于 49B frozen 对比协议、不是 leaderboard 条目</strong>（scaling 参考）；</li>
+<li>判断：<strong>属实</strong>。RWKV 仍不在 NextTransformer 候选集中</li>
+</ul>
+<h3 id="4-x-harness-rs-wordcraft"><a class="toclink" href="#4-x-harness-rs-wordcraft">4. <code>x-harness-rs</code> WordCraft 插件</a></h3>
+<ul>
+<li>未回源核验（与 agent/RWKV 主线无关，日检自己也标注"关系不大"）</li>
+</ul>
+<h2 id="1400_2"><a class="toclink" href="#1400_2">六、对 14:00 判定的修正</a></h2>
+<table>
+<thead>
+<tr>
+<th>日检说法</th>
+<th>修正</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"多 adapter 合批 rollout 闭环打通"</td>
+<td>✅ 代码层面属实（请求级 adapter + UI + 上传），是异步 RL/多 checkpoint 评测的<strong>使能件</strong>；但<strong>不是单策略 RL 的前置条件</strong>（我们的 P2/P3/B1 全程单 policy+ref，无需 per-request adapter）</td>
+</tr>
+<tr>
+<td>"所有零件都造好了，只等一个人接起来跑一轮并公布数字"</td>
+<td>⚠️ 过于乐观。真实剩余：(a) <strong>算力</strong>——官方 1000 步 DAPO 若按上游默认 batch（1024 prompts×5 samples）≈ 5.12M rollouts，是我们缩小版 B1（1000 步×16 rollouts=16k）的 <strong>320 倍</strong>；(b) <strong>多轮 agentic RL 的正向结果</strong>仍空白（我们 P3 是负结果）；(c) <strong>许可</strong>：训练数据私有、<code>rwkv-agent-eval</code> 无 LICENSE、adapter 无公开权重</td>
+</tr>
+<tr>
+<td>"下一轮盯 rwkv-agent-eval 出现 RL 训练 adapter"</td>
+<td>✅ 方向对；但即使出现，无 LICENSE → 我们只能引用数字、不能复用数据/代码</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_5"><a class="toclink" href="#_5">七、我们自己的对照进展（同时段）</a></h2>
+<ul>
+<li>B1（DAPO 1000 步，单轮 GSM8K RLVR）step 703/1000；avg@4：100→21.5 / 200→25.6 / 300→27.9 / <strong>400→30.25</strong> / 500→25.25（base 21.0）——小批量 DAPO 有 ±5pp 振荡；step600/700 评测已提交</li>
+<li>我们已有 <strong>多轮工具 RL 的公开负结果</strong>（P3：tool RL 后 held-out tool-name 98.9%→82.2%，GSM8K-calc 38.55% &lt; SFT 42%），这是目前唯一公开的 RWKV 多轮 agentic RL 证据</li>
+</ul>
+<h2 id="_6"><a class="toclink" href="#_6">八、引用</a></h2>
+<ul>
+<li>dsh-rwkv-plugin #1: https://github.com/No-22-Github/dsh-rwkv-plugin/pull/1 （merged 2026-11-10T08:30:36Z）</li>
+<li>transformers-rwkv c62a794: https://github.com/rwkv-rs/transformers-rwkv/commit/c62a794e9f03e5ac7d6d5cc43d3dfacee6df0374</li>
+<li>NextTransformer #41: https://github.com/Interactive-Active-AI/NextTransformer/pull/41 （merged 2026-11-10T12:49:07Z）</li>
+</ul></div></article>
+<footer class="foot">Generated from the repository Markdown sources · <a href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">source on GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>

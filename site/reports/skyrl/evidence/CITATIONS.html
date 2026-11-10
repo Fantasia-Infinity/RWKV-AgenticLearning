@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evidence citations — skyrl/ · RWKV-AgenticLearning · 报告站</title>
+<link rel="stylesheet" href="../../../assets/style.css">
+
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="brand" href="../../../index.html">RWKV-AgenticLearning · 报告站</a>
+<span class="built">built 2026-11-10 21:03 UTC</span></div></header>
+<div class="layout wrap">
+<nav class="sidebar"><a href="../../../index.html">首页</a>
+<span class="nav-cat">核心报告</span>
+<a href="../../../reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
+<a href="../../../reports/2026-11-10-rl-results-summary.html">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)</a>
+<a href="../../../reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a>
+<a href="../../../reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
+<a href="../../../reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
+<a href="../../../reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
+<a href="../../../reports/2026-11-05-verification.html">RWKV 生态核验报告（2026-11-05 接续 session）</a>
+<span class="nav-cat">专题报告</span>
+<a href="../../../reports/state/evidence/CITATIONS.html">Evidence citations — state/</a>
+<a href="../../../reports/state/REPORT.html">状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告</a>
+<a href="../../../reports/skyrl/evidence/CITATIONS.html" class="active">Evidence citations — skyrl/</a>
+<a href="../../../reports/skyrl/evidence/00-env.html">环境与时间快照</a>
+<a href="../../../reports/skyrl/REPORT.html">skyrl-rwkv 深度核验报告（任务 task-1）</a>
+<a href="../../../reports/eco/evidence/CITATIONS.html">Evidence citations — eco/</a>
+<a href="../../../reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html">Evidence: rwkv.cn /tutorials/basic/Prompt-Format</a>
+<a href="../../../reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</a>
+<a href="../../../reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html">RWKV Native Model Templates</a>
+<a href="../../../reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html">RWKV MaxRL configuration</a>
+<a href="../../../reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html">Native rwkv-lm Engine</a>
+<a href="../../../reports/eco/REPORT.html">RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）</a>
+<a href="../../../reports/EVIDENCE.html">Evidence — policy, layout, and how to re-verify</a>
+<span class="nav-cat">文档</span>
+<a href="../../../docs/ecosystem-review-2026-11-05.html">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a>
+<a href="../../../docs/methodology.html">Methodology — how claims in this repository are produced and checked</a>
+<span class="nav-cat">项目</span>
+<a href="../../../THIRD_PARTY_NOTICES.html">Third-party notices</a>
+<a href="../../../ROADMAP.html">ROADMAP — RWKV agentic RL</a>
+<a href="../../../index.html">RWKV-AgenticLearning</a>
+<a class="ext" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">GitHub ↗</a></nav>
+<main class="content">
+<article class="report">
+<div class="crumb"><a href="../../../index.html">首页</a> / reports/skyrl/evidence/CITATIONS.md</div>
+<h1 class="report-title">Evidence citations — skyrl/</h1>
+<div class="meta"><span class="badge">专题报告</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/reports/skyrl/evidence/CITATIONS.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
+<ul>
+<li><a href="#published-evidence-files">Published evidence files</a></li>
+<li><a href="#archived-originals-not-distributed">Archived originals (not distributed)</a></li>
+</ul>
+</div>
+</details><div class="md-body"><h1 id="evidence-citations-skyrl"><a class="toclink" href="#evidence-citations-skyrl">Evidence citations — skyrl/</a></h1>
+<h1 id="evidence-policy-citations"><a class="toclink" href="#evidence-policy-citations">Evidence policy &amp; citations</a></h1>
+<p>This directory contains <strong>only evidence that can be redistributed</strong>: command outputs produced by this project,
+structured metadata (TSV/JSON), and short quotations needed to support the findings.</p>
+<p>What is <strong>not</strong> published here (and why):</p>
+<ul>
+<li>Full copies of third-party READMEs, model cards, HTML pages and commit feeds are <strong>not redistributed</strong>;
+  they remain the property of their authors and are kept only in a private archive on the maintainer's machine.</li>
+<li>Every removed file is listed in <code>ARCHIVED.tsv</code> with its path, size and <strong>sha256</strong> so anyone can re-fetch the
+  original from the cited URL and verify it byte-for-byte.</li>
+<li>Full-text reproduction is unnecessary for verification and would raise copyright questions, especially for
+  sources without a license.</li>
+</ul>
+<p>Re-fetch examples:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># last commit time of a repo</span>
+curl -s https://github.com/rwkv-rs/skyrl-rwkv/commits/main.atom <span class="p">|</span> head
+<span class="c1"># raw README (compare sha256 with ARCHIVED.tsv)</span>
+curl -sL https://raw.githubusercontent.com/xiaol/wkvm/main/README.md <span class="p">|</span> sha256sum
+</code></pre></div>
+
+<h2 id="published-evidence-files"><a class="toclink" href="#published-evidence-files">Published evidence files</a></h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Bytes</th>
+<th>sha256</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>00-env.md</code></td>
+<td>794</td>
+<td><code>f921d17b0fa94a80e47809f901979f41fb15fefe2e25570c4817076331abe5f4</code></td>
+</tr>
+<tr>
+<td><code>01-ls-remote-skyrl-rwkv.txt</code></td>
+<td>700</td>
+<td><code>8105f5d684458e1c8ea9ad470756a700706c4b27081b904b55c886cb5d937020</code></td>
+</tr>
+<tr>
+<td><code>02-ls-remote-vllm-rwkv.txt</code></td>
+<td>15250</td>
+<td><code>42a0a88c444392210d0d251b6b5dd0dee8b73742842eaf3f95b8f39752ae4970</code></td>
+</tr>
+<tr>
+<td><code>03-ls-remote-helicopter.txt</code></td>
+<td>143</td>
+<td><code>db3fd9f09031ac654b38a22abe1a25596ea57fc37bc5ad2915e32490e567532a</code></td>
+</tr>
+<tr>
+<td><code>04-api-repo-metadata.json</code></td>
+<td>18560</td>
+<td><code>6e9b202d7616ea5516c2f52591fffb6ba6b9a2eac5c093cc8d52b3e3277da8c4</code></td>
+</tr>
+<tr>
+<td><code>05-branches-and-commits.txt</code></td>
+<td>1545</td>
+<td><code>a2581cefa47bc4eca935ef4d0e072dbcc4aecbb2494e691ed99334da397c8620</code></td>
+</tr>
+<tr>
+<td><code>06-ci.txt</code></td>
+<td>5583</td>
+<td><code>f148b71f2bb56a15a2d92b435b1ee11623b4f8770189eb007abf18586d3bf926</code></td>
+</tr>
+<tr>
+<td><code>07-rwkv-tests.txt</code></td>
+<td>3029</td>
+<td><code>88147fe6bc9d33772e2db7c7a0545014ab7d3cb92f6e34a930a0a45f3618eda6</code></td>
+</tr>
+<tr>
+<td><code>08-pin.txt</code></td>
+<td>2990</td>
+<td><code>fd67ecf6dc96ce9f6c26e863c716af1e720c7f4875c172d75fbc15a7688b9bdd</code></td>
+</tr>
+<tr>
+<td><code>09-multiturn-tlpo.txt</code></td>
+<td>3709</td>
+<td><code>84163c9578e6d2977154839c20d9aba3a44d64c8829c7f4e7743edd350c473e6</code></td>
+</tr>
+<tr>
+<td><code>10-heli-branch.txt</code></td>
+<td>6093</td>
+<td><code>11efed5a9005bf13a5e10969a4baa36cfbaab04e7006ffe5eff559e8f37031e8</code></td>
+</tr>
+<tr>
+<td><code>11-8gpu.txt</code></td>
+<td>9540</td>
+<td><code>7cb3181756ef22aaab31b748d89470a08b701df8e37ab90d6e2abca55898f14a</code></td>
+</tr>
+<tr>
+<td><code>12-upstream-compare.txt</code></td>
+<td>1235</td>
+<td><code>69dfe2c0ca2669e264bb1feb74c3a3b151037191fa3de20cba4fcdfe593db5d3</code></td>
+</tr>
+<tr>
+<td><code>13-quotes.txt</code></td>
+<td>8126</td>
+<td><code>d858a7b79c0850f7ab3d2ff3651fe528bca57d62102b817e045f38829f6342e2</code></td>
+</tr>
+<tr>
+<td><code>14-web-checks.txt</code></td>
+<td>1599</td>
+<td><code>3a353c32b2da93678ffad42a491ce2251e64329926ce584ef154810f696766c4</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="archived-originals-not-distributed"><a class="toclink" href="#archived-originals-not-distributed">Archived originals (not distributed)</a></h2>
+<p>0 files, listed in <a href="ARCHIVED.tsv"><code>ARCHIVED.tsv</code></a> with size + sha256.</p>
+<p>Source mapping:</p>
+<ul>
+<li><code>07*</code> → https://github.com/rwkv-rs/skyrl-rwkv (README/CI/pin 等提取)</li>
+</ul>
+<p>Default source: https://github.com/rwkv-rs/skyrl-rwkv · https://github.com/rwkv-rs/vllm-rwkv</p></div></article>
+<footer class="foot">Generated from the repository Markdown sources · <a href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">source on GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>

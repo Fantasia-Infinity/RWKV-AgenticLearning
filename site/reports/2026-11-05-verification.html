@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RWKV 生态核验报告（2026-11-05 接续 session） · RWKV-AgenticLearning · 报告站</title>
+<link rel="stylesheet" href="../assets/style.css">
+
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="brand" href="../index.html">RWKV-AgenticLearning · 报告站</a>
+<span class="built">built 2026-11-10 21:03 UTC</span></div></header>
+<div class="layout wrap">
+<nav class="sidebar"><a href="../index.html">首页</a>
+<span class="nav-cat">核心报告</span>
+<a href="../reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
+<a href="../reports/2026-11-10-rl-results-summary.html">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)</a>
+<a href="../reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a>
+<a href="../reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
+<a href="../reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
+<a href="../reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
+<a href="../reports/2026-11-05-verification.html" class="active">RWKV 生态核验报告（2026-11-05 接续 session）</a>
+<span class="nav-cat">专题报告</span>
+<a href="../reports/state/evidence/CITATIONS.html">Evidence citations — state/</a>
+<a href="../reports/state/REPORT.html">状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告</a>
+<a href="../reports/skyrl/evidence/CITATIONS.html">Evidence citations — skyrl/</a>
+<a href="../reports/skyrl/evidence/00-env.html">环境与时间快照</a>
+<a href="../reports/skyrl/REPORT.html">skyrl-rwkv 深度核验报告（任务 task-1）</a>
+<a href="../reports/eco/evidence/CITATIONS.html">Evidence citations — eco/</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html">Evidence: rwkv.cn /tutorials/basic/Prompt-Format</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html">RWKV Native Model Templates</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html">RWKV MaxRL configuration</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html">Native rwkv-lm Engine</a>
+<a href="../reports/eco/REPORT.html">RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）</a>
+<a href="../reports/EVIDENCE.html">Evidence — policy, layout, and how to re-verify</a>
+<span class="nav-cat">文档</span>
+<a href="../docs/ecosystem-review-2026-11-05.html">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a>
+<a href="../docs/methodology.html">Methodology — how claims in this repository are produced and checked</a>
+<span class="nav-cat">项目</span>
+<a href="../THIRD_PARTY_NOTICES.html">Third-party notices</a>
+<a href="../ROADMAP.html">ROADMAP — RWKV agentic RL</a>
+<a href="../index.html">RWKV-AgenticLearning</a>
+<a class="ext" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">GitHub ↗</a></nav>
+<main class="content">
+<article class="report">
+<div class="crumb"><a href="../index.html">首页</a> / reports/2026-11-05-verification.md</div>
+<h1 class="report-title">RWKV 生态核验报告（2026-11-05 接续 session）</h1>
+<div class="meta"><span class="badge">核心报告</span><span class="badge date">2026-11-05</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/reports/2026-11-05-verification.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
+<ul>
+<li><a href="#0-delta">0. 一句话结论（相对交接的 delta）</a></li>
+<li><a href="#1-101">1. §10.1 五项未验证事项 —— 逐条裁定</a></li>
+<li><a href="#2-12">2. 交接文档需要修订的 12 处（可直接照改）</a></li>
+<li><a href="#3">3. 新发现的生态资产（交接未提 / 判断可用性）</a></li>
+<li><a href="#4-05">4. 更新后的结论（建议直接替换交接 §0/§5）</a><ul>
+<li><a href="#41-0">4.1 §0 建议版本</a></li>
+<li><a href="#42-5">4.2 §5 建议版本</a></li>
+<li><a href="#43-9">4.3 §9 路线图影响（最小改动）</a></li>
+</ul>
+</li>
+<li><a href="#5">5. 仍未验证 / 需要下一轮的事项</a></li>
+<li><a href="#6">6. 本轮交付物与可复跑入口</a><ul>
+<li><a href="#_1">复跑命令</a></li>
+</ul>
+</li>
+<li><a href="#7-2026-11-06">7. 增量更新（2026-11-06）</a></li>
+</ul>
+</div>
+</details><div class="md-body"><h1 id="rwkv-2026-11-05-session"><a class="toclink" href="#rwkv-2026-11-05-session">RWKV 生态核验报告（2026-11-05 接续 session）</a></h1>
+<blockquote>
+<p>任务：接续 <code>内部交接 2026-11-05（未公开存档）</code> 的「生态核验 / 跟踪」线，复核交接中的未验证项与事实、产出可引用的 delta。
+方法：3 名 teammate 并行深挖（<code>reports/skyrl/</code>、<code>reports/state/</code>、<code>reports/eco/</code>）+ Lead 抽验承重事实。
+证据：每个结论都可在同目录报告 / <code>reports/*/evidence/</code> / <code>tracking/runs/</code> 中回查；时间均为 2026-11-05（CET/UTC 标注）。
+公开版政策：第三方全文/HTML/ATOM 已移除，保留报告 + 命令输出 + 结构化数据；被移除原件以 sha256 记录（<code>reports/EVIDENCE.md</code>）。
+GitHub API 用量：全队合计 <strong>2 次</strong>（60/h 限额内的 3%）；其余全部走零配额路径（<code>git ls-remote</code> / <code>commits.atom</code> / <code>raw.githubusercontent.com</code> / org HTML embedded JSON / HF API）。</p>
+</blockquote>
+<hr>
+<h2 id="0-delta"><a class="toclink" href="#0-delta">0. 一句话结论（相对交接的 delta）</a></h2>
+<p><strong>交接的核心判断「单轮 RLVR 成熟、多轮 agentic RL 是空白」仍然成立，但它的三条支撑事实需要大幅修订</strong>：
+1. <strong>生态图严重不全</strong>：<code>rwkv-rs</code> 组织实为 <strong>40 个公开仓库</strong>，交接完全未提 <strong>30 个</strong> —— 漏掉的是整层（verl 原生 RL 集成、torchtitan 训练栈、评测生产体系、量化、Rust 全栈）。
+2. <strong>「没有模型、没有评测成绩」已被部分推翻</strong>：生态外 <code>No-22-Github/RWKV-Agent</code> 有公开 568 题多步 agent 考卷 + 公开跑分（G1l 基模 187/568=32.9%，NoRA 适配器 320.5/568=56.4%）；<code>rwkv-rs/browsecomp-plus-eval</code> 是 830 题 BrowseComp-Plus 的完整评测复现包（无分数）。
+3. <strong>「官方主动不做 agentic」的表述已过时</strong>：G1l（2026-10-31）官方 chat template 已支持 tool-call/multi-turn，官方文档与 README 主动指向 agent 目录 —— 准确说法是「<strong>官方不做 agentic RL 训练，但已把 agentic 接口官方化、把实践外包给社区</strong>」。</p>
+<p><strong>仍然为真的空白</strong>：公开的<strong>多轮 agentic RL 训练配方与结果</strong>（现有 agent 模型全是 SFT/NoRA/MiSS 适配器，不是 RL）；标准 benchmark（BrowseComp-Plus 830 / τ-bench / BFCL）的 RWKV 公开分数；state-native 多轮 rollout 层。</p>
+<p><strong>交接文档里 6 处事实错误已定位并修正</strong>（§10.1 五项全部有裁定，见 §1/§2）；剩余真正未验证的只有「真机 8 卡跑通」与「28B 长跑/收敛」两项。</p>
+<hr>
+<h2 id="1-101"><a class="toclink" href="#1-101">1. §10.1 五项未验证事项 —— 逐条裁定</a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>交接原文</th>
+<th>裁定</th>
+<th>事实</th>
+<th>证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>skyrl-rwkv</code> 在真实 8 卡上能否跑通（依赖 pin 死的<strong>私有</strong> vLLM fork；无 CI）</td>
+<td>⚠️ <strong>仍未实测；且"原样跑不通"由静态证据确认</strong></td>
+<td>① pin 不在私有 fork：实际 <code>rwkv-rs/vllm-rwkv@2852a7b1d</code>（<code>pyproject.toml:584</code>、<code>uv.lock:10591</code>），是公开仓库、HEAD <code>7a6adcc6</code> 的祖先（落后 2 提交）；交接的 <code>67f0c599</code> 是 2026-08-04 旧提交、<strong>不在</strong> rwkv 分支历史。② CI 缺失属实，但根因是 fork 继承的 <strong>16/16 个 workflow 全部</strong>带 <code>github.repository == 'NovaSky-AI/SkyRL'</code> 门禁 → fork 内无任何 CI（不只是 RWKV 单测）。③ 软件可装证据充分（依赖全公开、5 条 launcher 都有 <code>--test_mode</code>）；但默认配方是<strong>单节点 8×96GB Pro6000</strong>，<code>examples/train/rwkv/eval/run.sh:11-12</code> 硬性 <code>NUM_GPUS==8</code> → Snellius 单节点只有 4×A100 80GB / 4×H100，<strong>不能原样跑</strong>；集群 CUDA module 最高 12.9.1 vs 仓库 cu130，FlashRWKV2 预编译需真机验证</td>
+<td><code>reports/skyrl/REPORT.md</code> §2.1–2.7；Lead 抽验：<code>pyproject.toml:584</code>、<code>grep -l</code> 16/16、<code>eval/run.sh:11</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>wkvm</code> 的 RWKV-7 durable-state 引擎真实性能（"README 只给了 Gemma 路径的完整数字"）</td>
+<td>❌ <strong>交接说法错误</strong></td>
+<td>RWKV-7 数字在仓库里是完整的：<code>experiments/results/m2_engine_bench.md</code>（1.5B <strong>8,077 tok/s @B256</strong>；191M 38,856 tok/s）、<code>m3_results.md</code>（2,000 会话 / 2.29 MiB / p50 8.2ms / 64-way fork / 16-16 续接）、<code>bench_albatross_2.9b.log</code>；<code>paper/CLAIMS.md</code> 是 claim-SHA256-commit 台账。<strong>需加限定</strong>：p99 9.5ms 被作者 claim 台账明确排除（单次运行、KO 页缓存未清）；8,077 tok/s 是单次 64-step 计时；缺的是<strong>独立复现</strong>，不是数字。另：<strong><code>live-migrate</code> 并未实现</strong>（<code>wkvm/server.py</code> 只有 <code>/v1/states</code> create/get/fork/mutate/persist/delete + <code>/v1/generate</code>；ROADMAP 把 migration 列入 <em>Deferred</em>)；main 冻结于论文发布（2026-08-02），但 <code>m4-qwen35-hybrid</code> 分支活到 <strong>2026-09-10</strong></td>
+<td><code>reports/state/REPORT.md</code> §1 任务 1；Lead 抽验：<code>wkvm/server.py:1-14</code> 端点清单、<code>docs/ANGLE.md:142</code> 仅有 roadmap 措辞、<code>experiments/results/</code> 文件存在</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>RWKV-Megatron</code> 的 <code>codex/rwkv28b-distill</code> 是否有 28B 真实训练</td>
+<td>⚠️ <strong>存在（部分被证明），但不是"被证明"</strong></td>
+<td>分支真名 <strong><code>codex/qwen-rwkv28b-distill</code></strong>（交接名字错），HEAD 2026-10-30。有 28B 证据：3 个 28B 蒸馏配置（88 层/hidden 5120/80 heads）+ capacity probe（自述 30 步、峰值 75,063 MiB、2.513 s/step）；更硬的在 <code>codex/rwkv7-cp</code> 分支：<strong>4 种 28B 布局 × 30 步 + 固定验证</strong>的机器可读 JSON（TP4/PP2/CP1：75,829 MiB、2.0712 s/step、final val CE <strong>7.497223</strong>、无 NaN/skip/OOM）。但：probe 脚本自述 "does not save checkpoints or certify model quality"；distill 分支 <code>docs/</code>/<code>training-smoke/</code> 被 <code>.gitignore</code>（0 文件入库）；组织内唯一 12h 长跑是 <strong>2.7B，不是 28B</strong>；28B TP grad-norm 分叉 28.42% 未修。→ <strong>规模化路径：存在 ✅ + 工程可行性部分证明 ⚠️；训练有效性/收敛 ❌ 无证据</strong></td>
+<td><code>reports/state/REPORT.md</code> §1 任务 2；Lead 抽验：分支列表、28B 配置/证据文件存在</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>rwkv-rs/Helicopter</code>（scoreboard 仓库）是否存在（当前 404）</td>
+<td>✅ <strong>公开不存在（维持原判）</strong>；⚠️ <strong>但它是"未公开的内部项目"，不是"不存在的东西"</strong></td>
+<td>多路复验全 404：repo 页、<code>.atom</code>、raw README、未认证 API、org 30 仓列表、Codeberg、HuggingFace 均无。但公开代码里已有它的契约：① <code>rwkv-skills</code> README 第 8 行 "The public scoreboard is maintained separately in the <strong>Helicopter</strong> repository"；② <code>skyrl-rwkv</code> 分支 <code>feat/heli-r00-training-eval</code>（8 commits，2026-10-24→28，"+516/−48"）的 README 有 <strong><code>python -m helicopter checkpoint-result &lt;spec&gt; train</code></strong> 回调；③ <code>rwkv-skills</code> 仓库内有 dashboard 前后端代码与 <code>SCOREBOARD_API_BASE_URL</code>。→ 结论：Helicopter 是内部/私有 scoreboard，公开仓库不存在，但<strong>训练→评测回调契约已进入公开分支</strong>；公开侧仍无成绩数据</td>
+<td><code>reports/state/REPORT.md</code> §1 任务 3；<code>reports/skyrl/REPORT.md</code> §2.6；Lead 抽验：heli 分支 README 第 79 行 <code>python -m helicopter checkpoint-result</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td>官方是否会把 DAPO 之外的新算法（TLPO）并入 <code>skyrl-rwkv</code></td>
+<td>⚠️ <strong>未并入（0 命中），但"算法文件数"口径不可复现；官方路径另有动作</strong></td>
+<td><code>skyrl-rwkv</code> main 中 <code>tlpo</code> 0 命中；Anti-Doom/FTPO 在（<code>antidoom</code> 14 文件）。交接的"算法文件数"（grpo 191 / dapo 87 / cispo 17 …）用常规口径无法复现（实测 221/104/20/21/20/34/14/9/0）。<strong>更重要的是</strong>：生态中已出现独立 <code>antidoom-rwkv</code> 仓库（Antidoom/FTPO 去复读工具，2026-07-07 后停），且 <code>verl-rwkv</code> 早已实现 RWKV7 GRPO/MaxRL —— 算法生态不是"只有 skyrl 一条线"</td>
+<td><code>reports/skyrl/REPORT.md</code> §2.5；<code>reports/eco/REPORT.md</code> §2</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="2-12"><a class="toclink" href="#2-12">2. 交接文档需要修订的 12 处（可直接照改）</a></h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>位置</th>
+<th>交接原文</th>
+<th>应改为（2026-11-05 实测）</th>
+<th>证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>§0</td>
+<td>"没有模型、没有评测成绩、没有 rollout 基础设施"</td>
+<td><strong>部分推翻</strong>：有公开 agent 适配器模型（State/MiSS/NoRA）与公开跑分（No-22 568 题考卷，32.9%→56.4%）；有评测包（browsecomp-plus-eval 830 题）与 scoreboard 管线；<strong>仍空白的是</strong>多轮 agentic RL 训练配方/结果 + 标准 benchmark 公开分数 + state-native rollout 层</td>
+<td><code>reports/eco/REPORT.md</code> §1 A/H</td>
+</tr>
+<tr>
+<td>2</td>
+<td>§0</td>
+<td>"这是官方主动选择的路线，不是遗漏"</td>
+<td>改为：<strong>官方不做 agentic RL 训练，但已把 agentic 接口官方化</strong>（G1l 2026-10-31：chat template 多轮 + strict tool-call；官方模板含 function-call；官方 README/hub 卡指向 agent 目录）；rwkv_lightning 教程明确说"真实 Agent RL 要自己执行工具"</td>
+<td><code>reports/eco/REPORT.md</code> §1 B；Lead 抽验：<code>reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.md</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>§1.2</td>
+<td>两目录 + Awesome 三份清单，漏项是"零散条目的通用基建"</td>
+<td><strong>规模低估</strong>：rwkv-rs 组织 = <strong>40 个公开仓库</strong>（17 源 + 21 fork + 2 archived），交接未提 <strong>30 个</strong>；漏的是整层（训练/评测/量化/Rust 全栈）</td>
+<td><code>reports/eco/REPORT.md</code> §2；<code>data/eco-org-repos.txt</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>§2/§3</td>
+<td>训练层"五条路线"，<code>skyrl-rwkv</code> 是唯一/最优 RL 基座</td>
+<td>训练路线不止五条，且 RL 基座有 <strong>两代</strong>：<code>verl-rwkv</code>（fork verl，native <code>rwkv_lm</code> engine + GRPO/MaxRL，43 RWKV 文件/18 PR，2026-05-21 建、<strong>2026-08-02 停更</strong>）→ <code>skyrl-rwkv</code>（2026-08-30 建、10-31 活跃，同一主力 <code>Cai-z-us</code>）；<code>skyrl</code> 是"当前活跃/推荐基座"而非"唯一/最优"</td>
+<td><code>reports/eco/REPORT.md</code> §1 E；<code>reports/skyrl/REPORT.md</code> §2.8</td>
+</tr>
+<tr>
+<td>5</td>
+<td>§3</td>
+<td>绑私有 vLLM fork <code>rwkv-rs/vllm-rwkv@67f0c599</code></td>
+<td>pin 实为 <strong><code>2852a7b1d</code></strong>（公开仓库、HEAD 祖先、落后 2 提交）；<code>67f0c599</code> 是 2026-08-04 旧提交不在历史</td>
+<td><code>reports/skyrl/REPORT.md</code> §2.2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>§3</td>
+<td>"3,354 行 RWKV 单测存在但不在 CI"</td>
+<td>行数对（790+788+1087+689），但根因是 <strong>fork 继承的 16/16 workflow 全带上游 repo 门禁</strong> → fork 内整体无 CI</td>
+<td><code>reports/skyrl/REPORT.md</code> §2.3</td>
+</tr>
+<tr>
+<td>7</td>
+<td>§3</td>
+<td>"8 卡可跑（缺 CI/pin 私有）"</td>
+<td>软件<strong>可装</strong>（依赖全公开），但默认配方 = <strong>单节点 8×96GB Pro6000</strong>；<code>eval/run.sh:11-12</code> 硬性 <code>NUM_GPUS==8</code>；Snellius 单节点仅 4×A100/H100 → <strong>原样不能跑</strong>；CUDA cu130 vs 集群 module 12.9.1 需真机验证</td>
+<td><code>reports/skyrl/REPORT.md</code> §2.7</td>
+</tr>
+<tr>
+<td>8</td>
+<td>§4.1</td>
+<td><code>wkvm</code> 支持 live-migrate</td>
+<td><strong>未实现</strong>（server 无 migrate 端点；ROADMAP 列为 Deferred/refused）</td>
+<td><code>reports/state/REPORT.md</code> §1.6</td>
+</tr>
+<tr>
+<td>9</td>
+<td>§10.1#2</td>
+<td>wkvm README 只给了 Gemma 数字</td>
+<td>RWKV-7 数字完整（m2/m3/CLAIMS.md）；但需引用限定（p99 被作者排除、单次计时、无独立复现）</td>
+<td><code>reports/state/REPORT.md</code> §1.4</td>
+</tr>
+<tr>
+<td>10</td>
+<td>§10.1#3 / §2</td>
+<td>Megatron 分支名 <code>codex/rwkv28b-distill</code></td>
+<td>真名 <code>codex/qwen-rwkv28b-distill</code>；28B = 短跑容量验证，非收敛证明；默认分支已变 <code>muon</code>（2026-07-06 停），<code>codex/rwkv7-cp</code> 活跃到 10-22</td>
+<td><code>reports/state/REPORT.md</code> §1 任务 2</td>
+</tr>
+<tr>
+<td>11</td>
+<td>§7</td>
+<td>"唯一支持多轮的 SFT 是 howard-hou/RWKV-SFT"</td>
+<td><strong>已不完整</strong>：No-22 用自建 8,846 行 agent 轨迹 + <code>rwkv_lightning_cuda</code> 的 NoRA 多轮 SFT 训出公开适配器；skyrl 代码本身支持多轮</td>
+<td><code>reports/eco/REPORT.md</code> §1 G</td>
+</tr>
+<tr>
+<td>12</td>
+<td>§7/§8</td>
+<td><code>FlashRWKV2</code> 归属 BlinkDL；<code>RWKV-LH</code> 停 10-08 等</td>
+<td>FlashRWKV2 已迁 <strong><code>rwkv-rs/FlashRWKV2</code></strong>（MIT，BlinkDL 路径 404）；<code>RWKV-LH</code> main 停 10-08 但侧分支活跃到 11-03；<code>RWKV-Megatron</code> 默认分支 <code>muon</code>；<code>wx-cli</code> 列在 org 但 repo 404</td>
+<td><code>reports/eco/REPORT.md</code> §2；<code>tracking/runs/2026-11-05T200900Z.md</code></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="3"><a class="toclink" href="#3">3. 新发现的生态资产（交接未提 / 判断可用性）</a></h2>
+<blockquote>
+<p>资格线：<strong>公开可核验</strong> + 与 RL/agentic 方向相关。完整 40 仓见 <code>data/eco-org-repos.txt</code> / <code>reports/eco/REPORT.md</code> §2。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>资产</th>
+<th>是什么</th>
+<th>活跃度 / 许可</th>
+<th>对交接判断的影响</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rwkv-rs/verl-rwkv</code></td>
+<td>fork <code>verl-project/verl</code>：native <code>rwkv_lm</code> engine（EngineRegistry）+ RWKV7 GRPO launcher + MaxRL 入口 + 每日 upstream rebase；43 个 RWKV 文件、18 个 PR</td>
+<td>2026-05-21 建，<strong>2026-08-02 停更</strong>；Apache-2.0</td>
+<td>推翻"skyrl 是唯一/最早 RL 集成"；"停更后换乘 skyrl"是重要历史信号</td>
+</tr>
+<tr>
+<td><code>rwkv-rs/torchtitan-rwkv</code></td>
+<td>fork pytorch/torchtitan：first-class RWKV-7 训练（<code>torchtitan/models/rwkv7/</code> RWKVTrainer + FlashRWKV2）+ state tuning 实验</td>
+<td><strong>2026-10-31 活跃</strong>；BSD-3</td>
+<td>训练栈又多一条（PyTorch 原生），交接 §8 未画</td>
+</tr>
+<tr>
+<td><code>rwkv-rs/Megatrwkv-Bridge</code></td>
+<td>fork NVIDIA-NeMo/Megatron-Bridge：Megatron+RWKV 桥孵化位</td>
+<td><strong>2026-11-02 新建</strong>；Apache-2.0，尚无 RWKV 代码</td>
+<td>与 Megatron 28B 线配套，值得跟踪</td>
+</tr>
+<tr>
+<td><code>rwkv-rs/browsecomp-plus-eval</code></td>
+<td><strong>830 题 BrowseComp-Plus 完整 RWKV agent 评测复现包</strong>：search(top5)/get_document/final_answer 100 步循环、3 路候选、vendored vLLM-RWKV、官方 judge</td>
+<td>2026-07-21 抽取后未更新；<strong>无 LICENSE、无 scores</strong></td>
+<td>推翻"agentic 评测空白"→ 降级为"有可复现评测包、无公开分数"；但<strong>无许可 = 不可商用</strong></td>
+</tr>
+<tr>
+<td><code>No-22-Github/RWKV-Agent</code>（生态外）</td>
+<td><strong>公开 568 题多步 agent 考卷</strong>（15 场景、每题 verify.py）+ 公开跑分：G1l 基模 <strong>187/568=32.9%</strong>，NoRA v2.3 <strong>320.5/568=56.4%</strong>（p=2e-24）+ 公开适配器权重（HF <code>No-22/rwkv-agent-weights</code>）与训练数据</td>
+<td>2026-10/11 活跃；<strong>无 LICENSE</strong></td>
+<td>直接推翻"没有模型/没有评测成绩"；但也说明现有能力来自 <strong>SFT/NoRA</strong>，非 RL</td>
+</tr>
+<tr>
+<td><code>rwkv-rs/antidoom-rwkv</code> / <code>fla-rwkv</code> / <code>any2rwkv</code> / <code>llm-compressor-rwkv</code></td>
+<td>Anti-Doom/FTPO 工具；RWKV7 FLA kernel（MIT）；attention→RWKV 架构转换研究；RWKV7 量化</td>
+<td>07-07 / 08-06 / 10-31 / 07-31；前两者 Apache、fla MIT</td>
+<td>补齐 L1/L2 层；<code>any2rwkv</code> 是新的"混合架构"路线</td>
+</tr>
+<tr>
+<td><code>rwkv-rs/rwkv-skills</code> 的 scoreboard 管线</td>
+<td>README 引用 Helicopter；仓库内有 Next.js dashboard + FastAPI API + <code>SCOREBOARD_API_BASE_URL</code>；<code>lm-eval-rwkv</code> 有 "Evaluation Producer Contract" + 9 条 <code>codex/rwkv-*</code> 分支</td>
+<td>2026-08-09 后停；<strong>无 LICENSE</strong></td>
+<td>评测生产体系比交接描述成熟，但<strong>公开成绩仍缺</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="4-05"><a class="toclink" href="#4-05">4. 更新后的结论（建议直接替换交接 §0/§5）</a></h2>
+<h3 id="41-0"><a class="toclink" href="#41-0">4.1 §0 建议版本</a></h3>
+<blockquote>
+<p>RWKV 的<strong>单轮 RLVR 已成熟且有官方组织</strong>（DAPO 配方、skyrl-rwkv、异步 RLVR 基建）；
+<strong>多轮 agentic RL 训练仍是公开空白</strong>（无公开配方、无公开训练结果、state-native rollout 层仍需自建）。
+但 <strong>agentic 能力/评测本身已不再空白</strong>：官方 G1l（2026-10-31）已官方化 tool-call/multi-turn 提示接口并把 agentic 实践入口指向社区；
+社区已有公开的 568 题多步 agent 考卷与跑分（No-22：G1l 基模 32.9% → NoRA 适配器 56.4%）、830 题 BrowseComp-Plus 评测复现包（无分数）。
+因此工作量重心从"从零建评测"下调为"<strong>接公开评测 + 自建多轮 rollout/RL</strong>"。</p>
+</blockquote>
+<h3 id="42-5"><a class="toclink" href="#42-5">4.2 §5 建议版本</a></h3>
+<p>把"评测层：有框架，几乎没成绩"改为：</p>
+<blockquote>
+<p><strong>评测已工业化</strong>（lm-eval/lighteval/evalscope 三个 fork + scoreboard 发布管线 + 16 benchmark 计划，其中 <code>agentic = []</code> 为空类目），
+<strong>但公开的标准 agentic 成绩仍缺</strong>；唯一公开的 agentic 成绩来自生态外自建 568 题考卷（No-22，无许可证）。</p>
+</blockquote>
+<h3 id="43-9"><a class="toclink" href="#43-9">4.3 §9 路线图影响（最小改动）</a></h3>
+<ul>
+<li><strong>P0（自建 32 题评测）</strong>：可复用 No-22 的 568 题考卷格式 + <code>browsecomp-plus-eval</code> 的 agent loop，把 3 周压缩；</li>
+<li><strong>P2（单轮 RLVR）</strong>：不变，仍用 skyrl-rwkv + DAPO；但可参考 <code>verl-rwkv</code> 的 <code>rwkv_lm</code> engine 设计；</li>
+<li><strong>P3（多轮 rollout）</strong>：不变，仍是生态空白；<code>heli</code> 分支只覆盖"训练→评测回调"，不是 rollout 层。</li>
+<li>新增跟踪项：<code>torchtitan-rwkv</code>（训练栈）、<code>Megatrwkv-Bridge</code>（Megatron 桥）、<code>any2rwkv</code>（架构转换）、G1l 之后的官方 tool-call 生态。</li>
+</ul>
+<hr>
+<h2 id="5"><a class="toclink" href="#5">5. 仍未验证 / 需要下一轮的事项</a></h2>
+<table>
+<thead>
+<tr>
+<th>事项</th>
+<th>现状</th>
+<th>建议动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>skyrl-rwkv</code> 真机跑通</td>
+<td>静态：可装但<strong>原样不能跑</strong>（8×96GB Pro6000 配方 + NUM_GPUS==8 + cu130 vs 12.9.1）</td>
+<td>需在 8 卡 A100/H100 上改 <code>NUM_GPUS</code>/多节点或容器化 cu130；先跑 5 条 launcher 的 <code>--test_mode</code></td>
+</tr>
+<tr>
+<td>28B 长跑/收敛</td>
+<td>只有 30 步容量验证与 2.7B 的 12h 长跑</td>
+<td>向 <code>codex/qwen-rwkv28b-distill</code> 作者确认是否有 28B 长跑/权重；或自建</td>
+</tr>
+<tr>
+<td>Helicopter 本体</td>
+<td>公开 404；契约出现在 skyrl heli 分支与 rwkv-skills</td>
+<td>关注 <code>feat/heli-r00-training-eval</code> 是否合并 main、是否发布 scoreboard 数据</td>
+</tr>
+<tr>
+<td>标准 benchmark 分数</td>
+<td>BrowseComp-Plus 830 题包无 scores；τ-bench/BFCL 无 RWKV 数字</td>
+<td>用该包跑 G1l/NoRA 基线，产出第一份公开分数（无硬件也能先搭 judge）</td>
+</tr>
+<tr>
+<td><code>No-22</code> 资产许可</td>
+<td>考卷/权重/数据均无 LICENSE</td>
+<td>不可商用；需自行重写评测或取得授权</td>
+</tr>
+<tr>
+<td>TLPO 并入</td>
+<td>skyrl main 0 命中</td>
+<td>跟踪官方后续提交 / 公众号</td>
+</tr>
+<tr>
+<td>官方 G1l 之后的 agentic 动作</td>
+<td>10-31 起接口官方化</td>
+<td>跟踪 rwkv.cn / HF / RWKV-LM README 变化（已入 <code>tracking/sources.md</code> 信号 7）</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="6"><a class="toclink" href="#6">6. 本轮交付物与可复跑入口</a></h2>
+<table>
+<thead>
+<tr>
+<th>交付物</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tracking/sources.md</code></td>
+<td>三层信息源 / 8 项信号 / 失真登记 / 每轮复查清单</td>
+</tr>
+<tr>
+<td><code>tracking/repos.txt</code></td>
+<td>35 个跟踪仓库（rwkv-rs 组织全量 + 关键外部仓库），<strong>零 API 配额</strong></td>
+</tr>
+<tr>
+<td><code>tracking/check.sh</code></td>
+<td>快照脚本：<code>bash tracking/check.sh [--diff] [--deep]</code>；输出 <code>tracking/runs/&lt;UTC&gt;.md/.tsv</code></td>
+</tr>
+<tr>
+<td><code>tracking/runs/2026-11-05T200900Z.*</code></td>
+<td>首轮快照（35 仓：HEAD/最后提交/许可/分支数/stars/描述）</td>
+</tr>
+<tr>
+<td><code>docs/ecosystem-review-2026-11-05.md</code></td>
+<td>公开版生态综述（中性表述）</td>
+</tr>
+<tr>
+<td><code>reports/EVIDENCE.md</code></td>
+<td>证据政策 / 归档 sha256 / 复抓方法</td>
+</tr>
+<tr>
+<td><code>reports/skyrl/REPORT.md</code></td>
+<td>skyrl-rwkv 深度核验（241 行 + 15 件证据，全部保留）</td>
+</tr>
+<tr>
+<td><code>reports/state/REPORT.md</code></td>
+<td>wkvm / Megatron 28B / Helicopter（363 行 + 35 件证据 + 3 件归档）</td>
+</tr>
+<tr>
+<td><code>reports/eco/REPORT.md</code></td>
+<td>rwkv-rs 40 仓全量 + 新信号 + 官方渠道（384 行 + 33 件证据 + 194 件归档）</td>
+</tr>
+<tr>
+<td><code>data/eco-org-repos.txt</code></td>
+<td>40 仓库全量清单（kind/license/created/last commit/交接覆盖）</td>
+</tr>
+<tr>
+<td><code>内部交接 2026-11-05（未公开存档）</code></td>
+<td>交接原文基线（本报告相对它给出 delta；公开综述见 <code>docs/ecosystem-review-2026-11-05.md</code>）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_1"><a class="toclink" href="#_1">复跑命令</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span> ~/AlchemyRepos/RWKV-AgenticLearning
+bash tracking/check.sh --diff          <span class="c1"># 下一轮：与 2026-11-05 快照对比，打印变化</span>
+</code></pre></div>
+
+<p>关键证据回查示例：</p>
+<div class="codehilite"><pre><span></span><code>grep -n <span class="s1">&#39;2852a7b1d&#39;</span> repos/skyrl-rwkv/pyproject.toml          <span class="c1"># skyrl pin 真相</span>
+sed -n <span class="s1">&#39;1,20p&#39;</span> repos/wkvm/wkvm/server.py                     <span class="c1"># wkvm 端点（无 migrate）</span>
+sed -n <span class="s1">&#39;9,13p&#39;</span> repos/skyrl-rwkv/examples/train/rwkv/eval/run.sh  <span class="c1"># NUM_GPUS==8 硬门禁</span>
+</code></pre></div>
+
+<hr>
+<h2 id="7-2026-11-06"><a class="toclink" href="#7-2026-11-06">7. 增量更新（2026-11-06）</a></h2>
+<p>本报告发布后 24 小时内的新证据（helicopter 仓库定位、v8/ROSA 前沿层、贡献者活跃度分层、AI 提交信号）
+见 <a href="2026-11-06-ecosystem-update.html"><code>2026-11-06-ecosystem-update.md</code></a>。</p></div></article>
+<footer class="foot">Generated from the repository Markdown sources · <a href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">source on GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Methodology — how claims in this repository are produced and checked · RWKV-AgenticLearning · 报告站</title>
+<link rel="stylesheet" href="../assets/style.css">
+
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="brand" href="../index.html">RWKV-AgenticLearning · 报告站</a>
+<span class="built">built 2026-11-10 21:03 UTC</span></div></header>
+<div class="layout wrap">
+<nav class="sidebar"><a href="../index.html">首页</a>
+<span class="nav-cat">核心报告</span>
+<a href="../reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
+<a href="../reports/2026-11-10-rl-results-summary.html">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)</a>
+<a href="../reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a>
+<a href="../reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
+<a href="../reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
+<a href="../reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
+<a href="../reports/2026-11-05-verification.html">RWKV 生态核验报告（2026-11-05 接续 session）</a>
+<span class="nav-cat">专题报告</span>
+<a href="../reports/state/evidence/CITATIONS.html">Evidence citations — state/</a>
+<a href="../reports/state/REPORT.html">状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告</a>
+<a href="../reports/skyrl/evidence/CITATIONS.html">Evidence citations — skyrl/</a>
+<a href="../reports/skyrl/evidence/00-env.html">环境与时间快照</a>
+<a href="../reports/skyrl/REPORT.html">skyrl-rwkv 深度核验报告（任务 task-1）</a>
+<a href="../reports/eco/evidence/CITATIONS.html">Evidence citations — eco/</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html">Evidence: rwkv.cn /tutorials/basic/Prompt-Format</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html">RWKV Native Model Templates</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html">RWKV MaxRL configuration</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html">Native rwkv-lm Engine</a>
+<a href="../reports/eco/REPORT.html">RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）</a>
+<a href="../reports/EVIDENCE.html">Evidence — policy, layout, and how to re-verify</a>
+<span class="nav-cat">文档</span>
+<a href="../docs/ecosystem-review-2026-11-05.html">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a>
+<a href="../docs/methodology.html" class="active">Methodology — how claims in this repository are produced and checked</a>
+<span class="nav-cat">项目</span>
+<a href="../THIRD_PARTY_NOTICES.html">Third-party notices</a>
+<a href="../ROADMAP.html">ROADMAP — RWKV agentic RL</a>
+<a href="../index.html">RWKV-AgenticLearning</a>
+<a class="ext" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">GitHub ↗</a></nav>
+<main class="content">
+<article class="report">
+<div class="crumb"><a href="../index.html">首页</a> / docs/methodology.md</div>
+<h1 class="report-title">Methodology — how claims in this repository are produced and checked</h1>
+<div class="meta"><span class="badge">文档</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/docs/methodology.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
+<ul>
+<li><a href="#1-evidence-standard">1. Evidence standard</a></li>
+<li><a href="#2-zero-api-quota-policy">2. Zero-API-quota policy</a></li>
+<li><a href="#3-source-of-truth-hierarchy">3. Source-of-truth hierarchy</a></li>
+<li><a href="#4-re-verifying-archived-evidence">4. Re-verifying archived evidence</a></li>
+<li><a href="#5-known-limitations">5. Known limitations</a></li>
+</ul>
+</div>
+</details><div class="md-body"><h1 id="methodology-how-claims-in-this-repository-are-produced-and-checked"><a class="toclink" href="#methodology-how-claims-in-this-repository-are-produced-and-checked">Methodology — how claims in this repository are produced and checked</a></h1>
+<p>This repository is an <strong>evidence-first</strong> audit. The rule is simple: a claim without a re-runnable check is not a
+claim, it is an opinion. Every statement in <code>reports/</code> carries three things: <strong>the command (or URL), the timestamp,
+and the evidence file</strong> it came from.</p>
+<h2 id="1-evidence-standard"><a class="toclink" href="#1-evidence-standard">1. Evidence standard</a></h2>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reproducibility</td>
+<td>The exact command is shown, or the exact URL + fetch time is given</td>
+</tr>
+<tr>
+<td>Timestamp</td>
+<td>UTC timestamps in every evidence file name and in report tables</td>
+</tr>
+<tr>
+<td>Locality</td>
+<td>Primary sources only: the repository itself (<code>git ls-remote</code>, raw files, commits), the model card, the official docs</td>
+</tr>
+<tr>
+<td>Quotation limit</td>
+<td>Short excerpts for identification/critique only; full third-party texts are not redistributed (see <code>THIRD_PARTY_NOTICES.md</code>)</td>
+</tr>
+<tr>
+<td>Confidence mark</td>
+<td><code>✅</code> verified · <code>⚠️</code> partially verified or needs qualification · <code>❌</code> refuted</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-zero-api-quota-policy"><a class="toclink" href="#2-zero-api-quota-policy">2. Zero-API-quota policy</a></h2>
+<p>GitHub's unauthenticated API allows only 60 requests/hour, shared across a network. The tracker therefore avoids
+<code>api.github.com</code> entirely:</p>
+<table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Source used</th>
+<th>Quota</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Repository existence / default branch / all branches</td>
+<td><code>git ls-remote [--symref]</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>Last commit time</td>
+<td><code>https://github.com/&lt;owner&gt;/&lt;repo&gt;/commits/&lt;branch&gt;.atom</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>License detection, stars, description</td>
+<td>repository HTML page (embedded JSON)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>File contents</td>
+<td><code>raw.githubusercontent.com</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td>Full history / pin ancestry</td>
+<td><code>git clone --filter=blob:none</code> / <code>--depth</code></td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>API quota actually consumed during the 2026-11-05 audit: <strong>2 requests total</strong> (one 404 check for the Helicopter
+repository, one metadata call); everything else went through the paths above.</p>
+<h2 id="3-source-of-truth-hierarchy"><a class="toclink" href="#3-source-of-truth-hierarchy">3. Source-of-truth hierarchy</a></h2>
+<ol>
+<li><strong>Code / repository state</strong> — beats documentation, catalog entries, and blog posts.</li>
+<li><strong>Official docs / model cards</strong> — beats community summaries; recorded with fetch time and quoted briefly.</li>
+<li><strong>Community catalogs and articles</strong> — <em>clues only</em>. Any decision-relevant item must be re-verified against the
+   repository (several catalog entries were wrong: mislabelled licenses, archived repos not marked, misleading names).</li>
+<li><strong>Our own prior notes</strong> — treated as untrusted until re-checked; the audit refuted or qualified 12 of them.</li>
+</ol>
+<h2 id="4-re-verifying-archived-evidence"><a class="toclink" href="#4-re-verifying-archived-evidence">4. Re-verifying archived evidence</a></h2>
+<p>Each <code>reports/*/evidence/</code> directory contains:</p>
+<ul>
+<li><code>CITATIONS.md</code> — what is published and where to re-fetch the archived originals;</li>
+<li><code>ARCHIVED.tsv</code> — path, size, and <strong>sha256</strong> of every original that was removed from the public snapshot
+  (full texts, HTML pages, commit feeds). Re-fetch and compare:</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>curl -sL https://raw.githubusercontent.com/xiaol/wkvm/main/README.md <span class="p">|</span> sha256sum
+<span class="c1"># compare with the corresponding row in reports/state/evidence/ARCHIVED.tsv</span>
+</code></pre></div>
+
+<h2 id="5-known-limitations"><a class="toclink" href="#5-known-limitations">5. Known limitations</a></h2>
+<ul>
+<li><strong>Static analysis only</strong>: no GPU training/evaluation was run for this audit. The "8-GPU feasibility" item is a
+  static conclusion with explicit blockers, not a benchmark.</li>
+<li><strong>Snapshot semantics</strong>: numbers (stars, last commit, branches) are as of 2026-11-05; the tracker is how to refresh
+  them (<code>bash tracking/check.sh --diff</code>).</li>
+<li><strong>Language</strong>: analytical reports are Chinese (original working language); repository-level docs are English.</li>
+<li><strong>Licensing</strong>: several key sources have no license. Facts are still verifiable, but reuse of their code/text is
+  restricted — noted per source in <code>THIRD_PARTY_NOTICES.md</code>.</li>
+</ul></div></article>
+<footer class="foot">Generated from the repository Markdown sources · <a href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">source on GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>

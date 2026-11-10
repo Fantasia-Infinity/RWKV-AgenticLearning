@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Third-party notices · RWKV-AgenticLearning · 报告站</title>
+<link rel="stylesheet" href="assets/style.css">
+
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="brand" href="index.html">RWKV-AgenticLearning · 报告站</a>
+<span class="built">built 2026-11-10 21:03 UTC</span></div></header>
+<div class="layout wrap">
+<nav class="sidebar"><a href="index.html">首页</a>
+<span class="nav-cat">核心报告</span>
+<a href="reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
+<a href="reports/2026-11-10-rl-results-summary.html">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)</a>
+<a href="reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a>
+<a href="reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
+<a href="reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
+<a href="reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
+<a href="reports/2026-11-05-verification.html">RWKV 生态核验报告（2026-11-05 接续 session）</a>
+<span class="nav-cat">专题报告</span>
+<a href="reports/state/evidence/CITATIONS.html">Evidence citations — state/</a>
+<a href="reports/state/REPORT.html">状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告</a>
+<a href="reports/skyrl/evidence/CITATIONS.html">Evidence citations — skyrl/</a>
+<a href="reports/skyrl/evidence/00-env.html">环境与时间快照</a>
+<a href="reports/skyrl/REPORT.html">skyrl-rwkv 深度核验报告（任务 task-1）</a>
+<a href="reports/eco/evidence/CITATIONS.html">Evidence citations — eco/</a>
+<a href="reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html">Evidence: rwkv.cn /tutorials/basic/Prompt-Format</a>
+<a href="reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</a>
+<a href="reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html">RWKV Native Model Templates</a>
+<a href="reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html">RWKV MaxRL configuration</a>
+<a href="reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html">Native rwkv-lm Engine</a>
+<a href="reports/eco/REPORT.html">RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）</a>
+<a href="reports/EVIDENCE.html">Evidence — policy, layout, and how to re-verify</a>
+<span class="nav-cat">文档</span>
+<a href="docs/ecosystem-review-2026-11-05.html">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a>
+<a href="docs/methodology.html">Methodology — how claims in this repository are produced and checked</a>
+<span class="nav-cat">项目</span>
+<a href="THIRD_PARTY_NOTICES.html" class="active">Third-party notices</a>
+<a href="ROADMAP.html">ROADMAP — RWKV agentic RL</a>
+<a href="index.html">RWKV-AgenticLearning</a>
+<a class="ext" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">GitHub ↗</a></nav>
+<main class="content">
+<article class="report">
+<div class="crumb"><a href="index.html">首页</a> / THIRD_PARTY_NOTICES.md</div>
+<h1 class="report-title">Third-party notices</h1>
+<div class="meta"><span class="badge">项目</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/THIRD_PARTY_NOTICES.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
+<ul>
+<li><a href="#sources-referenced-by-license">Sources referenced (by license)</a></li>
+</ul>
+</div>
+</details><div class="md-body"><h1 id="third-party-notices"><a class="toclink" href="#third-party-notices">Third-party notices</a></h1>
+<p>This repository's <strong>own</strong> content (reports, trackers, docs, scripts) is licensed under
+<a href="LICENSE">Apache-2.0</a>.</p>
+<p>Third-party material is treated as follows:</p>
+<ul>
+<li>We <strong>do not redistribute full texts</strong> (READMEs, model cards, HTML pages, commit feeds, source files) of third-party
+  projects. Removed originals are recorded in <code>ARCHIVED.tsv</code> files inside each <code>reports/*/evidence/</code> directory with
+  size + <strong>sha256</strong>, so anyone can re-fetch the original from the cited URL and verify it byte-for-byte.</li>
+<li>Short quotations and factual data points (versions, commit SHAs, dates, file counts, benchmark numbers) are included
+  for identification, review, and commentary. Copyright remains with the original authors.</li>
+<li>Where a source has <strong>no license</strong>, we only quote short factual excerpts and never reproduce its full text; such
+  material should not be reused commercially without the authors' permission.</li>
+</ul>
+<h2 id="sources-referenced-by-license"><a class="toclink" href="#sources-referenced-by-license">Sources referenced (by license)</a></h2>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>License</th>
+<th>What appears here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/rwkv-rs/skyrl-rwkv">rwkv-rs/skyrl-rwkv</a></td>
+<td>Apache-2.0</td>
+<td>version pins, CI/workflow names, short quotes, branch/commit data</td>
+</tr>
+<tr>
+<td><a href="https://github.com/rwkv-rs/vllm-rwkv">rwkv-rs/vllm-rwkv</a></td>
+<td>Apache-2.0</td>
+<td>pin commit, repo metadata</td>
+</tr>
+<tr>
+<td><a href="https://github.com/rwkv-rs/verl-rwkv">rwkv-rs/verl-rwkv</a></td>
+<td>Apache-2.0</td>
+<td>file lists, engine/paths; <code>evidence/04-verl-rwkv/</code> retains small verbatim excerpts under this license</td>
+</tr>
+<tr>
+<td><a href="https://github.com/TimeMobius/RWKV-Megatron">TimeMobius/RWKV-Megatron</a></td>
+<td>Apache-2.0</td>
+<td>branch/config references, benchmark numbers</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Joluck/RWKV-PEFT">Joluck/RWKV-PEFT</a></td>
+<td>Apache-2.0</td>
+<td>feature/PEFT facts</td>
+</tr>
+<tr>
+<td><a href="https://github.com/BlinkDL/RWKV-LM">BlinkDL/RWKV-LM</a></td>
+<td>Apache-2.0</td>
+<td>G1x prompt-template excerpt (<code>evidence/09-official/</code>)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/rwkv-rs/FlashRWKV2">rwkv-rs/FlashRWKV2</a></td>
+<td>MIT</td>
+<td>license/version facts</td>
+</tr>
+<tr>
+<td><a href="https://github.com/rwkv-rs/lm-evaluation-harness-rwkv">rwkv-rs/lm-evaluation-harness-rwkv</a></td>
+<td>MIT (fork of EleutherAI harness)</td>
+<td>benchmark config facts</td>
+</tr>
+<tr>
+<td><a href="https://github.com/rwkv-rs/lighteval-rwkv">rwkv-rs/lighteval-rwkv</a></td>
+<td>MIT (fork of HuggingFace lighteval)</td>
+<td>branch/activity facts</td>
+</tr>
+<tr>
+<td><a href="https://github.com/rwkv-rs/evalscope-rwkv">rwkv-rs/evalscope-rwkv</a></td>
+<td>Apache-2.0 (fork of ModelScope evalscope)</td>
+<td>branch/activity facts</td>
+</tr>
+<tr>
+<td><a href="https://github.com/rwkv-rs/torchtitan-rwkv">rwkv-rs/torchtitan-rwkv</a></td>
+<td>BSD-3-Clause (fork of PyTorch torchtitan)</td>
+<td>RWKV file facts</td>
+</tr>
+<tr>
+<td><a href="https://github.com/xiaol/wkvm">xiaol/wkvm</a></td>
+<td><strong>No license file</strong></td>
+<td>short factual excerpts only (performance numbers, endpoints, claim-ledger facts)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/rwkv-rs/browsecomp-plus-eval">rwkv-rs/browsecomp-plus-eval</a></td>
+<td><strong>No license</strong></td>
+<td>package facts (830 questions, agent loop) only; full README archived, not published</td>
+</tr>
+<tr>
+<td><a href="https://github.com/No-22-Github/RWKV-Agent">No-22-Github/RWKV-Agent</a> + HF assets</td>
+<td><strong>No license</strong></td>
+<td>benchmark numbers (568 questions, 32.9%, 56.4%) and dataset facts only</td>
+</tr>
+<tr>
+<td><a href="https://github.com/rwkv-rs/rwkv-skills">rwkv-rs/rwkv-skills</a></td>
+<td><strong>No license</strong></td>
+<td>one quoted sentence about the scoreboard; no full text</td>
+</tr>
+<tr>
+<td><a href="https://github.com/RWKV-Vibe/rwkv_lightning">RWKV-Vibe/rwkv_lightning</a></td>
+<td><strong>No license</strong></td>
+<td>license-status fact only</td>
+</tr>
+<tr>
+<td><a href="https://codeberg.org/scarletwolf_ai/rwkv-toolcaller-bench">scarletwolf_ai/rwkv-toolcaller-bench</a></td>
+<td>Apache-2.0</td>
+<td>benchmark facts</td>
+</tr>
+<tr>
+<td><a href="https://www.rwkv.cn/">rwkv.cn</a> official documentation</td>
+<td>© RWKV / 元始智能</td>
+<td>short excerpts (function-call format)</td>
+</tr>
+<tr>
+<td>HuggingFace model cards (<code>RWKV/*</code>, <code>BlinkDL/*</code>, <code>No-22/*</code>)</td>
+<td>per-model</td>
+<td>short factual excerpts; no full card reproduction</td>
+</tr>
+<tr>
+<td>GitHub organization pages and commit feeds</td>
+<td>— (factual metadata)</td>
+<td>repository lists, dates, commit SHAs</td>
+</tr>
+</tbody>
+</table>
+<p>If you believe a quotation here exceeds fair-use/commentary bounds, please open an issue and it will be removed or
+shortened.</p></div></article>
+<footer class="foot">Generated from the repository Markdown sources · <a href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">source on GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>

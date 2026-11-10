@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正 · RWKV-AgenticLearning · 报告站</title>
+<link rel="stylesheet" href="../assets/style.css">
+
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="brand" href="../index.html">RWKV-AgenticLearning · 报告站</a>
+<span class="built">built 2026-11-10 21:03 UTC</span></div></header>
+<div class="layout wrap">
+<nav class="sidebar"><a href="../index.html">首页</a>
+<span class="nav-cat">核心报告</span>
+<a href="../reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
+<a href="../reports/2026-11-10-rl-results-summary.html">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)</a>
+<a href="../reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a>
+<a href="../reports/2026-11-09-verified-update.html" class="active">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
+<a href="../reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
+<a href="../reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
+<a href="../reports/2026-11-05-verification.html">RWKV 生态核验报告（2026-11-05 接续 session）</a>
+<span class="nav-cat">专题报告</span>
+<a href="../reports/state/evidence/CITATIONS.html">Evidence citations — state/</a>
+<a href="../reports/state/REPORT.html">状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告</a>
+<a href="../reports/skyrl/evidence/CITATIONS.html">Evidence citations — skyrl/</a>
+<a href="../reports/skyrl/evidence/00-env.html">环境与时间快照</a>
+<a href="../reports/skyrl/REPORT.html">skyrl-rwkv 深度核验报告（任务 task-1）</a>
+<a href="../reports/eco/evidence/CITATIONS.html">Evidence citations — eco/</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html">Evidence: rwkv.cn /tutorials/basic/Prompt-Format</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html">RWKV Native Model Templates</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html">RWKV MaxRL configuration</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html">Native rwkv-lm Engine</a>
+<a href="../reports/eco/REPORT.html">RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）</a>
+<a href="../reports/EVIDENCE.html">Evidence — policy, layout, and how to re-verify</a>
+<span class="nav-cat">文档</span>
+<a href="../docs/ecosystem-review-2026-11-05.html">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a>
+<a href="../docs/methodology.html">Methodology — how claims in this repository are produced and checked</a>
+<span class="nav-cat">项目</span>
+<a href="../THIRD_PARTY_NOTICES.html">Third-party notices</a>
+<a href="../ROADMAP.html">ROADMAP — RWKV agentic RL</a>
+<a href="../index.html">RWKV-AgenticLearning</a>
+<a class="ext" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">GitHub ↗</a></nav>
+<main class="content">
+<article class="report">
+<div class="crumb"><a href="../index.html">首页</a> / reports/2026-11-09-verified-update.md</div>
+<h1 class="report-title">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</h1>
+<div class="meta"><span class="badge">核心报告</span><span class="badge date">2026-11-09</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/reports/2026-11-09-verified-update.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
+<ul>
+<li><a href="#1">1. 事实（文档可查）</a></li>
+<li><a href="#2">2. 判断修正</a></li>
+<li><a href="#3">3. 我们的位置</a></li>
+</ul>
+</div>
+</details><div class="md-body"><h1 id="2026-11-09-rwkv_lightning_cuda-rl-server"><a class="toclink" href="#2026-11-09-rwkv_lightning_cuda-rl-server">2026-11-09 核验：<code>rwkv_lightning_cuda</code> 在线 RL server 与生态空白修正</a></h1>
+<p>核验日期 2026-11-09。核验方式：GitHub 仓库页 + <code>docs/online-rl.zh-CN.md</code>（HTTP 200）+ 根 <code>LICENSE</code>（HTTP 404）。</p>
+<h2 id="1"><a class="toclink" href="#1">1. 事实（文档可查）</a></h2>
+<p><code>Alic-Li/rwkv_lightning_cuda</code> 不只是推理引擎，自 2026-10-23 起包含三个常驻在线 RL server：</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>server</th>
+<th>训练参数</th>
+<th>冻结</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MiSS</td>
+<td><code>rwkv_miss_tune_server</code></td>
+<td>MiSS 的 <code>D</code></td>
+<td>初始 State</td>
+</tr>
+<tr>
+<td>State</td>
+<td><code>rwkv_state_tune_server</code></td>
+<td>初始 <code>time_state</code></td>
+<td>Adapter</td>
+</tr>
+<tr>
+<td>NoRA</td>
+<td><code>rwkv_nora_tune_server</code></td>
+<td>NoRA 的 A/B</td>
+<td>初始 State</td>
+</tr>
+</tbody>
+</table>
+<p>已文档化的能力：GRPO / Dr.GRPO（客户端算 advantage）、actor+learner 共享 BF16 backbone、<code>--keep-versions</code> 快照、CPU Radix+LRU 前缀缓存、token 级 <code>loss_mask</code>、<code>/v1/logprobs</code> 教师强制 + reference KL、<code>policy_version</code>/<code>expected_step</code> CAS、多轮 tool 客户端示例（<strong>server 不执行工具</strong>）、temperature 后采样 logprob（无 top-k/top-p，避免截断采样与 CE 不一致）。</p>
+<p>限制：纯 on-policy REINFORCE（无 PPO clipping/内置 KL）、单 GPU worker 串行、<strong>PEFT-only</strong>、C++/CUDA 无 PyTorch、<strong>无 LICENSE</strong>。</p>
+<h2 id="2"><a class="toclink" href="#2">2. 判断修正</a></h2>
+<table>
+<thead>
+<tr>
+<th>判断</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>没有 agent 评测成绩</td>
+<td>❌ 已推翻（此前已确认）</td>
+</tr>
+<tr>
+<td><strong>没有 agentic RL 基建</strong></td>
+<td>❌ <strong>本次推翻</strong>（2026-10-23 起已有，但无许可证）</td>
+</tr>
+<tr>
+<td>没有 agentic RL <strong>公开成绩</strong></td>
+<td>✅ 仍成立</td>
+</tr>
+<tr>
+<td>缺许可证</td>
+<td>✅ 仍成立（根 LICENSE 404）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3"><a class="toclink" href="#3">3. 我们的位置</a></h2>
+<ul>
+<li>继续 <strong>skyrl-rwkv（Apache-2.0）</strong> 路线：可公开、可复现、支持全参 FSDP + vLLM，工具环境与多轮已跑通</li>
+<li>不采用/不复制 <code>rwkv_lightning_cuda</code>（无 LICENSE；PEFT-only；C++/CUDA 维护成本高），仅作设计参考</li>
+<li>借鉴其正确做法：<strong>采样温度与 CE/logprob 一致性</strong>（我们训练采样 temp=1.0/top-p=1/top-k=-1，天然一致；若以后改截断采样必须同步修 CE）、<strong>token-id 历史拼接</strong>、<strong>turn 级 loss_mask</strong></li>
+<li>我们的公开空白因此更明确：<strong>① 公开的多轮工具 RL 训练结果；② 许可证干净的可复现 recipe</strong></li>
+</ul>
+<p>参考：
+- https://github.com/Alic-Li/rwkv_lightning_cuda
+- https://github.com/Alic-Li/rwkv_lightning_cuda/blob/main/docs/online-rl.zh-CN.md</p></div></article>
+<footer class="foot">Generated from the repository Markdown sources · <a href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">source on GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>

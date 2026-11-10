@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ROADMAP — RWKV agentic RL · RWKV-AgenticLearning · 报告站</title>
+<link rel="stylesheet" href="assets/style.css">
+
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="brand" href="index.html">RWKV-AgenticLearning · 报告站</a>
+<span class="built">built 2026-11-10 21:03 UTC</span></div></header>
+<div class="layout wrap">
+<nav class="sidebar"><a href="index.html">首页</a>
+<span class="nav-cat">核心报告</span>
+<a href="reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
+<a href="reports/2026-11-10-rl-results-summary.html">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)</a>
+<a href="reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a>
+<a href="reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
+<a href="reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
+<a href="reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
+<a href="reports/2026-11-05-verification.html">RWKV 生态核验报告（2026-11-05 接续 session）</a>
+<span class="nav-cat">专题报告</span>
+<a href="reports/state/evidence/CITATIONS.html">Evidence citations — state/</a>
+<a href="reports/state/REPORT.html">状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告</a>
+<a href="reports/skyrl/evidence/CITATIONS.html">Evidence citations — skyrl/</a>
+<a href="reports/skyrl/evidence/00-env.html">环境与时间快照</a>
+<a href="reports/skyrl/REPORT.html">skyrl-rwkv 深度核验报告（任务 task-1）</a>
+<a href="reports/eco/evidence/CITATIONS.html">Evidence citations — eco/</a>
+<a href="reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html">Evidence: rwkv.cn /tutorials/basic/Prompt-Format</a>
+<a href="reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</a>
+<a href="reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html">RWKV Native Model Templates</a>
+<a href="reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html">RWKV MaxRL configuration</a>
+<a href="reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html">Native rwkv-lm Engine</a>
+<a href="reports/eco/REPORT.html">RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）</a>
+<a href="reports/EVIDENCE.html">Evidence — policy, layout, and how to re-verify</a>
+<span class="nav-cat">文档</span>
+<a href="docs/ecosystem-review-2026-11-05.html">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a>
+<a href="docs/methodology.html">Methodology — how claims in this repository are produced and checked</a>
+<span class="nav-cat">项目</span>
+<a href="THIRD_PARTY_NOTICES.html">Third-party notices</a>
+<a href="ROADMAP.html" class="active">ROADMAP — RWKV agentic RL</a>
+<a href="index.html">RWKV-AgenticLearning</a>
+<a class="ext" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">GitHub ↗</a></nav>
+<main class="content">
+<article class="report">
+<div class="crumb"><a href="index.html">首页</a> / ROADMAP.md</div>
+<h1 class="report-title">ROADMAP — RWKV agentic RL</h1>
+<div class="meta"><span class="badge">项目</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/ROADMAP.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
+<ul>
+<li><a href="#phase-overview">Phase overview</a></li>
+<li><a href="#three-non-negotiables-any-path">Three non-negotiables (any path)</a></li>
+<li><a href="#p0-in-detail-first-deliverable">P0 in detail (first deliverable)</a></li>
+<li><a href="#open-questions-from-the-audit">Open questions (from the audit)</a></li>
+<li><a href="#tracking-cadence">Tracking cadence</a></li>
+</ul>
+</div>
+</details><div class="md-body"><h1 id="roadmap-rwkv-agentic-rl"><a class="toclink" href="#roadmap-rwkv-agentic-rl">ROADMAP — RWKV agentic RL</a></h1>
+<blockquote>
+<p>Revised 2026-11-05 after the ecosystem audit (<code>reports/2026-11-05-verification.md</code>).
+The original plan assumed building the first multi-turn evaluation from scratch; the audit showed public assets
+that can be reused (No-22's 568-question agent exam, <code>browsecomp-plus-eval</code>'s 830-question package).</p>
+</blockquote>
+<h2 id="phase-overview"><a class="toclink" href="#phase-overview">Phase overview</a></h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Weeks</th>
+<th>Deliverable</th>
+<th>Gate</th>
+<th>Infrastructure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>P0 — baseline</strong></td>
+<td>0–3</td>
+<td>Freeze prompt/tool format; run the 568-question agent exam + the 830-question BrowseComp-Plus package on G1l / G1k; publish first RWKV agentic scores</td>
+<td>G1 baseline reproducible</td>
+<td>Reuse public assets (⚠️ No-22 assets are unlicensed)</td>
+</tr>
+<tr>
+<td><strong>P1 — single-turn SFT</strong></td>
+<td>3–6</td>
+<td>Split trajectories into single steps; SFT with assistant-only mask</td>
+<td>G2 tool-call parse rate &gt; 99%</td>
+<td>✅ RWKV-PEFT / RWKV-SFT</td>
+</tr>
+<tr>
+<td><strong>P2 — single-turn RLVR</strong></td>
+<td>6–10</td>
+<td><code>skyrl-rwkv</code> + <strong>DAPO</strong> (not GRPO); deterministic checker as reward; Anti-Doom first</td>
+<td>G3 single-turn RL &gt; SFT</td>
+<td>✅ official recipe (155-step GSM8K warm-up + 1000-step DAPO)</td>
+</tr>
+<tr>
+<td><strong>P3 — multi-turn rollout</strong></td>
+<td>10–17</td>
+<td>Plan B first: re-prefill episodes on <code>skyrl-rwkv</code> (~2 weeks); then Plan A: <code>wkvm</code> state slots</td>
+<td>G4 ≥3-step episode runs end-to-end</td>
+<td>❌ ecosystem gap (only primitives exist)</td>
+</tr>
+<tr>
+<td><strong>P4 — multi-turn RL</strong></td>
+<td>17–22</td>
+<td>Episode-level GRPO or turn-level GAE; process + outcome rewards</td>
+<td>G5 multi-turn RL &gt; single-turn</td>
+<td>⚠️ code exists upstream, never trained multi-turn</td>
+</tr>
+<tr>
+<td><strong>P5 — scale</strong></td>
+<td>22+</td>
+<td>Megatron CPT to 7B/13B; connect τ-bench / BFCL</td>
+<td>—</td>
+<td>✅ Megatron stack exists (28B = short-run evidence only)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="three-non-negotiables-any-path"><a class="toclink" href="#three-non-negotiables-any-path">Three non-negotiables (any path)</a></h2>
+<ol>
+<li><strong>Per-token log-probs must be persisted</strong> for every generated token (trainer/rollout alignment); <code>wkvm</code> currently
+   does not support logprobs, <code>skyrl-rwkv</code> does.</li>
+<li><strong>Recurrent state must be invalidated after any policy weight update</strong> — the upstream contract in
+   <code>skyrl-rwkv/docs/rwkv/upstream-weight-sync-handoff.md</code> says: <em>"Recurrent state/cache slots must not survive a policy
+   weight update"</em>; CUDA graphs must be discarded too.</li>
+<li><strong>Per-turn loss mask</strong>: observation tokens (tool outputs) must not contribute to the gradient.</li>
+</ol>
+<h2 id="p0-in-detail-first-deliverable"><a class="toclink" href="#p0-in-detail-first-deliverable">P0 in detail (first deliverable)</a></h2>
+<ul>
+<li><strong>Assets to reuse</strong></li>
+<li><code>No-22-Github/RWKV-Agent</code>: 568-question exam (15 scenarios, per-question <code>verify.py</code>) + public baseline numbers
+    (G1l 32.9%, NoRA 56.4%) — ⚠️ no license, evaluation only.</li>
+<li><code>rwkv-rs/browsecomp-plus-eval</code>: 830-question BrowseComp-Plus package (100-step search/get_document/final_answer
+    loop, vendored vLLM-RWKV, official judge) — ⚠️ no license, no published scores.</li>
+<li><strong>Tasks</strong>
+  1. Freeze prompt/tool format (align with G1x function-call template).
+  2. Run both suites against G1l / G1k baselines; publish per-category numbers (multi-step category is the gap).
+  3. Record exact model/commit/harness hashes so scores are reproducible.</li>
+<li><strong>Exit criteria</strong>: a public table of RWKV agentic scores with re-runnable configs; report which categories remain 0.</li>
+</ul>
+<h2 id="open-questions-from-the-audit"><a class="toclink" href="#open-questions-from-the-audit">Open questions (from the audit)</a></h2>
+<ul>
+<li>Can <code>skyrl-rwkv</code> run on real 8 GPUs as-is? Static analysis says <strong>not</strong> on the current cluster: single-node
+  8×96 GB Pro6000 recipe, hard <code>NUM_GPUS==8</code> in <code>examples/train/rwkv/eval/run.sh</code>, CUDA 13 (repo) vs 12.9 (cluster).</li>
+<li>Does the <code>feat/heli-r00-training-eval</code> branch merge into <code>main</code>? (bounded training/eval + <code>python -m helicopter
+  checkpoint-result</code> callback; <code>rwkv-rs/Helicopter</code> repo is still 404.)</li>
+<li>Does <code>RWKV-Megatron</code>'s 28B distill branch produce a long run / checkpoint? (currently 30-step capacity evidence only.)</li>
+<li>Will the official org merge TLPO or other algorithms into <code>skyrl-rwkv</code>? (TLPO not present as of 2026-11-05.)</li>
+</ul>
+<h2 id="tracking-cadence"><a class="toclink" href="#tracking-cadence">Tracking cadence</a></h2>
+<p>Run the zero-API-quota tracker before each planning update:</p>
+<div class="codehilite"><pre><span></span><code>bash tracking/check.sh --diff
+</code></pre></div>
+
+<p>Signals watched: <code>rwkv-rs</code> new repos, <code>skyrl-rwkv</code> branches (esp. <code>heli</code>), <code>vllm-rwkv</code> pin drift, <code>wkvm</code> LICENSE,
+Megatron 28B evidence, standard-benchmark scores, official docs/roadmap, agent catalog changes.
+See <a href="tracking/sources.html"><code>tracking/sources.md</code></a>.</p></div></article>
+<footer class="foot">Generated from the repository Markdown sources · <a href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">source on GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>

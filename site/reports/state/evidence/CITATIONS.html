@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evidence citations — state/ · RWKV-AgenticLearning · 报告站</title>
+<link rel="stylesheet" href="../../../assets/style.css">
+
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="brand" href="../../../index.html">RWKV-AgenticLearning · 报告站</a>
+<span class="built">built 2026-11-10 21:03 UTC</span></div></header>
+<div class="layout wrap">
+<nav class="sidebar"><a href="../../../index.html">首页</a>
+<span class="nav-cat">核心报告</span>
+<a href="../../../reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
+<a href="../../../reports/2026-11-10-rl-results-summary.html">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)</a>
+<a href="../../../reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a>
+<a href="../../../reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
+<a href="../../../reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
+<a href="../../../reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
+<a href="../../../reports/2026-11-05-verification.html">RWKV 生态核验报告（2026-11-05 接续 session）</a>
+<span class="nav-cat">专题报告</span>
+<a href="../../../reports/state/evidence/CITATIONS.html" class="active">Evidence citations — state/</a>
+<a href="../../../reports/state/REPORT.html">状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告</a>
+<a href="../../../reports/skyrl/evidence/CITATIONS.html">Evidence citations — skyrl/</a>
+<a href="../../../reports/skyrl/evidence/00-env.html">环境与时间快照</a>
+<a href="../../../reports/skyrl/REPORT.html">skyrl-rwkv 深度核验报告（任务 task-1）</a>
+<a href="../../../reports/eco/evidence/CITATIONS.html">Evidence citations — eco/</a>
+<a href="../../../reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html">Evidence: rwkv.cn /tutorials/basic/Prompt-Format</a>
+<a href="../../../reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</a>
+<a href="../../../reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html">RWKV Native Model Templates</a>
+<a href="../../../reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html">RWKV MaxRL configuration</a>
+<a href="../../../reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html">Native rwkv-lm Engine</a>
+<a href="../../../reports/eco/REPORT.html">RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）</a>
+<a href="../../../reports/EVIDENCE.html">Evidence — policy, layout, and how to re-verify</a>
+<span class="nav-cat">文档</span>
+<a href="../../../docs/ecosystem-review-2026-11-05.html">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a>
+<a href="../../../docs/methodology.html">Methodology — how claims in this repository are produced and checked</a>
+<span class="nav-cat">项目</span>
+<a href="../../../THIRD_PARTY_NOTICES.html">Third-party notices</a>
+<a href="../../../ROADMAP.html">ROADMAP — RWKV agentic RL</a>
+<a href="../../../index.html">RWKV-AgenticLearning</a>
+<a class="ext" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">GitHub ↗</a></nav>
+<main class="content">
+<article class="report">
+<div class="crumb"><a href="../../../index.html">首页</a> / reports/state/evidence/CITATIONS.md</div>
+<h1 class="report-title">Evidence citations — state/</h1>
+<div class="meta"><span class="badge">专题报告</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/reports/state/evidence/CITATIONS.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
+<ul>
+<li><a href="#published-evidence-files">Published evidence files</a></li>
+<li><a href="#archived-originals-not-distributed">Archived originals (not distributed)</a></li>
+</ul>
+</div>
+</details><div class="md-body"><h1 id="evidence-citations-state"><a class="toclink" href="#evidence-citations-state">Evidence citations — state/</a></h1>
+<h1 id="evidence-policy-citations"><a class="toclink" href="#evidence-policy-citations">Evidence policy &amp; citations</a></h1>
+<p>This directory contains <strong>only evidence that can be redistributed</strong>: command outputs produced by this project,
+structured metadata (TSV/JSON), and short quotations needed to support the findings.</p>
+<p>What is <strong>not</strong> published here (and why):</p>
+<ul>
+<li>Full copies of third-party READMEs, model cards, HTML pages and commit feeds are <strong>not redistributed</strong>;
+  they remain the property of their authors and are kept only in a private archive on the maintainer's machine.</li>
+<li>Every removed file is listed in <code>ARCHIVED.tsv</code> with its path, size and <strong>sha256</strong> so anyone can re-fetch the
+  original from the cited URL and verify it byte-for-byte.</li>
+<li>Full-text reproduction is unnecessary for verification and would raise copyright questions, especially for
+  sources without a license.</li>
+</ul>
+<p>Re-fetch examples:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># last commit time of a repo</span>
+curl -s https://github.com/rwkv-rs/skyrl-rwkv/commits/main.atom <span class="p">|</span> head
+<span class="c1"># raw README (compare sha256 with ARCHIVED.tsv)</span>
+curl -sL https://raw.githubusercontent.com/xiaol/wkvm/main/README.md <span class="p">|</span> sha256sum
+</code></pre></div>
+
+<h2 id="published-evidence-files"><a class="toclink" href="#published-evidence-files">Published evidence files</a></h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Bytes</th>
+<th>sha256</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>01_lsremote_20261105T200837Z.txt</code></td>
+<td>910</td>
+<td><code>c0678841e53fe9d270feedb0d0bee21dcc887782281b2002d0bcb2898af33fe5</code></td>
+</tr>
+<tr>
+<td><code>02_atom_wkvm_20261105T200845Z.txt</code></td>
+<td>2040</td>
+<td><code>a002a4f25beff3b7c77c8584cc88704e534c7c9d7cf95301c794263421462edd</code></td>
+</tr>
+<tr>
+<td><code>03_helicopter_rwkvskills_20261105T200908Z.txt</code></td>
+<td>2921</td>
+<td><code>7b911c77d099a4b3803e634117742217da925da076aa5fd1aca9dfabdc16cb57</code></td>
+</tr>
+<tr>
+<td><code>04_wkvm_structure_20261105T200938Z.txt</code></td>
+<td>8322</td>
+<td><code>8207a825ddf31f6895d9b9a233ec3429e0a324f18f8feddb82b4d7c53f84e382</code></td>
+</tr>
+<tr>
+<td><code>04b_wkvm_tracked_files_CLEAN_20261105T201614Z.txt</code></td>
+<td>20907</td>
+<td><code>81fb9d3e6e11758591da90ac118e057d99e684154b3547984980c48bfefe6ad1</code></td>
+</tr>
+<tr>
+<td><code>05_wkvm_models_rwkv7_20261105T200952Z.txt</code></td>
+<td>4756</td>
+<td><code>20bcf3301c9a902cfc479ed92d4e1ac644262afb53bc5a7a79ef05871449f108</code></td>
+</tr>
+<tr>
+<td><code>06_wkvm_rwkv7_layout_bench_20261105T201000Z.txt</code></td>
+<td>18533</td>
+<td><code>bacd150ca3c8d28b9b9817668d2b39f142559a9cbc81ace17e9ca439bf6e9f2d</code></td>
+</tr>
+<tr>
+<td><code>08_wkvm_rwkv_bench_artifacts_20261105T201019Z.txt</code></td>
+<td>12071</td>
+<td><code>f65f57e67c82fca517e4d45c99b5521d42f022d801aa4eb49ec1a0a28ba35761</code></td>
+</tr>
+<tr>
+<td><code>09_wkvm_api_capabilities_20261105T201031Z.txt</code></td>
+<td>9891</td>
+<td><code>98ea5546a9340063bc0cbc376beb51c56ea5cb125faa41f905a8af26b25558f7</code></td>
+</tr>
+<tr>
+<td><code>10_wkvm_branches_20261105T201038Z.txt</code></td>
+<td>5842</td>
+<td><code>2a523fd01c791f614fa94812ffcd24266751d1ff6e7abf3ce026eac036c0ac8e</code></td>
+</tr>
+<tr>
+<td><code>11_wkvm_activity_license_migrate_20261105T201051Z.txt</code></td>
+<td>7164</td>
+<td><code>6cda507384c656fba61d28aa37a17a947f14ce6196a5eb6defc83a5de99eac1b</code></td>
+</tr>
+<tr>
+<td><code>12_wkvm_paper_license_scripts_20261105T201103Z.txt</code></td>
+<td>5538</td>
+<td><code>fc3a38fe504c9e987da5b48498efbe8bec631871241a69218c55aae9ecf17bc4</code></td>
+</tr>
+<tr>
+<td><code>20_megatron_28b_head_20261105T201112Z.txt</code></td>
+<td>4804</td>
+<td><code>1933e4c531b2c5f5f8ff33cdff38050cf6293eddec02fbf75e4bac30d9bc423c</code></td>
+</tr>
+<tr>
+<td><code>21_megatron_28b_docs_20261105T201117Z.txt</code></td>
+<td>20151</td>
+<td><code>396047ec1b2257440c3bab4ec2a17bc5a7947d0879845665b513ee03f2080626</code></td>
+</tr>
+<tr>
+<td><code>22_megatron_28b_inventory_20261105T201127Z.txt</code></td>
+<td>4574</td>
+<td><code>3ff155b12a246aacc7f84b630ca2b7b36909585a40040b78a4e6f5f006c46954</code></td>
+</tr>
+<tr>
+<td><code>23_megatron_atom_feeds_20261105T201129Z.txt</code></td>
+<td>6597</td>
+<td><code>e88639f470b6aab4b524b985d36967656341a2b0e74d6d1479aa970f6e76b4bf</code></td>
+</tr>
+<tr>
+<td><code>25_megatron_28b_configs_20261105T201153Z.txt</code></td>
+<td>14562</td>
+<td><code>4e842c4ee4cd27004c98b4cf9456b7292c1eaa794217f668a8c7e3b50c597486</code></td>
+</tr>
+<tr>
+<td><code>26_megatron_28b_artifacts_20261105T201202Z.txt</code></td>
+<td>7657</td>
+<td><code>e22a19d9c7b359444fed6360ef9423634880570ce46d6b94a303caffeca4a852</code></td>
+</tr>
+<tr>
+<td><code>27_megatron_other_branches_20261105T201216Z.txt</code></td>
+<td>8444</td>
+<td><code>13b7f7276d71f60bed950b7ae56ba9128c845828e7ec4154832fbb2a61b1dffb</code></td>
+</tr>
+<tr>
+<td><code>28_megatron_cp_testing_status_20261105T201234Z.txt</code></td>
+<td>24626</td>
+<td><code>78641b0dbf6e9ea438f1ab3ffa154518bcfe1518c07509b150aacbf42abf7bbe</code></td>
+</tr>
+<tr>
+<td><code>29_megatron_cp_28b_evidence_files_20261105T201247Z.txt</code></td>
+<td>14738</td>
+<td><code>3c1d5d6d24b86b30dba9261dbcfb6b39f91f84c32ac6c804933e0da89ea90382</code></td>
+</tr>
+<tr>
+<td><code>30_helicopter_probes_20261105T201303Z.txt</code></td>
+<td>1722</td>
+<td><code>cf515e31f8eb9ce69f72caaf77e78d723da8df032f936e721f0dc6d0a0796b27</code></td>
+</tr>
+<tr>
+<td><code>31_helicopter_siblings_20261105T201320Z.txt</code></td>
+<td>5663</td>
+<td><code>8b69a0e7f82a28b40b0ffdf626ab1f4ed3d46b6dd62b42843c49487bb38a52ad</code></td>
+</tr>
+<tr>
+<td><code>32_helicopter_scoreboard_rwkvskills_20261105T201331Z.txt</code></td>
+<td>8148</td>
+<td><code>c2753b16f338fcdc539140126d9111c34fdfb9dac48ac2de75faaac51a673abb</code></td>
+</tr>
+<tr>
+<td><code>33_helicopter_traces_20261105T201345Z.txt</code></td>
+<td>6614</td>
+<td><code>95d19408e152aafdeeddfeedf4743d937f8540a54eca1eea5a7aca84499e8952</code></td>
+</tr>
+<tr>
+<td><code>34_helicopter_codeberg_grepapp_20261105T201349Z.txt</code></td>
+<td>2875</td>
+<td><code>ac955021772b93ebc86fee1fc2f6e7a7137f0d77260b653fb38bab7ccb8edce5</code></td>
+</tr>
+<tr>
+<td><code>35_helicopter_leaderboard_doc_20261105T201430Z.txt</code></td>
+<td>1160</td>
+<td><code>ab43899dce6f39165ceb8d39f361016316c8b2e9ad073e53df13ba761b627394</code></td>
+</tr>
+<tr>
+<td><code>36_license_spotchecks_20261105T201435Z.txt</code></td>
+<td>2956</td>
+<td><code>60cfce78a78c91e774b3897cbb82b528735b7a235bddb0e784f5aa324c347c20</code></td>
+</tr>
+<tr>
+<td><code>37_license_final_20261105T201451Z.txt</code></td>
+<td>891</td>
+<td><code>591cf6e3da87b728b3639134548c9200b97c8f87352ef26d2574b849cc16d926</code></td>
+</tr>
+<tr>
+<td><code>38_license_tree_listings_20261105T201502Z.txt</code></td>
+<td>2877</td>
+<td><code>159a1205ebcdffb6be52a92489a5865c60b4520bebec52d3bd71345498e845e1</code></td>
+</tr>
+<tr>
+<td><code>39_residual_checks_20261105T201523Z.txt</code></td>
+<td>1754</td>
+<td><code>9fe67cb78d749ba3acd8a0f4b6ed066f9a341d1ef83c573fe4e09901fdf1d75c</code></td>
+</tr>
+<tr>
+<td><code>40_final_megatron_checks_20261105T201534Z.txt</code></td>
+<td>2889</td>
+<td><code>f87d0e215a4542d9dfeaff846be7767344e0f3ce5ade1033b98a762cc96600a2</code></td>
+</tr>
+<tr>
+<td><code>41_citation_verification_20261105T202011Z.txt</code></td>
+<td>3556</td>
+<td><code>b4cb64af44a71569a5c0c777c3fa0de01c640c5e838c0201ed42ff43b1ea3042</code></td>
+</tr>
+<tr>
+<td><code>42_reverify_20261105T202033Z.txt</code></td>
+<td>1210</td>
+<td><code>07d201069335fdaa1ff7eb43501e2791d2f8fe2be588127a20111ea6c1e01a74</code></td>
+</tr>
+<tr>
+<td><code>KEY-FACTS_20261105T201626Z.txt</code></td>
+<td>30061</td>
+<td><code>0e6372b1ed1df0f0a75c41460bebeb922d4d45f9593c734d675d08cb24a51d6e</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="archived-originals-not-distributed"><a class="toclink" href="#archived-originals-not-distributed">Archived originals (not distributed)</a></h2>
+<p>3 files, listed in <a href="ARCHIVED.tsv"><code>ARCHIVED.tsv</code></a> with size + sha256.</p>
+<p>Source mapping:</p>
+<ul>
+<li><code>07_wkvm_README_full*</code> → https://raw.githubusercontent.com/xiaol/wkvm/main/README.md</li>
+<li><code>24_megatron_28b_README*</code> → https://raw.githubusercontent.com/TimeMobius/RWKV-Megatron/codex/qwen-rwkv28b-distill/README.md</li>
+</ul>
+<p>Default source: https://github.com/xiaol/wkvm · https://github.com/TimeMobius/RWKV-Megatron</p></div></article>
+<footer class="foot">Generated from the repository Markdown sources · <a href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">source on GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>

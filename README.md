@@ -33,6 +33,8 @@ Before building in that gap, we audited the ecosystem. This repo is the audit: w
 │   ├── 2026-11-06-ecosystem-update.md   # delta: helicopter found, v8/ROSA frontier, activity tiers
 │   ├── 2026-11-10-verified-update.md    # PR #20/#21, irwkv PR states, NextTransformer #38 (with corrections)
 │   ├── 2026-11-10-dapo-gsm8k-rlvr.md    # DAPO 1000 steps on G1l-1.5B: avg@4 21.0→31.0 (+10pp, p=6.6e-05)
+│   ├── 2026-11-10-rl-results-summary.md # consolidated SFT/RL results (positive + negative) + artifacts
+│   ├── data/2026-11-10-summary.json     # machine-readable summary of all results
 │   ├── skyrl/  REPORT.md + evidence/    # skyrl-rwkv deep-dive (CI, pin, multi-turn, 8×GPU)
 │   ├── state/  REPORT.md + evidence/    # wkvm, RWKV-Megatron 28B, Helicopter traces
 │   └── eco/    REPORT.md + evidence/    # 40-repo inventory + new signals

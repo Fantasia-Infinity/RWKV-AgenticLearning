@@ -31,6 +31,7 @@ Before building in that gap, we audited the ecosystem. This repo is the audit: w
 ├── reports/
 │   ├── 2026-11-05-verification.md       # summary: 5 open questions resolved, 12 corrections
 │   ├── 2026-11-06-ecosystem-update.md   # delta: helicopter found, v8/ROSA frontier, activity tiers
+│   ├── 2026-11-10-verified-update.md    # PR #20/#21, irwkv PR states, NextTransformer #38 (with corrections)
 │   ├── skyrl/  REPORT.md + evidence/    # skyrl-rwkv deep-dive (CI, pin, multi-turn, 8×GPU)
 │   ├── state/  REPORT.md + evidence/    # wkvm, RWKV-Megatron 28B, Helicopter traces
 │   └── eco/    REPORT.md + evidence/    # 40-repo inventory + new signals
@@ -39,6 +40,10 @@ Before building in that gap, we audited the ecosystem. This repo is the audit: w
 │   ├── repos.txt                        # 35 tracked repositories
 │   ├── check.sh                         # zero-GitHub-API snapshot script
 │   └── runs/                            # dated snapshots
+├── tools/
+│   ├── sync_rwkv_chat_template.py       # sync post-PR#20 chat template (pinned sha256)
+│   ├── test_chat_template.py            # CPU regression: tool-call history rendering
+│   └── gen_sft_traj/                    # synthetic agent-trajectory generators (P1.5)
 ├── data/eco-org-repos.txt               # full 40-repo table
 ├── data/rwkv-cn-eco-projects-2026-11-06.tsv  # official catalog (95 projects)
 └── ROADMAP.md                           # P0–P5 plan (revised after the audit)

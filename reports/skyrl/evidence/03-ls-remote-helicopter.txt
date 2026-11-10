@@ -1,2 +1,0 @@
-=== ls-remote rwkv-rs/Helicopter @ 2026-11-05T20:08:58Z ===
-fatal: could not read Username for 'https://github.com': No such device or address

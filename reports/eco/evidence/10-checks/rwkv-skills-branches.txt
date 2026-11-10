@@ -1,8 +1,0 @@
-# rwkv-skills public branches (git ls-remote --heads, 2026-11-05)
-eval
-main
-old
-perf/benchmark-concurrency
-vllm-rwkv
-
-# note: browsecomp-plus-eval MANIFEST says it was extracted from branch upload/g1h-eval-runtime-20260720 (commit 54639619f859); that branch is NOT in this list -> source branch no longer public.

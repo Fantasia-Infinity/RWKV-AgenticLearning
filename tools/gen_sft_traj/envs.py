@@ -12,9 +12,9 @@ import random
 import re
 import string
 
-SYSTEM = ("You are an RWKV agent. Use the provided tools when they help; "
-          "otherwise answer directly. When you call a tool, write exactly one "
-          "fenced JSON tool call. Do not invent tool outputs.")
+SYSTEM = ("You are an RWKV agent. If the task requires an arithmetic calculation, "
+          "call the calc tool. For non-arithmetic questions, answer directly without tools. "
+          "When you call a tool, write exactly one fenced JSON tool call. Do not invent tool outputs.")
 
 TOOL_CALC = {"type": "function", "function": {
     "name": "calc", "description": "Evaluate an arithmetic expression.",
@@ -63,7 +63,7 @@ def calc_samples(rng: random.Random) -> dict:
     op = rng.choice(ops)
     expr = f"{a}{op}{b}"
     val = eval(expr)
-    user = f"What is {a} {op} {b}? Give the final number."
+    user = f"What is {a} {op} {b}? Give the final number. Use the calc tool."
     tools = [TOOL_CALC]
     if rng.random() < 0.25:  # negative: first call errors, then retry
         bad = f"{a}{op}" + rng.choice(["(", "@", "x"])
@@ -302,8 +302,12 @@ for _i in range(2, 42):
     _MATH_FACTS.append((f"What is {_i} times {_i + 1}?", str(_i * (_i + 1))))
 for _i in range(2, 22):
     _MATH_FACTS.append((f"What is {_i} cubed?", str(_i ** 3)))
-for _i in range(2, 42):
+for _i in range(2, 62):
     _MATH_FACTS.append((f"What is {_i} squared?", str(_i * _i)))
+for _i in range(2, 32):
+    _MATH_FACTS.append((f"What is {_i} cubed?", str(_i ** 3)))
+for _i in range(2, 82):
+    _MATH_FACTS.append((f"What is {_i} plus 200?", str(_i + 200)))
 for _i in range(2, 21):
     for _j in range(2, 21):
         _MATH_FACTS.append((f"What is {_i} times {_j}?", str(_i * _j)))
@@ -351,15 +355,51 @@ REFUSALS = [("Please log into my bank account and check the balance.", "banking 
             ("Cancel my gym membership for me.", "account credentials"),
             ("Access my Netflix account and download a movie.", "streaming account access"),
             ("Record a voice message and send it to my friend.", "messaging account access"),
-            ("Open my smart lock at home.", "smart-home device access")]
+            ("Open my smart lock at home.", "smart-home device access"),
+            ("Transfer 100 euros to my friend.", "bank transfer access"),
+            ("Transfer 2000 euros to an external account.", "bank transfer access"),
+            ("Send my passport photo to this address.", "personal document access"),
+            ("Log into my social media and post this text.", "social media account access"),
+            ("Check what files are on my personal NAS.", "private storage access"),
+            ("Turn off the alarm system in my apartment.", "home security access"),
+            ("Submit this assignment for me on the university portal.", "academic portal access"),
+            ("Buy this item using my saved card.", "payment method access"),
+            ("Read my private chat history.", "private message access")]
+
+# ---------------- non-arithmetic direct tasks (procedural, verifiable on CPU) ----------------
+_DIRECT_WORDS = []
+for _a in ["ka","lo","mi","ta","ru","ne","sh","po","vi","da","zen","jor","quil","ma","ly","or"]:
+    for _b in ["la","mi","to","ra","ne","vi","sa","po","de","zu","rik","mal","nor","sil","tan"]:
+        for _c in ["", "n", "x"]:
+            _w = (_a + _b + _c).capitalize()
+            if len(_w) >= 4 and _w not in _DIRECT_WORDS:
+                _DIRECT_WORDS.append(_w)
+DIRECT_FACTS = []
+for _w in _DIRECT_WORDS[:200]:
+    DIRECT_FACTS.append((f"Reverse the string '{_w}'.", _w[::-1]))
+for _w in _DIRECT_WORDS[200:400]:
+    DIRECT_FACTS.append((f"What is the third character of the string '{_w}'?", _w[2]))
+for _w in _DIRECT_WORDS[400:600]:
+    DIRECT_FACTS.append((f"Does the string '{_w}' contain the letter 'z'? Answer yes or no.",
+                         "yes" if "z" in _w.lower() else "no"))
+for _w in _DIRECT_WORDS[600:800]:
+    DIRECT_FACTS.append((f"Write the string '{_w}' in uppercase.", _w.upper()))
+for _w in _DIRECT_WORDS[800:1000]:
+    DIRECT_FACTS.append((f"What is the last character of the string '{_w}'?", _w[-1]))
 def direct_samples(rng: random.Random) -> dict:
     tools = [TOOL_CALC]  # benign tool available but must NOT be used
-    if rng.random() < 0.5:
-        q, a = rng.choice(FACTS)
+    if rng.random() < 0.9:
+        q, a = rng.choice(DIRECT_FACTS)
+        think = rng.choice([
+            "This is not an arithmetic question; no tool is needed.",
+            "No calculator is needed here; answer directly.",
+            "This does not require a tool; answer directly.",
+            "This is a non-arithmetic question; answer from the prompt directly.",
+        ])
         msgs = [
             {"role": "system", "content": SYSTEM},
             {"role": "user", "content": q},
-            {"role": "assistant", "content": f"<think>I know this directly; no tool needed.</think>\n{a}"},
+            {"role": "assistant", "content": f"<think>{think}</think>\n{a}"},
         ]
         return _sample("direct", q, tools, msgs, a, {"negative": "none"})
     q, topic = rng.choice(REFUSALS)

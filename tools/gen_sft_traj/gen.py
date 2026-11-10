@@ -16,8 +16,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import envs  # noqa: E402
 from render import Renderer  # noqa: E402
 
-WEIGHTS = {"calc": 0.15, "file_edit": 0.20, "code_task": 0.20,
-           "local_search": 0.20, "stats": 0.10, "direct": 0.15}
+WEIGHTS = {"calc": 0.18, "file_edit": 0.18, "code_task": 0.18,
+           "local_search": 0.18, "stats": 0.10, "direct": 0.18}
 GENS = {
     "calc": envs.calc_samples,
     "file_edit": envs.file_edit_samples,

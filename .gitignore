@@ -10,3 +10,6 @@ __pycache__/
 .DS_Store
 
 # 注：图片（*.png/*.pdf）允许入库，便于放图表
+
+# SLURM 日志（本地运行产物）
+slurm-*.out

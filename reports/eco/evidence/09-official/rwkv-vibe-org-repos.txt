@@ -1,0 +1,21 @@
+# RWKV-Vibe org public repos (fetched 2026-11-05 UTC)
+# via https://github.com/orgs/RWKV-Vibe/repositories?type=all
+# count text: 17 repositories
+
+.github
+Awesome-RWKV
+RWKV-Inference-Performance-Test
+RWKV-LM-V7
+RWKV-Parallel-Novel
+RWKV-Summit
+kernels
+rwkv-Primitive-Bench
+rwkv-dsh
+rwkv-fla
+rwkv-kit
+rwkv-parallel-tone
+rwkv-vibe-code
+rwkv_Ascend
+rwkv_lightning
+vllm
+wkv6_Ascend

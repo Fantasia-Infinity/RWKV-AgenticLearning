@@ -1,0 +1,119 @@
+=== Helicopter: sibling repos + branch READMEs @ 2026-11-05T20:13:20Z ===
+########## rwkv-rs/browsecomp-plus-eval README.md ##########
+     1	# BrowseComp-Plus RWKV evaluation package
+     2	
+     3	This directory is a self-contained source package for reproducing the current
+     4	BrowseComp-Plus evaluation path with RWKV-vLLM and the parallel-candidate
+     5	router. It is a physical extraction: the evaluator and vendored vLLM sources
+     6	are copied into this directory and do not import files from the parent checkout.
+     7	
+     8	The package does not contain credentials, database rows, model weights, the
+     9	official 2+ GB corpus, BM25 index, qrels, or generated scores. Creating and
+    10	testing the package does not start vLLM, contact an inference endpoint, connect
+    11	to PostgreSQL, use a GPU, or mutate any scheduler/runner state.
+    12	
+    13	## Runtime flow
+    14	
+    15	```text
+    16	830 official questions
+    17	        |
+    18	        v
+    19	BrowseComp-Plus agent loop -- search(top 5) / get_document / final_answer
+    20	        |
+    21	        v
+    22	3 parallel candidate shards -- evidence/context/tool grounding
+    23	        |
+    24	        v
+    25	candidate aggregation -- one grounded tool call or final answer
+    26	        |
+    27	        v
+    28	OpenAI-compatible /v1/completions -- vendored RWKV-vLLM
+    29	        |
+    30	        v
+    31	PostgreSQL completion/audit rows -- export 830 per-query official run files
+    32	        |
+    33	        v
+    34	internal judge and/or upstream official judge -- accuracy + retrieval Recall
+    35	```
+    36	
+    37	Important implementation entry points:
+    38	
+    39	- `src/eval/tasks/function_calling/browsecomp_plus.py`: dataset adapter,
+    40	  BM25 tools, prompt budgeting, agent loop, evidence persistence, final-answer
+    41	  conversion, judge modes, and score payload.
+    42	- `src/eval/experiments/parallel_candidate_router/router.py`: candidate shard
+    43	  generation, parsing, grounding, deduplication, and aggregation.
+    44	- `src/eval/tasks/function_calling/runner.py`: unified CLI and DB lifecycle.
+    45	- `src/infer/backend.py`: OpenAI-compatible completion client.
+    46	- `vendor/vllm-rwkv/`: exact vendored inference runtime source snapshot.
+    47	
+    48	## 1. Install
+    49	
+    50	Python 3.12, PostgreSQL, a CUDA environment compatible with the selected vLLM
+    51	build, and Java/pyserini for the BM25 index are required.
+    52	
+    53	Create the evaluation environment:
+    54	
+    55	```bash
+    56	uv sync --extra dev --extra function-calling-official
+    57	cp .env.example .env
+    58	```
+    59	
+    60	Keep vLLM in a separate environment because its CUDA/PyTorch dependency set is
+    61	usually stricter than the evaluation harness:
+    62	
+    63	```bash
+    64	uv venv .venv-vllm --python 3.12
+    65	uv pip install --python .venv-vllm/bin/python -e vendor/vllm-rwkv
+    66	```
+    67	
+    68	The launch wrapper also prepends the vendored tree to `PYTHONPATH`, ensuring the
+    69	copied implementation is selected. It sets `VLLM_USE_V2_MODEL_RUNNER=1`, which
+    70	is required by this RWKV7 runtime path.
+    71	
+    72	## 2. Prepare official assets
+    73	
+    74	Obtain the official `texttron/BrowseComp-Plus` assets and point
+    75	`BROWSECOMP_PLUS_ROOT` at them. The expected layout is documented in
+    76	`data/README.md`.
+    77	
+    78	Run the offline preflight. Full validation reads the large decrypted JSONL and
+    79	requires exactly 830 valid, unique query IDs:
+    80	
+
+--- grep -i helicopter/scoreboard in browsecomp-plus-eval README ---
+(none)
+
+--- rwkv-skills other branches README: Helicopter refs ---
+== branch eval ==
+(no README or no match)
+== branch old ==
+(no README or no match)
+== branch vllm-rwkv ==
+58:Open `http://localhost:3000` in development. Set `SCOREBOARD_API_BASE_URL` when the FastAPI backend
+64:NEXT_PUBLIC_BASE_PATH=/new-eval SCOREBOARD_API_BASE_URL=http://127.0.0.1:7860 pnpm build
+65:NEXT_PUBLIC_BASE_PATH=/new-eval SCOREBOARD_API_BASE_URL=http://127.0.0.1:7860 pnpm start
+== branch perf/benchmark-concurrency ==
+(no README or no match)
+
+--- rwkv-skills main atom feed commit titles ---
+2026-08-09T04:38:10Z | Remove duplicate package and vendor development assets
+2026-08-09T04:18:27Z | Merge organization main history, keeping local runtime
+2026-08-09T04:14:31Z | Consolidate local evaluation runtime on main
+2026-07-20T06:42:10Z | Refresh vendored vLLM-RWKV snapshot
+2026-07-20T06:41:40Z | Add G1H evaluation operations bundle
+2026-07-20T06:41:13Z | Support endpoint-aware remote eval scheduling
+2026-07-20T06:41:07Z | Harden BrowseComp-Plus and RWKV tool routing
+2026-07-20T06:40:59Z | Add cascaded knowledge evaluation scoring
+2026-07-20T06:40:47Z | Improve dashboard eval context inspection
+2026-07-19T04:37:46Z | Merge pull request #42 from w1c2j3/benchmark/mmlu-prox
+2026-07-19T04:37:03Z | Merge pull request #41 from w1c2j3/benchmark/medmcqa
+2026-07-19T04:36:24Z | Merge pull request #40 from w1c2j3/benchmark/medqa
+2026-07-19T04:36:05Z | Merge pull request #39 from w1c2j3/benchmark/arabicmmlu
+2026-07-19T04:35:26Z | Merge pull request #38 from w1c2j3/benchmark/kmmlu
+2026-07-19T04:35:07Z | Merge pull request #37 from w1c2j3/benchmark/bbh-mcq
+2026-07-19T04:34:31Z | Merge pull request #36 from w1c2j3/benchmark/agieval-mcq
+2026-07-19T04:34:11Z | Merge pull request #35 from w1c2j3/benchmark/winogrande
+2026-07-19T04:33:27Z | Merge pull request #34 from w1c2j3/benchmark/hellaswag
+2026-07-19T04:33:08Z | Merge pull request #33 from w1c2j3/benchmark/truthfulqa-mc1
+2026-07-19T04:32:31Z | Merge pull request #32 from w1c2j3/benchmark/commonsense-qa

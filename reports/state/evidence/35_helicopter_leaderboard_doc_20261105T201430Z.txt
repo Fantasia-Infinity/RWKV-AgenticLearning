@@ -1,0 +1,18 @@
+=== Helicopter: leaderboard doc + old README @ 2026-11-05T20:14:30Z ===
+--- docs/function_calling_open_leaderboard.zh-CN.md (Helicopter/scoreboard refs) ---
+98 leaderboard_doc.md
+
+--- old README at 54639619 (2026-07-20) Helicopter refs ---
+58:Open `http://localhost:3000` in development. Set `SCOREBOARD_API_BASE_URL` when the FastAPI backend
+64:NEXT_PUBLIC_BASE_PATH=/new-eval SCOREBOARD_API_BASE_URL=http://127.0.0.1:7860 pnpm build
+65:NEXT_PUBLIC_BASE_PATH=/new-eval SCOREBOARD_API_BASE_URL=http://127.0.0.1:7860 pnpm start
+
+--- old README at 6c9282b (2026-08-09 consolidation) Helicopter refs ---
+8:Third-party benchmark data and evaluation artifacts stay out of the source package. The public scoreboard is maintained separately in the Helicopter repository.
+
+--- .env.example (scoreboard API hints) ---
+25:# MCP-Atlas checkout (official score_claims.py claim-coverage judge; uses JUDGE_* above).
+44:# Evaluation dashboard (FastAPI API + Next.js frontend).
+45:#   Backend:  rwkv-skills-dashboard            (serves JSON API on :7860)
+48:# Optional overrides for the leaderboard score index location:
+49:# RWKV_SPACE_SCORE_INDEX=/path/to/score_index.jsonl

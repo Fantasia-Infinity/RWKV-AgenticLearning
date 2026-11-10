@@ -1,0 +1,244 @@
+=== Megatron 28B branch docs/@ 2026-11-05T20:11:17Z ===
+########## BRANCH_WORKSPACES.md ##########
+     1	# 蒸馏工作区
+     2	
+     3	本目录为 `/mnt/data/Codes/RWKV/RWKV-Megatron-H200/RWKV/RWKV-Megatron-distill`，主仓库及两个子仓库均使用 `codex/qwen-rwkv28b-distill`。
+     4	
+     5	主仓库从 TimeMobius 蒸馏提交 `87116dc` 创建，`f979779` 修正工作区隔离相关的启动路径与分支声明。2026-10-23 新增 TP/普通 PP/SP 蒸馏，分阶段提交和验收见 [实施记录](docs/distillation-parallel-20261023.md)。CP 不在本次蒸馏支持范围内。
+     6	
+     7	当前依赖由父仓库 gitlink 固定：
+     8	
+     9	- Megatron：`1cb0ccc336a0793153c54d687d53a9b0bca6e509`，在原 `d65baf60f3d715f313f644eeb68a4047f4cc42aa` 上加入此前验证过的 hybrid optimizer 初始化/恢复修复；父仓库 `45f72f2` 固定此依赖。
+    10	- FLA：`ff481ea6862c99a818858081571373694de7b4e7`，保持原版本。
+    11	
+    12	`.gitmodules` 声明蒸馏分支名，实际依赖仍由这两个 gitlink 固定，声明不会自动更新版本。两个子仓库为独立本地克隆，与 CP 工作区的文件/index/分支配置隔离；兄弟目录 `RWKV-Megatron-upstream-test` 的 `codex/rwkv7-cp` 工作区保持独立。
+    13	
+    14	蒸馏启动脚本按自身位置寻找当前工作区；不要使用仍包含旧目录绝对路径的历史脚本代表当前入口。多卡验证入口为 `training-smoke/parallel-distill-20261023/run.sh`。
+    15	
+    16	以下命令只检查依赖导入及启动器帮助，不启动训练：
+    17	
+    18	```bash
+    19	bash with-local-env.sh
+    20	bash with-local-env.sh python tools/launch_distillation.py --help
+    21	```
+    22	
+    23	提交使用 `shiroko98 <email redacted>` 和 sign-off，按用户此前授权不做 GPG 签名；本轮未 push。
+
+########## new_readme.md ##########
+     1	# RWKV-Megatron
+     2	
+     3	<div align="center">
+     4	
+     5	<img src="./assets/logo.png" width="300px">
+     6	
+     7	**基于Megatron-Core构建的RWKV架构大模型高效训练框架**
+     8	
+     9	[![license](https://img.shields.io/github/license/BlinkDL/RWKV-LM)](LICENSE)
+    10	[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+    11	</div>
+    12	
+    13	## 📖 项目简介
+    14	
+    15	RWKV-Megatron是基于NVIDIA Megatron-Core打造的高性能RWKV模型训练框架，专为大规模分布式训练而设计。本框架将RWKV的线性注意力机制与Megatron的高效并行训练技术相结合，实现了高效、高性能的大语言模型并行训练框架。
+    16	
+    17	**RWKV模型优势**：
+    18	- 同时拥有RNN的高效推理和Transformer的并行训练能力
+    19	- 线性计算复杂度，降低内存消耗
+    20	- 优秀的上下文处理能力和长文本理解能力
+    21	
+    22	**Megatron框架优势**：
+    23	- 完善的分布式训练架构
+    24	- 高效的模型并行和数据并行支持
+    25	- 丰富的GPU优化技术
+    26	
+    27	## 🚀 核心特性
+    28	
+    29	### 模型架构
+    30	- **原生支持RWKV6/7**：完整实现RWKV系列最新架构
+    31	- **模块化设计**：提供各类注意力机制、层规范化和嵌入方法的灵活组合
+    32	- **融合核心计算**：优化的WKV计算实现，提高训练和推理性能
+    33	
+    34	### 分布式训练
+    35	- **全维度并行**：支持4D并行化策略
+    36	  - **张量并行** (Tensor Parallelism)：跨GPU分割模型层内结构
+    37	  - **流水线并行** (Pipeline Parallelism)：跨GPU分割模型层间结构
+    38	  - **序列并行** (Sequence Parallelism)：优化序列数据处理
+    39	  - **数据并行** (Data Parallelism)：横向扩展训练能力
+    40	
+    41	### 性能优化
+    42	- **混合精度训练**：支持FP16和BF16混合精度训练
+    43	- **激活检查点**：智能管理内存使用，支持更大批量和序列长度
+    44	- **梯度累积**：高效实现大批量训练
+    45	- **CUDA融合算子**：优化的CUDA实现，最大化GPU利用率
+    46	
+    47	### 互操作性
+    48	- **多种模型格式支持**：
+    49	  - 支持从RWKV-LM官方权重加载
+    50	  - 导出为PTH格式和HuggingFace格式 (coming soon)
+    51	
+    52	## 💡 使用场景
+    53	
+    54	- **超大规模预训练**：利用分布式训练进行万亿级参数模型训练
+    55	- **领域特化微调**：高效适应特定领域的知识
+    56	- **研究与创新**：为RWKV架构实验提供灵活基础
+    57	- **产业级应用**：稳定可靠的训练框架，支持产业级应用
+    58	
+    59	## 🔧 快速开始
+    60	
+    61	### 安装与环境配置
+    62	
+    63	```bash
+    64	# 克隆仓库及子模块
+    65	git clone --recursive https://github.com/shiroko98/RWKV_Megatron.git
+    66	cd RWKV_Megatron
+    67	
+    68	# 创建conda环境
+    69	conda env create -f environment.yml
+    70	conda activate rwkv-megatron
+    71	```
+    72	### 验证环境是否安装成功
+    73	你可以通过以下 Python 脚本测试 PyTorch 与 CUDA：
+    74	```bash
+    75	import torch
+    76	print("PyTorch version:", torch.__version__)
+    77	print("CUDA available:", torch.cuda.is_available())
+    78	```
+    79	
+    80	### 使用方法
+    81	
+    82	安装完成后，有几种可能的工作流程，包括：
+    83	1. 数据预处理
+    84	2. 预训练
+    85	3. 微调（对于零样本任务可选）
+    86	4. 下游任务评估或文本生成
+    87	
+    88	### 一、数据预处理
+    89	
+    90	```bash
+    91	from preprocess_data import process_data
+    92	
+    93	process_data(
+    94	    input="/path/to/input/data/",             # 输入数据路径（文件或目录）
+    95	    output_prefix="./output/data",            # 输出文件前缀
+    96	    tokenizer_type="RWKVTokenizer",           # 分词器类型
+    97	    vocab_file="/path/to/vocab.txt",          # 词汇表文件
+    98	    workers=6,                                # 每个分区的工作进程数
+    99	    max_processes=24                          # 最大并发文件处理进程数
+   100	)
+   101	```
+   102	数据预处理脚本已优化并适配RWKV及其他模型，具体细节详见 [./data_processor/preprocess_data.py](./data_processor)
+   103	
+   104	### 二、训练RWKV模型
+   105	
+   106	### 配置YAML示例
+   107	
+   108	使用YAML配置文件进行灵活的模型参数配置：
+   109	
+   110	```bash
+   111	python pretrain_rwkv7.py --yaml-cfg config.yaml
+   112	```
+   113	
+   114	### 分布式训练配置
+   115	
+   116	可以根据您的硬件资源配置不同的并行策略：
+   117	
+   118	```python
+   119	# 8-GPU张量并行
+   120	--tensor-model-parallel-size 8 --pipeline-model-parallel-size 1
+   121	
+   122	# 2-GPU张量并行 × 4-GPU流水线并行
+   123	--tensor-model-parallel-size 2 --pipeline-model-parallel-size 4
+   124	
+   125	# 启用序列并行
+   126	--sequence-parallel --tensor-model-parallel-size 8
+   127	```
+   128	### 编写启动脚本
+   129	编写以下脚本配置环境变量与配置文件：
+   130	```bash
+   131	#!/bin/bash
+   132	export TORCH_NCCL_AVOID_RECORD_STREAMS=1
+   133	export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+   134	export OMP_NUM_THREADS=24
+   135	export CUDA_DEVICE_MAX_CONNECTIONS=1
+   136	
+   137	conda activate train_rwkv
+   138	cd /path/to/RWKV_Megatron
+   139	
+   140	torchrun --master_port 51281 --nproc-per-node 8 --nnodes 1 pretrain_rwkv7.py --yaml-cfg config.yaml | tee output.log
+   141	```
+   142	
+   143	## 如何贡献
+   144	
+   145	我们欢迎各种形式的贡献，包括但不限于：
+   146	
+   147	1. 报告问题和提出功能请求
+   148	2. 提交代码改进
+   149	3. 改进文档
+   150	4. 分享训练经验和优化技巧
+   151	
+   152	
+   153	## 📄 许可证
+   154	
+   155	本项目采用 [LICENSE](LICENSE) 许可证开源。
+
+########## grep 28b / qwen / distill in tracked files (excluding 3rdparty) ##########
+.gitignore:191:/training-smoke/qwen-rwkv-qwenvocab/tensorboard/
+.gitignore:193:# Distributed distillation validation: retain reports/configs, not generated tensors/runs.
+.gitignore:194:/training-smoke/parallel-distill-20261023/*.pt
+.gitignore:195:/training-smoke/parallel-distill-20261023/cache*/
+.gitignore:196:/training-smoke/parallel-distill-20261023/online-*/
+.gitignore:197:/training-smoke/parallel-distill-20261023/frozen-*/
+.gitignore:198:/training-smoke/parallel-distill-20261023/*.yaml
+.gitignore:199:/training-smoke/parallel-distill-20261023/wandb/
+.gitignore:202:/training-smoke/dp2-distill-20261023/*/
+.gitignore:203:/training-smoke/dp2-distill-20261023/*.yaml
+.gitignore:206:/training-smoke/distill-numerics-20261023/*/
+.gitignore:207:/training-smoke/distill-numerics-20261023/*.yaml
+.gitignore:209:# Extended distillation validation: keep compact reports, not tensor caches or runs.
+.gitignore:210:/training-smoke/distill-remaining-20261026/*/
+.gitignore:211:/training-smoke/distill-remaining-20261026/*.yaml
+.gitmodules:4:	branch = codex/qwen-rwkv28b-distill
+.gitmodules:8:	branch = codex/qwen-rwkv28b-distill
+BRANCH_WORKSPACES.md:3:本目录为 `/mnt/data/Codes/RWKV/RWKV-Megatron-H200/RWKV/RWKV-Megatron-distill`，主仓库及两个子仓库均使用 `codex/qwen-rwkv28b-distill`。
+BRANCH_WORKSPACES.md:5:主仓库从 TimeMobius 蒸馏提交 `87116dc` 创建，`f979779` 修正工作区隔离相关的启动路径与分支声明。2026-10-23 新增 TP/普通 PP/SP 蒸馏，分阶段提交和验收见 [实施记录](docs/distillation-parallel-20261023.md)。CP 不在本次蒸馏支持范围内。
+BRANCH_WORKSPACES.md:14:蒸馏启动脚本按自身位置寻找当前工作区；不要使用仍包含旧目录绝对路径的历史脚本代表当前入口。多卡验证入口为 `training-smoke/parallel-distill-20261023/run.sh`。
+BRANCH_WORKSPACES.md:20:bash with-local-env.sh python tools/launch_distillation.py --help
+README.md:18:## Qwen→RWKV 蒸馏分支功能范围
+README.md:20:文本蒸馏必须让学生数据与教师服务使用相同的 tokenizer 实现。当前 Qwen 服务的分词与 `Qwen2Tokenizer`（Slow）一致；在 YAML 中设置 `rwkv_teacher_tokenizer_use_fast: false`，JSONL、异步预取和 teacher pool 会统一采用该实现。默认值 `true` 保留既有 Fast 行为。相同词表文件不代表分词规则相同，Fast/Slow 对泰文等组合字符可能得到不同位置数；改变该配置会改变样本分词与窗口边界，旧评测结果需按对应设置比较。
+README.md:36:训练流注册后开始后台预取，验证/测试流等到首次实际读取才启动，避免初始化时挤占训练请求。当前 Qwen 端点不接受多条 prompt 的单次 HTTP 请求；增大学生 micro batch 不会合并 HTTP 请求。长跑模板按 global batch 8 配置 8 并发、32 条 lookahead（4 步）、64 条请求队列/结果容量，延迟目标 30 秒，限流时仍可降到 4 并发。预取量按 global batch 计算，不按 DP/PP 读取端重复相乘。供给跟不上时仍会等待，应结合实际 teacher 吞吐调参。
+README.md:40:长跑监督器完成训练后会自动运行 `tools/evaluate_distill_checkpoint.py`，对初始化权重和最终 checkpoint 做固定验证集 CE/PPL、top-1 及六条固定提示词的 greedy 续写对照，另开 W&B evaluation run 上传报告。评估仅加载权重，不请求 teacher 或更新优化器。固定清单保存 tokens/labels/mask、tokenizer 与源文件指纹，复用时拒绝配置或内容变化；保留 `fixed-validation.json` 用于后续 checkpoint 比较。生成样例用于直接检查重复或退化，CE 改善不等于生成质量合格。
+README.md:45:torchrun --standalone --nproc-per-node=1 tools/evaluate_distill_checkpoint.py \
+README.md:52:需要连续运行约 12 小时且不中途主动重启时，使用 `python tools/run_distill_longrun.py --output /path/to/new-run --continuous-minutes 720`。该模式单段运行，保存间隔保持 250 步，退出时保存最终 checkpoint 后自动评估；固定验证清单在训练前生成。省略该参数仍使用原来的两段流程。运行中 W&B 的 `teacher/pool_active`、`pool_queued`、`pool_target_workers`、`pool_ewma_latency_seconds` 及 `sample_queue_unclaimed/partial/received` 用于检查供给速度和多卡领取进度；这些累计或微批次聚合指标需要结合逐步耗时判断，不能仅以缓存条数认定供给充足。
+README.md:55:以下清单记录分支 `codex/qwen-rwkv28b-distill` 的当前约定。实现完成后将对应项标记为 `[x]`。
+README.md:66:| 多 GPU 蒸馏（TP/PP/SP/DP2） | `[x]` 已实现 | DP2/DP4样本、精度和严格恢复通过；deterministic_mode固定FLA scan，恢复末位问题已定位并修复，见docs/distillation-replay-20261026.md。 |
+README.md:68:| Teacher pool 与训练一键启动 | `[x]` 已完成 | `tools/launch_distillation.py` 启动 pool，等待就绪后启动训练，并在退出或失败时清理进程组。 |
+README.md:72:| Qwen→RWKV 权重转换 | 不做 | 使用现有 mapped RWKV checkpoint。 |
+README.md:75:当前蒸馏分支已经完成：在线 vLLM top-k prompt-logprob teacher、`sk-distill` 请求头、固定 seed、请求温度 1.0、有效词表 KL、padding 行排除、重试退避、限流统计、缓存、异步预取、动态并发、teacher pool、JSONL 文本输入、round-trip 检查、checkpoint 恢复和合并后的 W&B 监控。
+README.md:77:运行环境固定为 Conda `train_mobius_py312`。Teacher 请求使用 `Authorization: Bearer sk-distill`、`rwkv_teacher_seed: 1234`、请求温度 `1.0` 和 top-100；蒸馏温度由本地 KL 独立处理。开启 `log_timers_to_tensorboard: true` 并配置 TensorBoard/W&B，以便同时记录吞吐和迭代耗时。`throughput` 的单位是 TFLOP/s/GPU，`iteration-time` 的单位是 s/step。
+README.md:79:`distill/student_ce_loss` 使用原始 next-token 标签和有效 token mask，在有效词表上计算自然对数 CE（含最后一个可预测标签），独立于 teacher top-k 和 KL 温度；默认 `rwkv_distill_ce_weight: 0.0`，监控不保留反向图。每个优化步的 `distill/student_ppl` 由跨微批次汇总后的 token CE 取 `exp` 得到；验证 PPL 在整个验证集批次汇总后计算。验证/测试使用 `distill/validation_student_ce_loss`、`distill/validation_student_ppl` 和 `distill/test_student_*` 独立命名，避免 Megatron 通用日志将 test 写入带 validation 的同名指标。日志区间中显示的训练 PPL 是这些优化步 PPL 的均值。测试 `tests/test_distill_telemetry.py` 对齐直接 PyTorch CE、有效词表以及 FP32/BF16 纯 KL 梯度，5 项通过。
+README.md:88:python tools/launch_distillation.py --rwkv-config configs/config-rwkv7-qwen-distill-qwenvocab-2p7b-pool-smoke.yaml
+README.md:91:Launcher 使用同一份 YAML 配置两个进程，并为训练追加 `--rwkv-teacher-pool`；不会启动 vLLM。训练正常/异常退出、pool 启动失败/超时、训练期间 pool 退出或 SIGINT/SIGTERM 都会清理所属进程组；已占用的 pool 地址会报错。需要自定义训练命令时，放在 `--` 后（如 `-- torchrun --standalone --nproc-per-node=1 pretrain_rwkv7.py`），配置和 pool 参数由 launcher 追加。生命周期测试 `tests/test_distill_launcher.py` 共 6 项通过；实际 2.7B student、minipile JSONL、真实 API、pool/异步、每步两个微批次的 4 步训练与验证已正常结束，零 NaN、零跳步。
+README.md:95:单卡功能测试详情见 [蒸馏功能验证记录](docs/distillation-validation-20261021.md)。TP/PP/SP 的分阶段计划、精度阈值、恢复和多卡测试见 [多卡蒸馏记录](docs/distillation-parallel-20261023.md)。普通PP与SP、DP2/DP4、分布式优化器和CPU offload已通过精度及严格恢复。历史[DP2记录](docs/distillation-dp2-20261023.md)中的恢复差异已由deterministic_mode固定FLA scan解决；普通自动调优模式不承诺位一致。连续CP2的组合精度、严格恢复、真实2.7B评测和在线短训通过，范围见[剩余工作记录](docs/distillation-remaining-20261026.md)；虚拟/交错PP仍拒绝，多机未认证。
+README.md:111:bash training-smoke/parallel-distill-20261023/run.sh python tools/launch_distillation.py \
+README.md:112:  --rwkv-config configs/config-qwen-2p7b-distill-tp2-sp-pp2-smoke.yaml
+README.md:115:默认教师只在最后一个PP stage的CP0/TP0请求完整上下文；开启JSONL补位后，数据端先校验教师并携带成功响应，随后分发CP目标并广播TP；student 词表保持分片，KL/CE 排除全局 padding 行。配置的词表 padding 必须与 native checkpoint 行数一致：当前 248320 行 Qwen 初始化在 TP4 下使用 `make_vocab_size_divisible_by: 128`，TP2 下使用 256。生产在线 smoke 需要外部 Qwen 服务健康；固定教师测试用于验证并行与精度，不能代替真实 teacher 的训练质量评估。2026-10-23 外部服务恢复后，2.7B 在 dense、TP2、TP2+SP、PP2、TP2+PP2+SP、TP4+PP2+SP 六种布局均完成真实 Qwen 在线3步训练及验证/test，零NaN/skip；[W&B验收报告](http://dian.sea-group.org:9098/mobius/rwkv-qwen-distill-2p7b/runs/v4pf5ud7)与逐布局结果见上述多卡记录。
+Binary file assets/logo.png matches
+configs/config-qwen-28b-distill-tp2-sp-pp2-cp2-offload50-smoke.yaml:1:# Real 28B, 8xH800, seq4096, micro1/global2. Capacity tested with local top100 targets.
+configs/config-qwen-28b-distill-tp2-sp-pp2-cp2-offload50-smoke.yaml:2:# Online Qwen availability and checkpoint resume need separate validation.
+configs/config-qwen-28b-distill-tp2-sp-pp2-cp2-offload50-smoke.yaml:14:data_cache_path: /mnt/data/Codes/RWKV/RWKV-Megatron-H200/RWKV/RWKV-Megatron-distill/training-smoke/parallel-distill-20261023/cache-qwen
+configs/config-qwen-28b-distill-tp2-sp-pp2-cp2-offload50-smoke.yaml:54:load_pretrained_rwkv: /hikscale/models/XiaoKe/rwkv7_28b_88_mapped.pt
+configs/config-qwen-28b-distill-tp2-sp-pp2-cp2-offload50-smoke.yaml:99:rwkv_distill: true
+configs/config-qwen-28b-distill-tp2-sp-pp2-cp2-offload50-smoke.yaml:100:rwkv_distill_ce_weight: 0.0
+configs/config-qwen-28b-distill-tp2-sp-pp2-cp2-offload50-smoke.yaml:101:rwkv_distill_logit_weight: 1.0
+configs/config-qwen-28b-distill-tp2-sp-pp2-cp2-offload50-smoke.yaml:102:rwkv_distill_temperature: 2.0
+configs/config-qwen-28b-distill-tp2-sp-pp2-cp2-offload50-smoke.yaml:103:rwkv_distill_valid_vocab_size: 248077
+configs/config-qwen-28b-distill-tp2-sp-pp2-cp2-offload50-smoke.yaml:113:rwkv_teacher_model: Qwen3.8-27B
+configs/config-qwen-28b-distill-tp2-sp-pp2-cp2-offload50-smoke.yaml:128:rwkv_teacher_tokenizer: /hikscale/models/Qwen/Qwen3.8-27B
+configs/config-qwen-28b-distill-tp2-sp-pp2-cp2-offload50-smoke.yaml:136:tensorboard_dir: /mnt/data/Codes/RWKV/RWKV-Megatron-H200/RWKV/RWKV-Megatron-distill/training-smoke/28b-tp2-sp-pp2-cp2-offload50-smoke/tensorboard
+configs/config-qwen-28b-distill-tp2-sp-pp2-cp2-offload50-smoke.yaml:139:tokenizer_model: /hikscale/models/Qwen/Qwen3.8-27B
+configs/config-qwen-28b-distill-tp2-sp-pp2-cp2-offload50-smoke.yaml:148:wandb_exp_name: 28b-tp2-sp-pp2-cp2-offload50-seq4096-smoke
+configs/config-qwen-28b-distill-tp2-sp-pp2-cp2-offload50-smoke.yaml:149:wandb_project: rwkv-qwen-distill-28b
+configs/config-qwen-28b-distill-tp2-sp-pp2-cp2-offload50-smoke.yaml:150:wandb_save_dir: /mnt/data/Codes/RWKV/RWKV-Megatron-H200/RWKV/RWKV-Megatron-distill/training-smoke/28b-tp2-sp-pp2-cp2-offload50-smoke/wandb
+configs/config-qwen-28b-distill-tp2-sp-pp2-cp2-offload50-smoke.yaml:159:rwkv_teacher_sample_records: /mnt/data/Codes/RWKV/RWKV-Megatron-H200/RWKV/RWKV-Megatron-distill/training-smoke/28b-tp2-sp-pp2-cp2-offload50-smoke/sample-selection
+configs/config-qwen-28b-distill-tp2-sp-pp4-balanced-smoke.yaml:3:# Peak 75063 MiB; mean 2.513 s/step. Online Qwen and checkpoint resume remain separate checks.
+configs/config-qwen-28b-distill-tp2-sp-pp4-balanced-smoke.yaml:15:data_cache_path: /mnt/data/Codes/RWKV/RWKV-Megatron-H200/RWKV/RWKV-Megatron-distill/training-smoke/parallel-distill-20261023/cache-qwen

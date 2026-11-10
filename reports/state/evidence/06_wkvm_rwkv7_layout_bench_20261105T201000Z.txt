@@ -1,0 +1,267 @@
+=== wkvm RWKV7 state layout + perf-data search @ 2026-11-05T20:10:00Z ===
+########## wkvm/models/rwkv7.py L1-140 ##########
+"""RWKV-7 model integration (fla-format checkpoints).
+
+M1 uses the reference ``fla`` module (`RWKV7ForCausalLM`) as the compute
+graph and takes ownership of the *state* only: every forward is driven with
+an explicitly seeded `fla` Cache whose per-layer entries are gathered from
+the engine's arena tensors and scattered back afterwards. This gives exact
+kernel parity for free (chunked scan `chunk_rwkv7` for prefill, fused
+recurrent for decode — the same dispatch the reference uses) while keeping
+request state where the roadmap requires it: in dense per-family GPU
+tensors indexed by arena slot ids, never in per-request python objects.
+
+Per-layer recurrent state carried by RWKV-7 (verified against
+``fla/layers/rwkv7.py`` and ``fla/models/rwkv7/modeling_rwkv7.py``):
+
+- ``recurrent_state``: the wkv matrix state, ``[H, head_dim, head_v_dim]``,
+  float32 (the fla kernels always emit/consume fp32 final states).
+- ``conv_state``: token-shift cache of the attention mixer, ``[hidden]``,
+  model dtype.
+- ``ffn_state``: token-shift cache of the channel mixer, ``[hidden]``,
+  model dtype.
+
+``v_first`` is recomputed from layer 0 within each forward and never
+crosses a step boundary, so it is not state.
+
+Zero state is exactly "fresh sequence" for all three components: a zero wkv
+matrix is the empty prefix sum, and a zero token-shift cache reproduces the
+ZeroPad2d shift-in at position 0. Slot admission therefore just zeroes.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+
+import torch
+
+from wkvm.core.config import ModelStateSpec, StateFamilySpec
+
+WKV_DTYPE = torch.float32
+
+
+@dataclass(frozen=True)
+class RWKV7StateLayout:
+    """Shapes/dtypes of the per-slot state, derived from a loaded config.
+
+    Family names match ``wkvm.core.config.rwkv7_state_spec`` ("wkv",
+    "shift"); byte counts here are exact (wkv is fp32, not model dtype).
+    """
+
+    n_layer: int
+    hidden_size: int
+    num_heads: int
+    head_dim: int
+    head_v_dim: int
+    dtype: torch.dtype  # model dtype; used for the shift family
+
+    @classmethod
+    def from_config(cls, config, dtype: torch.dtype) -> RWKV7StateLayout:
+        value_dims = set(config.value_dim)
+        if len(value_dims) != 1:
+            raise NotImplementedError(f"heterogeneous value_dim: {config.value_dim}")
+        if config.attn is not None:
+            raise NotImplementedError("hybrid attn layers are M4, not M1")
+        return cls(
+            n_layer=config.num_hidden_layers,
+            hidden_size=config.hidden_size,
+            num_heads=config.num_heads,
+            head_dim=config.head_dim,
+            head_v_dim=value_dims.pop() // config.num_heads,
+            dtype=dtype,
+        )
+
+    # Per-slot shapes, layer-major: the bank stores [n_layer, slots+1, ...]
+    # so a per-layer batch gather is one contiguous index_select.
+    @property
+    def wkv_shape(self) -> tuple[int, ...]:
+        return (self.num_heads, self.head_dim, self.head_v_dim)
+
+    @property
+    def shift_shape(self) -> tuple[int, ...]:
+        # 2 token-shift caches per layer: [0] attn conv_state, [1] ffn_state.
+        return (self.hidden_size,)
+
+    def state_spec(self) -> ModelStateSpec:
+        wkv_elems = self.n_layer * self.num_heads * self.head_dim * self.head_v_dim
+        shift_elems = self.n_layer * 2 * self.hidden_size
+        return ModelStateSpec(
+            families=(
+                StateFamilySpec(
+                    name="wkv",
+                    bytes_per_slot=wkv_elems * WKV_DTYPE.itemsize,
+                    layer_ids=tuple(range(self.n_layer)),
+                ),
+                StateFamilySpec(
+                    name="shift",
+                    bytes_per_slot=shift_elems * self.dtype.itemsize,
+                    layer_ids=tuple(range(self.n_layer)),
+                ),
+            )
+        )
+
+
+def load_rwkv7(
+    model_path: str,
+    device: torch.device | str = "cuda",
+    dtype: torch.dtype = torch.bfloat16,
+):
+    """Load an fla-format RWKV-7 checkpoint for inference.
+
+    Returns ``(model, layout)``. The model is frozen and in eval mode —
+    eval matters beyond dropout: the fla layer dispatches chunk vs fused
+    recurrent kernels on ``self.training or seq_len >= 64``.
+    """
+    from fla.models.rwkv7 import RWKV7ForCausalLM
+
+    model = RWKV7ForCausalLM.from_pretrained(model_path, dtype=dtype)
+    model = model.to(device).eval().requires_grad_(False)
+    layout = RWKV7StateLayout.from_config(model.config, dtype=dtype)
+    return model, layout
+
+########## pyproject.toml (full) ##########
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wkvm"
+version = "0.0.1"
+description = "A hypervisor for model state: state-native inference engine for RWKV/GDN/Mamba hybrids with durable, forkable, mutable state handles"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+authors = [{ name = "xiaol" }]
+keywords = ["rwkv", "inference", "llm", "linear-attention", "serving"]
+
+[project.optional-dependencies]
+# M0 core is dependency-free on purpose: the scheduler and arena are pure
+# bookkeeping and must stay unit-testable without a GPU or torch.
+gpu = ["numpy>=1.26", "torch>=2.6"]
+gemma-server = [
+    "numpy>=1.26",
+    "torch>=2.6",
+    "transformers>=5.7,<6",
+    "safetensors>=0.4.3",
+    "accelerate>=1.1",
+]
+open-webui-bench = [
+    "transformers>=5.7,<6",
+    "python-socketio[client]>=5.16,<6",
+    "websocket-client>=1.9,<2",
+]
+
+[project.scripts]
+wkvm-gemma-server = "wkvm.gemma_server:main"
+
+[tool.setuptools.packages.find]
+include = ["wkvm*"]
+
+########## perf-data search: rwkv mentions in results/paper/docs (non-gemma) ##########
+--- grep -rn "rwkv" in experiments/results (case-insens, first 60) ---
+experiments/results/m2_engine_bench.md:9:## RWKV-7 World 1.5B (24 layers, d=2048) — 12.19 MiB state/slot
+experiments/results/m2_engine_bench.md:20:## RWKV-7 World 191M (12 layers, d=768) — 2.29 MiB state/slot
+experiments/results/m2_engine_bench.md:49:- vs Albatross (RWKV-7 **2.9B** fp16, hand-tuned sm_89 CUDA, static batch, no
+experiments/results/bench_albatross_2.9b.log:1:[rwkv7_fast_v3a] start model=/run/media/xiaol/B214449214445C0B/wkvm_bench/weights/RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth wkv=fp16 emb=cpu batched_rkv=off cmix_sparse=no-fc lowrank_weight=both orig_linear_groups=att_c2c,ffn_key,head pp=off
+experiments/results/bench_albatross_2.9b.log:2:[rwkv7_fast_v3a] fixed fast path: ln=v3a linear=v3a/splitk lowrank=7/4 nofc_rows=by_C row20_t=by_C nofc_t512_rows>=8
+experiments/results/bench_albatross_2.9b.log:3:[rwkv7_fast_v3a] loading CUDA extensions v3a_ops + fast_ops + wkv=fp16
+experiments/results/bench_albatross_2.9b.log:4:[rwkv7_fast_v3a] CUDA extensions loaded in 0.036s
+experiments/results/bench_albatross_2.9b.log:5:[rwkv7_fast_v3a] loading weights from /run/media/xiaol/B214449214445C0B/wkvm_bench/weights/RWKV-x070-World-2.9B-v3-20250211-ctx4096.pth
+experiments/results/bench_albatross_2.9b.log:6:[rwkv7_fast_v3a] weights mmap loaded in 0.101s tensors=1059
+experiments/results/bench_albatross_2.9b.log:7:[rwkv7_fast_v3a] detected model C=2560 H=40 N=64 V=65536
+experiments/results/bench_albatross_2.9b.log:8:[rwkv7_fast_v3a] cmix no-fc path: rows<=19 row20_t<=5
+experiments/results/bench_albatross_2.9b.log:9:[rwkv7_fast_v3a] moving and preprocessing weights to CUDA emb=cpu
+experiments/results/bench_albatross_2.9b.log:10:[rwkv7_fast_v3a] model ready in 1.873s L=32 C=2560 H=40 N=64 V=65536
+experiments/results/bench_albatross_2.9b.log:11:[rwkv7_fast_v3a] gpu_mem used=7.63GiB allocated=5.37GiB reserved=5.45GiB total=23.51GiB
+experiments/results/bench_albatross_2.9b.log:14:csv,rwkv7_fast_v3a,1,1,10,5.121946,5.123072,5.132713,195.195377
+experiments/results/bench_albatross_2.9b.log:16:csv,rwkv7_fast_v3a,8,1,10,9.508998,9.521024,9.737626,840.245777
+experiments/results/bench_albatross_2.9b.log:18:csv,rwkv7_fast_v3a,32,1,10,8.897155,8.901120,9.140121,3595.053132
+experiments/results/bench_albatross_2.9b.log:20:csv,rwkv7_fast_v3a,64,1,10,10.570211,10.591744,10.793885,6042.442144
+experiments/results/bench_albatross_2.9b.log:22:csv,rwkv7_fast_v3a,128,1,10,12.586953,12.600768,12.808294,10158.111310
+experiments/results/bench_albatross_2.9b.log:24:csv,rwkv7_fast_v3a,256,1,10,20.107542,20.145648,20.342026,12707.459197
+experiments/results/bench_albatross_2.9b.log:26:csv,rwkv7_fast_v3a,512,1,10,36.377598,36.495136,36.756236,14029.266704
+experiments/results/bench_albatross_2.9b.log:28:csv,rwkv7_fast_v3a,1024,1,10,66.641480,66.684925,66.855132,15355.794414
+experiments/results/m3_results.md:3:*RWKV-7 191M (fla format), RTX 4090, 2026-07-06. Full log: `m3_run.log`. Test suite: 29/29 OK (5 new StateStore gates: cross-tier exactness, fork isolation, mutate provenance, rebuild-from-COLD-index, fingerprint rejection).*
+experiments/results/m3_results.md:24:8 seeded rollouts × 64 tokens, scored two ways over the *same* fla kernels and weights (bf16): serving path (chunked prefill + per-token `fused_recurrent` decode) vs trainer path (one `chunk_rwkv7` full-sequence forward, `use_cache=False`):
+experiments/results/poc1_gemma_e4b.md:95:   PoC-2 adds the segmented RWKV-7 state bank + readout injection to close that gap.
+experiments/results/poc1_gemma_e4b.md:178:  aligns). This mirrors the RWKV-MS finding that the shallow band carries memory.
+experiments/results/poc1_gemma_e4b.md:211:  untested — that is what the learned RWKV-MS sidecar is for later.
+experiments/results/poc1_gemma_e4b.md:216:  exact-KV representatives were. Linear-attention readout (option (b)) and an RWKV-7-style
+experiments/results/quality_nll.md:7:- repo-docs-md#0: Multi-state-RWKV-online-memory/README.md, causalab/ARCHITECTURE.md, HRM-Text/README.md
+experiments/results/quality_nll.md:8:- repo-docs-md#1: rwkv-lm/README.md
+experiments/results/m3_run.log:21:/home/xiaol/X/HRM-Text/.venv/lib/python3.12/site-packages/fla/layers/rwkv7.py:148: UserWarning: According to Bo, you are using a potentially buggy FLA implementation of RWKV. If you plan to report any numbers based on this implementation, we strongly recommend cross-checking with the official repo: https://github.com/BlinkDL/RWKV-LM. Bo may disagree with results reported from this version.
+experiments/results/m3_run.log:35:/home/xiaol/X/HRM-Text/.venv/lib/python3.12/site-packages/fla/layers/rwkv7.py:148: UserWarning: According to Bo, you are using a potentially buggy FLA implementation of RWKV. If you plan to report any numbers based on this implementation, we strongly recommend cross-checking with the official repo: https://github.com/BlinkDL/RWKV-LM. Bo may disagree with results reported from this version.
+experiments/results/m3_run.log:45:/home/xiaol/X/HRM-Text/.venv/lib/python3.12/site-packages/fla/layers/rwkv7.py:148: UserWarning: According to Bo, you are using a potentially buggy FLA implementation of RWKV. If you plan to report any numbers based on this implementation, we strongly recommend cross-checking with the official repo: https://github.com/BlinkDL/RWKV-LM. Bo may disagree with results reported from this version.
+experiments/results/m3_run.log:57:/home/xiaol/X/HRM-Text/.venv/lib/python3.12/site-packages/fla/layers/rwkv7.py:148: UserWarning: According to Bo, you are using a potentially buggy FLA implementation of RWKV. If you plan to report any numbers based on this implementation, we strongly recommend cross-checking with the official repo: https://github.com/BlinkDL/RWKV-LM. Bo may disagree with results reported from this version.
+experiments/results/m3_run.log:76:[parity] server path = chunked prefill + fused_recurrent decode; trainer path = one chunk_rwkv7 forward (use_cache=False). Same fla kernels, bf16 activations — residual diff is accumulation order.
+experiments/results/gemma_b16_evidence_bundle_20260713/provenance/worktree_files.tsv:11:09f9fed0e4732ccdb8a815bd689f0328b506ee4bf832101b62caab557e5aa2c3	6320	docs/WHY_RWKV_WINS.md
+experiments/results/gemma_b16_evidence_bundle_20260713/provenance/worktree_files.tsv:153:7ba676ac04e8ffa29b2af7ee5faaae430e56f03ce6902d580070bea453b6747c	12176	tests/test_rwkv7_gpu.py
+experiments/results/gemma_b16_evidence_bundle_20260713/provenance/worktree_files.tsv:169:ae54ba2d4633790ee13c0e905ec70dd001634d5a3b79c0eb339a2ed14c57655d	4496	wkvm/models/rwkv7.py
+experiments/results/gemma_b16_evidence_bundle_20260713/provenance/tracked_worktree.patch:2411:@@ -16,6 +16,15 @@ keywords = ["rwkv", "inference", "llm", "linear-attention", "serving"]
+
+--- files in paper/ ---
+total 4
+drwxr-x---  2 user user   4096 Nov  5 21:09 .
+drwxr-x--- 11 user user   4096 Nov  5 21:09 ..
+-rw-r-----  1 user user   2825 Nov  5 21:09 arxiv-metadata.md
+-rw-r-----  1 user user   5278 Nov  5 21:09 CLAIMS.md
+-rw-r-----  1 user user      8 Nov  5 21:09 .gitignore
+-rw-r-----  1 user user  35084 Nov  5 21:09 main.tex
+-rw-r-----  1 user user    482 Nov  5 21:09 Makefile
+-rw-r-----  1 user user   1758 Nov  5 21:09 README.md
+-rw-r-----  1 user user   5896 Nov  5 21:09 references.bib
+-rw-r-----  1 user user 297094 Nov  5 21:09 wkvm-technical-report.pdf
+--- paper/CLAIMS.md ---
+# WKVM report claim ledger
+
+This ledger defines which claims are promoted into `paper/main.tex`, the
+artifact that supports each claim, and the caveat that must travel with it.
+It is intentionally stricter than historical roadmap or marketing language.
+
+## Promoted claims
+
+| ID | Claim | Evidence | Required caveat |
+|---|---|---|---|
+| C1 | The implemented native RWKV-7 allocator admits requests by fixed state-family slots, and the scheduler advances one computed-token gap across prefill, decode, and resume. | `wkvm/core/arena.py`, `wkvm/core/scheduler.py`, `wkvm/core/request.py`; 60 focused current-checkout tests pass. | Native loader supports pure FLA-format RWKV-7, not general Mamba/GDN/hybrids. |
+| C2 | The M2 checkpoint reports 8,077 tok/s for RWKV-7 1.5B at B256 on one RTX 4090 with 12.19 MiB state per slot. | `experiments/results/m2_engine_bench.md`, SHA-256 `899d26677dadcf27f1443a510a0b6efc20e5c7244ab87e91486d4aa41e508df7`, commit `cb421afc185b3acdbbf4d0239c0a6ea16018671f`. | Single 64-step timing; no repeats, confidence interval, model hash, or matched incumbent. CUDA graph captures model forward only. |
+| C3 | The M3 demonstration created 2,000 191M snapshots at 2.29 MiB each, reported median warm/disk-backed restore of 8.2/8.6 ms, and reproduced 16/16 interrupted continuations. | `experiments/results/m3_results.md`, SHA-256 `15d336e000c7c4a9d6fd7e35938d75dcae7d28af16e3ea57f7a0c32520b951f9`, commit `9e129f5ba74b9e361a2ed157ba8573a46ada3efa`. | Single run. Disk-backed reload did not flush OS page cache. Exclude reported p99. Fingerprint is layout/dtype only. |
+| C4 | Span-atomic routed KV reaches 0.90 overall synthetic recall versus 0.95 for full KV across 8K/16K/32K. | `experiments/results/quality_grid.md`, SHA-256 `a5826b978281ecb09ad0849651b799ac8f4b05ebd37be3f3be161fba3464f5c2`, commit `84dd3a12bf6ae2b9a1330d7de7c01de7daefa08d`. | Custom substring-scored synthetic tasks; t1/t2 use three seeds and t3 one seed. Not quality equivalence. |
+| C5 | On 4090 B16/16K/128, WKVM and vLLM tie on E2E throughput while WKVM reports 3.82x comparable decode and 1.534 GiB lower whole-GPU engine delta. | `experiments/results/gemma_b16_evidence_audit_20260713.md`, SHA-256 `b5eef0bf411ca5be4edd626b12bd05284c9e4964fc0d06164ef448ea0d0fae46`, commit `2b4e642d6f9a2e53287e1755db5d711efcab88f4`. | WKVM has three runs; vLLM has one controlled run. Approximate versus full-KV semantics. |
+| C6 | On clean repeated A800 B64/16K/32-output runs, WKVM is 4.467x vLLM on comparable decode but 0.793x on E2E throughput. | `experiments/results/gemma_a800_reliable_20260716/report.md`, SHA-256 `83371ce4686212cd3357d9f403c1dce7ef3e2512187b76cb837d9d0abb386776`, benchmark commit `234cc04867a93f1352d2a1c220c216b698f46560`. | Approximate versus full-KV semantics. Peak memory reflects configured pools and is not minimum required memory. |
+| C7 | The strict Open WebUI B32x8 checkpoint reports 345.097 tok/s and 224/224 continuation reuse, 2.153x the tested vLLM profile and 5.305x the tested SGLang profile. | `experiments/results/open_webui_parent_token_b32_t8_20260723.md`, SHA-256 `aea5cce4adcba999f5d30720b36935a012bd58ff0498044917ae0439b37fa908`, commit `f128d1252d5aac7200eea214a7a504705580d39a`. | Exploratory single cross-run; external raw artifacts; autonomous later histories; approximate versus full KV; repeats pending. |
+
+## Claims excluded from the report
+
+- Any workload-independent or engine-wide “10x faster” statement.
+- The provisional 12.107x A800 scout, which used a dirty worktree and has no
+  matched SGLang result.
+- The superseded 11.151x RTX 4090 vLLM ratio; the later exact-trace audit reduces
+  it to 9.827x.
+- Full-quality equivalence between Gemma routed-span and full KV.
+- “Native recurrent mode” for Gemma. The implemented mechanism retains actual
+  K/V spans and is not the RWKV-style segmented matrix-state bank described in
+  older design documents.
+- General native support for GDN, Mamba2, Qwen3-Next, or arbitrary hybrid
+  architectures.
+- Integrated whole-engine CUDA graphs for native RWKV. The promoted M2 graph
+  captures fixed-shape model forward while scheduler and gather/scatter remain
+  eager.
+- Production GPU-to-host-to-NVMe tiering, live migration, automatic checkpoint
+  boundaries, rollback, or copy-on-write GPU slots.
+- Strong checkpoint compatibility. The current state-store fingerprint binds
+  layout and dtype, not checkpoint weight identity.
+- Trainer/server parity. The M3 experiment reports 0/8 rollouts within 5e-3.
+- “First stateful serving,” “first recurrent prefix cache,” or “first
+  linear-attention server.” Pensieve, Marconi, and KVBuffer are direct prior
+  art.
+
+## Required before a stronger revision
+
+1. Interleave and randomize at least three runs for every promoted engine/cell.
+2. Add confidence intervals or a predeclared nonparametric uncertainty summary.
+3. Commit request-level artifacts for application and provider-HTTP results.
+4. Run standard long-context quality benchmarks and native natural-document NLL.
+5. Bind state handles to a cryptographic checkpoint manifest.
+6. Measure truly cold storage by controlling the operating-system page cache.
+7. Add offered-load/latency curves, minimum-memory sweeps, energy per token, and
+   thermal/clock controls.

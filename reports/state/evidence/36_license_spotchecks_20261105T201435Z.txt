@@ -1,0 +1,35 @@
+=== §7 license spot-checks @ 2026-11-05T20:14:35Z ===
+--- locate rwkv_lightning via Awesome-RWKV index ---
+120:| RWKV_document-term-translator | [![Star](https://img.shields.io/github/stars/LuckySongXiao/RWKV_document-term-translator.svg?style=social&label=Star)](https://github.com/LuckySongXiao/RWKV_document-term-translator) |  | 基于 C# WPF 的 Windows 文档术语翻译助手，支持 Word、Excel 文档和术语库管理，可接入 rwkv_lightning 或 llama.cpp 推理后端。 |
+319:| rwkv-dsh | [![Star](https://img.shields.io/github/stars/RWKV-Vibe/rwkv-dsh.svg?style=social&label=Star)](https://github.com/RWKV-Vibe/rwkv-dsh) | | 面向本地工作区的 RWKV 桌面智能体，通过工具读取项目文件并基于证据回答，接入 rwkv_lightning 推理服务。 |
+350:| rwkv_lightning | [![Star](https://img.shields.io/github/stars/RWKV-Vibe/rwkv_lightning.svg?style=social&label=Star)](https://github.com/RWKV-Vibe/rwkv_lightning) |  | 基于 Albatross 与 FastAPI 的 RWKV 批量推理后端，提供 NVIDIA CUDA 和 AMD ROCm 路径，并支持量化推理与服务接口。 |
+353:| rwkv_lightning_cuda | [![Star](https://img.shields.io/github/stars/Alic-Li/rwkv_lightning_cuda.svg?style=social&label=Star)](https://github.com/Alic-Li/rwkv_lightning_cuda) |  | 面向 NVIDIA CUDA、附带 AMD HIP 路径的 RWKV-7 推理服务，提供 OpenAI 兼容与原生批量 API、流式输出、状态缓存、状态微调和量化功能。 |
+
+--- candidate repo HTTP status probes ---
+200  https://github.com/RWKV-Vibe/rwkv_lightning
+404  https://github.com/RWKV-Vibe/rwkv-lightning
+404  https://github.com/rwkv-rs/rwkv-lightning
+404  https://github.com/rwkv-rs/rwkv_lightning
+200  https://github.com/rwkv-rs/FlashRWKV2
+200  https://github.com/Abel2076/json2binidx_tool
+200  https://github.com/rwkv-rs/rwkv-skills
+
+--- raw LICENSE probes (codes + content heads) ---
+[200] https://raw.githubusercontent.com/rwkv-rs/FlashRWKV2/main/LICENSE  bytes=1110
+MIT License  Copyright (c) 2026 MoonshotAI Copyright (c) 2026 FlashRWKV2 contributors  Permission is hereby granted, free of charge, to any person obtaining a c
+[404] https://raw.githubusercontent.com/Abel2076/json2binidx_tool/main/LICENSE  bytes=14
+404: Not Found
+[404] https://raw.githubusercontent.com/rwkv-rs/rwkv-skills/main/LICENSE  bytes=14
+404: Not Found
+[200] https://raw.githubusercontent.com/rwkv-rs/FlashRWKV2/main/pyproject.toml  bytes=1132
+[build-system] requires = [   "setuptools>=77.0.3,<81.0.0",   "wheel", ] build-backend = "setuptools.build_meta"  [project] name = "FlashRWKV2" version = "0.1.0
+
+--- toolcaller-bench Codeberg raw LICENSE ---
+HTTP 200 size 11358
+
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+4
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and

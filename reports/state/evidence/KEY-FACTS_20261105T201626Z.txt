@@ -1,0 +1,444 @@
+===================================================================
+KEY FACTS — state-megatron verification (wkvm / RWKV-Megatron / Helicopter)
+Generated: 2026-11-05T20:16:26Z UTC | 2026-11-05T21:16:26+0100 local | host=Snellius login node
+All commands run on Snellius login node; clones at repos/wkvm, repos/RWKV-Megatron
+===================================================================
+
+### (1) wkvm LICENSE — raw HTTP probes (no API quota)
+2026-11-05T20:16:26Z  404  raw.githubusercontent.com/xiaol/wkvm/main/LICENSE
+2026-11-05T20:16:26Z  404  raw.githubusercontent.com/xiaol/wkvm/main/LICENSE.md
+2026-11-05T20:16:26Z  404  raw.githubusercontent.com/xiaol/wkvm/main/LICENSE.txt
+2026-11-05T20:16:26Z  404  raw.githubusercontent.com/xiaol/wkvm/main/COPYING
+
+--- wkvm clone: HEAD + date + tracked license-ish files ---
+HEAD=93e7a8714588875b2766160ce6aae5f7b17be933
+date=2026-08-02T11:15:22+08:00
+subject=Publish rendered WKVM technical report
+tracked license files: 0 (0 = none)
+--- pyproject.toml license line ---
+11:license = { text = "Apache-2.0" }
+--- README.md license section ---
+   272	## License
+   273	
+   274	Apache-2.0 (LICENSE file pending).
+--- paper/arxiv-metadata.md ## License section ---
+## License
+
+**Choose explicitly in arXiv.** The paper license is separate from the code
+license. The repository currently declares Apache-2.0 in `pyproject.toml` but
+also says the top-level `LICENSE` file is pending; resolve that inconsistency
+before advertising the code as Apache-licensed.
+
+## Submission blockers
+--- paper/README.md before-submission item 2 ---
+## Before submission
+
+1. Confirm or replace the author handle `xiaol` with the intended publication
+   name, affiliation, and ORCID.
+2. Resolve the repository’s missing top-level `LICENSE` file before making a
+   code-license statement.
+3. Choose the paper’s arXiv license; code and paper licenses are independent.
+
+### (2) wkvm RWKV-path performance evidence
+--- experiments/results/m2_engine_bench.md lines 1-29 ---
+     1	# M2 engine bench — steady-state decode from the engine loop
+     2	
+     3	*RTX 4090 24GB, 2026-07-03, torch 2.11 cu130 + fla, bf16 weights / fp32 wkv state.
+     4	Every timed token flows through `Engine.step()`: `scheduler.schedule()` →
+     5	gather/forward/scatter → batched sample → `update_from_output()`. All B slots
+     6	decoding, nobody finishes mid-measurement (prompt 32, 64 timed steps, 8 warmup).
+     7	Reproduce: `python experiments/m2_engine_bench.py [--model PATH] --graph`.*
+     8	
+     9	## RWKV-7 World 1.5B (24 layers, d=2048) — 12.19 MiB state/slot
+    10	
+    11	| B | tok/s (eager) | tok/s (graphed) | state MiB total | peak VRAM GiB |
+    12	|---|---|---|---|---|
+    13	| 1 | 67 | 195 | 24 | 2.96 |
+    14	| 8 | 516 | 1,084 | 110 | 3.19 |
+    15	| 32 | 1,890 | 3,565 | 402 | 4.36 |
+    16	| 64 | 3,592 | 5,274 | 792 | 5.92 |
+    17	| 128 | 6,345 | 6,886 | 1,572 | 9.84 |
+    18	| 256 | 7,913 | 8,077 | 3,132 | 19.02 |
+    19	
+    20	## RWKV-7 World 191M (12 layers, d=768) — 2.29 MiB state/slot
+    21	
+    22	| B | tok/s (eager) | tok/s (graphed) | state MiB total | peak VRAM GiB |
+    23	|---|---|---|---|---|
+    24	| 1 | 132 | 680 | 5 | 0.45 |
+    25	| 8 | 1,038 | 4,160 | 21 | 0.46 |
+    26	| 32 | 3,991 | 15,299 | 75 | 0.69 |
+    27	| 64 | 7,738 | 23,471 | 149 | 0.87 |
+    28	| 128 | 14,506 | 32,338 | 295 | 1.77 |
+    29	| 256 | 26,707 | 38,856 | 587 | 2.94 |
+--- experiments/results/m3_results.md lines 1-20 ---
+     1	# M3 results: Durable State API + the three generation-claim demos
+     2	
+     3	*RWKV-7 191M (fla format), RTX 4090, 2026-07-06. Full log: `m3_run.log`. Test suite: 29/29 OK (5 new StateStore gates: cross-tier exactness, fork isolation, mutate provenance, rebuild-from-COLD-index, fingerprint rejection).*
+     4	
+     5	## Demo (a) — warm-session fleet ✅
+     6	
+     7	2000 sessions created + snapshotted through continuous batching (64 slots) in **31.7s**; WARM tier 4.46 GiB (**2.29 MiB/session**); 500 evicted to COLD safetensors in 4.9s.
+     8	
+     9	| resume-to-next-token | n | p50 | p99 | max |
+    10	|---|---|---|---|---|
+    11	| WARM (pinned host → slot) | 224 | **8.2 ms** | 9.5 ms | 35.7 ms |
+    12	| COLD (NVMe safetensors → slot) | 76 | **8.6 ms** | 17.6 ms | 18.4 ms |
+    13	
+    14	Exactness: **16/16** interrupted+resumed continuations token-identical to uninterrupted twins (both sides batch-1 to isolate the store from bf16 batch-shape effects). The p99-under-10ms number is the "thousands of hibernated sessions, sub-100ms resume" claim, beaten by 10×; per-session memory says one 24 GB card + one 64 GB host can keep ~25k sessions warm at this model size (1.5B: 12.2 MiB/session → ~5k).
+    15	
+    16	## Demo (b) — persistent, forkable, mutable agent ✅
+    17	
+    18	- **RESTART-EXACT: True** — session `agent@2` persisted to COLD, engine process exited, a fresh process rebuilt the store from `index.json` alone and produced the identical 24-token greedy continuation.
+    19	- **Fork**: 64 children in 544.8 ms (**8.5 ms/fork** — metadata + shared bytes, no state copy); 8 decoded concurrently with distinct seeds → 8 distinct continuations; parent unperturbed.
+    20	- **Mutate**: `decay(alpha=0.2)` produced `agent@3` with recorded provenance (`rule='decay' <- agent@2`); its continuation differs while the parent's remains bit-exact. This is the operation no prefix-keyed cache can represent: `agent@3` is not `f(any token prefix)`.
+--- README.md Status section lines 244-254 ---
+   244	## Status
+   245	
+   246	**M3—Durable State API:** named, versioned, forkable, mutable state handles over
+   247	a tiered StateStore (GPU slot, pinned host, and NVMe safetensors). Measured demos
+   248	include 2,000 hibernated sessions at 2.29 MiB each, p50 8.2 ms / p99 9.5 ms
+   249	resume, process-restart recovery, 64-way fork, and provenance-recorded mutation.
+   250	
+   251	**M2—native RWKV-7 serving:** a no-phases scheduler drives FLA-kernel decode
+   252	from arena state slots with continuous batching and per-batch-bucket CUDA
+   253	graphs. A 1.5B model measured 8.1k tok/s at B256 on an RTX 4090.
+   254	
+--- paper/CLAIMS.md: promoted C2/C3 rows + excluded p99/10x lines ---
+12:| C2 | The M2 checkpoint reports 8,077 tok/s for RWKV-7 1.5B at B256 on one RTX 4090 with 12.19 MiB state per slot. | `experiments/results/m2_engine_bench.md`, SHA-256 `899d26677dadcf27f1443a510a0b6efc20e5c7244ab87e91486d4aa41e508df7`, commit `cb421afc185b3acdbbf4d0239c0a6ea16018671f`. | Single 64-step timing; no repeats, confidence interval, model hash, or matched incumbent. CUDA graph captures model forward only. |
+13:| C3 | The M3 demonstration created 2,000 191M snapshots at 2.29 MiB each, reported median warm/disk-backed restore of 8.2/8.6 ms, and reproduced 16/16 interrupted continuations. | `experiments/results/m3_results.md`, SHA-256 `15d336e000c7c4a9d6fd7e35938d75dcae7d28af16e3ea57f7a0c32520b951f9`, commit `9e129f5ba74b9e361a2ed157ba8573a46ada3efa`. | Single run. Disk-backed reload did not flush OS page cache. Exclude reported p99. Fingerprint is layout/dtype only. |
+21:- Any workload-independent or engine-wide “10x faster” statement.
+35:- Production GPU-to-host-to-NVMe tiering, live migration, automatic checkpoint
+39:- Trainer/server parity. The M3 experiment reports 0/8 rollouts within 5e-3.
+
+### (3) wkvm chat API — code refusals
+1819:        raise ValueError("logprobs is not supported")
+1823:        raise ValueError("per-request stop sequences are not supported")
+2057:    if body.get("tools") not in (None, []):
+2060:        raise ValueError("tool_choice is not supported")
+2062:        raise ValueError("per-request stop sequences are not supported")
+94:                "per-request stop_token_ids must be empty or equal to the "
+--- README chat contract lines 50-69 ---
+### Current chat contract
+
+- Blocking and streaming `/v1/chat/completions`, `/v1/models`, `/health`, and
+  `/metrics` are available.
+- Requests must use text messages, `temperature=0`, `top_p=1`, and `n=1`;
+  tools, images, logprobs, and custom stop sequences are not supported.
+- The helper configures Open WebUI's `parent-token-v1` provider headers. WKVM
+  binds each parked state to the model, user, chat, current assistant message,
+  previous assistant parent, exact visible history, and an internal raw-token
+  digest. Edits, branches, stale parents, or missing metadata restart safely.
+- `parent-token-v1` is an explicit stateful contract: WKVM preserves the exact
+  provider-generated token history, including hidden or noncanonical tokens,
+  instead of pretending that a decode-to-text-to-token round trip is identical.
+- WKVM mirrors Open WebUI 0.10.2's persisted outer-whitespace normalization,
+  and the helper disables reasoning-tag extraction. Content-changing filters
+  or edits fail the visible-history check and safely start a fresh state.
+- Both services bind to loopback. WKVM currently has no API-key enforcement,
+  so do not expose port 8000 to a LAN or the Internet.
+- This UI path exercises approximate Gemma routed-span mode. WKVM's native
+  RWKV-7 durable-state engine and API are separate paths.
+
+### (4) wkvm activity / branches
+--- main atom last commits (quota-free) ---
+2026-08-02T03:15:22Z | Publish rendered WKVM technical report
+2026-08-02T03:11:04Z | Add arXiv-ready WKVM technical report
+2026-07-23T00:23:05Z | Add normal-EOS B32 chat profile
+2026-07-22T18:51:43Z | Publish audited Open WebUI B32 profile
+--- branch heads/dates ---
+origin/main: 93e7a8714588875b2766160ce6aae5f7b17be933 2026-08-02T11:15:22+08:00 Publish rendered WKVM technical report
+origin/demo/open-webui-video: 5a5fda5ceb48eacded5098fe9dc3b6a05e356776 2026-07-17T13:29:03+08:00 Add validated Open WebUI concurrency demo
+origin/m4-qwen35-hybrid: 241affd2f6d172f8ee1e4f492e1badbc65ef68ac 2026-09-10T11:18:07+08:00 Docs: R=144 RULER-lite grid for the routed bank
+--- m4 branch diffstat vs main (tail) ---
+ wkvm/server.py                                     |   28 +-
+ wkvm/store.py                                      |  132 ++-
+ 61 files changed, 12086 insertions(+), 116 deletions(-)
+--- wkvm no CI config tracked: [0 files]
+--- live-migrate: server.py routes (no migrate endpoint) ---
+"""Minimal /v1/states + /v1/generate HTTP layer (stdlib only).
+
+This is the API *shape* of the Durable State design, not a production
+server: one engine, one lock, requests served synchronously. The point it
+demonstrates is that every session-lifecycle operation — create, resume,
+fork, mutate, persist — is a handle operation with O(state-size) cost.
+
+  POST   /v1/states                {"prompt_ids": [...], "name": "..."}
+  GET    /v1/states                list records
+  GET    /v1/states/<handle>       metadata
+  POST   /v1/states/<handle>/fork  {"name": "..."}
+  POST   /v1/states/<handle>/mutate {"rule": "...", "params": {...}}
+  POST   /v1/states/<handle>/persist
+  DELETE /v1/states/<handle>
+  POST   /v1/generate              {"state": handle | "prompt_ids": [...],
+                                    "max_tokens": n, "temperature": t,
+                                    "seed": s, "save_as": name?}
+
+--- ROADMAP.md Deferred/refused line ---
+52:- Speculative decoding via N+1 state slots (only if it earns its complexity), P/D disaggregation (one transport, one RDMA write per session), TP (manual sharding in the importer when needed).
+
+### (5) RWKV-Megatron branches — ls-remote + per-branch last commit (quota-free)
+--- ls-remote heads (@ 2026-11-05T20:16:37Z UTC) ---
+69aa22a55f2858f302bf60b42213c8b23da4c642  refs/heads/2026-10-10
+2fab35ce71ff1fc3d86aa4faa866bd1343879965  refs/heads/codex/qwen-rwkv28b-distill
+240d9a463386b4bd07302539a25a56a2a21d0649  refs/heads/codex/rwkv7-cp
+34e447cdc186a2763ae3e56f3b776772be8f719c  refs/heads/muon
+--- HEAD symref (default branch) ---
+ref: refs/heads/muon	HEAD
+34e447cdc186a2763ae3e56f3b776772be8f719c	HEAD
+--- per-branch last commit (from shallow fetch + atom) ---
+origin/muon: 34e447cdc186a2763ae3e56f3b776772be8f719c | 2026-07-06T17:09:04+08:00 | chore: refresh README and update tracked assets
+origin/2026-10-10: 69aa22a55f2858f302bf60b42213c8b23da4c642 | 2026-10-15T14:52:36+08:00 | Update Megatron and FLA release submodules
+origin/codex/rwkv7-cp: 240d9a463386b4bd07302539a25a56a2a21d0649 | 2026-10-22T16:18:50+08:00 | Archive CP validation, TP precision findings, and branch isolation records
+origin/codex/qwen-rwkv28b-distill: 2fab35ce71ff1fc3d86aa4faa866bd1343879965 | 2026-10-30T09:30:24+08:00 | Revert "feat(distill): stop JSONL training at the finite epoch boundary"
+
+### (6) RWKV-Megatron 28B training evidence
+--- distill branch HEAD (2026-10-30) ---
+2fab35ce71ff1fc3d86aa4faa866bd1343879965
+2026-10-30T09:30:24+08:00
+Revert "feat(distill): stop JSONL training at the finite epoch boundary"
+--- distill branch: tracked 28B configs ---
+configs/config-qwen-28b-distill-tp2-sp-pp2-cp2-offload50-smoke.yaml
+configs/config-qwen-28b-distill-tp2-sp-pp4-balanced-smoke.yaml
+configs/config-qwen-28b-distill-tp4-sp-pp2-smoke.yaml
+--- config 28B #1 header (real 28B capacity claim) ---
+# Real 28B, 8xH800, seq4096, micro1/global2. Capacity tested with local top100 targets.
+# Online Qwen availability and checkpoint resume need separate validation.
+accumulate_allreduce_grads_in_fp32: true
+--- config 28B #2 header (measured 30-step numbers) ---
+# 8xH800: TP2 x PP4 + SP, layer split [18,26,26,18], no CPU offload.
+# Requires global-layer checkpoint loader fix. 30 full-context local-target steps passed.
+# Peak 75063 MiB; mean 2.513 s/step. Online Qwen and checkpoint resume remain separate checks.
+accumulate_allreduce_grads_in_fp32: true
+--- config 28B model geometry + checkpoint + teacher ---
+9:auto_train_iters: false
+30:  num_layers: 88
+31:  hidden_size: 5120
+32:  num_attention_heads: 80
+34:  ffn_hidden_size: 17408
+52:  recompute_num_layers: 1
+57:load_pretrained_rwkv: /hikscale/models/XiaoKe/rwkv7_28b_88_mapped.pt
+116:rwkv_teacher_model: Qwen3.8-27B
+144:train_iters: 30
+152:wandb_project: rwkv-qwen-distill-28b
+--- capacity probe docstring (explicit 'does not certify model quality') ---
+"""Compare 28B/4096-token distillation layouts on eight GPUs with local targets.
+
+The student, data, shared pool, loss and Adam use the production path. Synthetic
+top100 targets isolate capacity from the availability of the online teacher.
+This probe does not save hundreds of GB of checkpoints or certify model quality.
+"""
+--- distill branch: docs/ + training-smoke/ tracked count (gitignored) ---
+tracked docs/+training-smoke/: 0
+--- distill branch .gitignore tail ---
+# Local training artifacts and planning notes
+/training-smoke/
+/docs/
+/todolist.txt
+
+--- CP branch HEAD + TESTING_STATUS '28B实际跑通的配置' table ---
+240d9a463386b4bd07302539a25a56a2a21d0649 | 2026-10-22T16:18:50+08:00 | Archive CP validation, TP precision findings, and branch isolation records
+    17	## 28B实际跑通的配置
+    18	
+    19	模型：`/hikscale/models/XiaoKe/rwkv7_28b_88_mapped.pt`（88层，hidden5120，80heads，FFN17408，日志约27.46B）。
+    20	数据：`/mnt/data/Datasets/0056_qwen3.8/0056_qwen3.8_text_document`，95/5划分；tokenizer：`/hikscale/models/Qwen/Qwen3.8-27B`。
+    21	
+    22	下表均为SP开启、BF16计算、FP32梯度及Adam m/v、full recompute、MB1/GB2、30步训练＋固定验证。显存是nvidia-smi采样的最高整卡值，耗时是step>2中位数，不能作为长期稳定性或单项优化的受控性能结论。
+    23	
+    24	| 布局 | seq | 优化器存储 | 整卡峰值 | 步耗时 | 最终验证CE | 原始结论 |
+    25	|---|---:|---|---:|---:|---:|---|
+    26	| TP4/PP2/CP1 | 4096 | 全GPU，完整FP32主权重 | 75829MiB / 74.05GiB | 2.0712s | 7.497223 | [报告](training-smoke/audit/28b-oom-20261022/TP4-PP2-CP1-NO-OFFLOAD.md) |
+    27	| TP2/PP4/CP1 | 4096 | 全GPU，完整FP32主权重 | 79969MiB / 78.09GiB | 2.40035s | 7.499003 | [报告](training-smoke/audit/28b-oom-20261022/TP2-PP4-CP1-NO-OFFLOAD.md) |
+    28	| TP2/PP2/CP2 | 4096 | 50% Adam CPU offload，完整FP32主权重 | 79595MiB / 77.73GiB | 4.5298s | 7.502898 | [报告](training-smoke/audit/28b-oom-20261022/RESULTS.md) |
+    29	| TP2/PP2/CP2 | 2048 | 全GPU，TE int16主权重余数 | 80797MiB / 78.90GiB | 5.6694s | 7.754669 | [报告](training-smoke/audit/28b-oom-20261022/CP2-NO-OFFLOAD.md) |
+    30	
+    31	注意：
+    32	
+    33	- TP2/PP2/CP2的完整FP32主权重全GPU方案常驻约81.10GiB/卡，超过本机容量，首次Adam状态初始化OOM。
+    34	- CP2全GPU余数模式4K试验仍OOM（首次更新或第2步前向/CE）；只有上述2K在限制NCCL、逐步empty_cache下完成30步，余量很小。
+    35	- 余数是TE已有功能，余数本身在GPU；没有把梯度和Adam矩降为低精度。CP1及50% offload模式未启用余数存储。
+    36	- 50% offload已有保存step3、新进程续训step4/5的28B日志一致性验证；严格小模型状态逐位对照也通过。不能把它当作余数模式、TP2/PP4或完整28B状态的逐位认证。
+    37	- 这些28B短测没有上传W&B；此前2.7B长跑和质量评测有W&B记录。
+--- CP branch machine-readable 28B result (TP4/PP2/CP1) ---
+{
+  "status": "passed",
+  "exit_code": 0,
+  "train_steps": 30,
+  "seq_length": 4096,
+  "micro_batch_size": 1,
+  "global_batch_size": 2,
+  "tp": 4,
+  "pp": 2,
+  "cp": 1,
+  "sequence_parallel": true,
+  "optimizer_cpu_offload": false,
+  "optimizer_offload_fraction": 0.0,
+  "master_parameters_and_moments_all_cuda": true,
+  "median_step_ms_after_step2": 2071.2,
+  "max_cuda_allocated_gib": 67.98236608505249,
+  "sampled_gpu_peak_mib": 75829,
+  "sampled_gpu_peak_mib_by_rank": {
+    "0": 75559,
+    "1": 75559,
+    "2": 75559,
+    "3": 75559,
+    "4": 75829,
+    "5": 75829,
+    "6": 75829,
+--- CP branch RESULTS.md long-run + caveat lines ---
+    54	| 配置 | 训练/验证 | 结果 | 稳态步速中位数 | 训练审计CUDA allocated峰值 |
+    55	|---|---|---|---:|---:|
+    56	| TP4/PP2/CP1/SP，无offload | 10步+固定验证 | 无NaN/跳步/OOM，末步CE8.940693，验证CE8.548809 | 2.077s | 67.982GiB |
+    57	| TP2/PP2/CP2，无offload | 首次更新 | Adam状态分配OOM | — | 分配未完成 |
+    58	| TP2/PP2/CP2/SP，50%offload，初始化修复 | 30步+每10步固定验证 | 无NaN/跳步/OOM，首步CE12.42638，末步CE7.762780；验证CE8.548290→7.841588→7.502898 | 4.530s | 64.696GiB |
+    59	
+    60	时间统计为step>2的日志中位数；每步global tokens=8192。
+    61	表内峰值是审计点捕获的PyTorch训练max_memory_allocated，不含NCCL等非PyTorch显存；`gpu.csv`保留每秒nvidia-smi采样，reserved与实际显卡占用会更高。CP2的nvidia-smi采样峰值为79595MiB/卡（约77.73GiB）；分阶段逐卡峰值见`gpu-summary.json`。
+    62	第一行和第三行改变了TP布局、CP、offload，不能用它们的耗时差直接量化CP开销，或视为严格数值等价对照。
+    63	30步短跑是功能/有限数值验证，不能替代长期收敛测试。
+--- CP branch: 2.7B long run (not 28B) + TP divergence lines ---
+     1	## TP精度差异：事实、结论和暂停决定
+     2	
+     3	原始两条30步轨迹第26步梯度范数21.372573与27.448297，相对差约28.42%，loss接近。输入哈希、独立FP64范数、确定性复跑、同权重交叉重放均已完成。
+     4	
+     5	- 固定TP2只改PP4→PP2，2470个参数平方范数完全一致；固定WKV输入及入边梯度，三层真实4K的40heads与2×20heads输出/六路梯度逐位一致。
+     6	- 最早前向不一致在第0层Attention行并行`linear_proj`。之前的LayerNorm、r/k/v、WKV六路输入及输出、GroupNorm、gate、投影输入均逐位一致。
+     7	- 同输入同权重下，生产BF16投影输出的TP2/TP4相对L2差0.35718%；BF16部分结果改FP32求和后为0.30488%；部分结果与求和均用FP32、最后转BF16后为0.0035344%。局部BF16矩阵乘法和独立NCCL重放均逐位复现训练。
+     8	- 后续差异在MB0/token0的少数近抵消head上放大。第15层head62的r·k从-0.02264变成-0.00969，而逐项乘积绝对值合计约29.8。屏蔽该token直接loss后，同权重范数差由约28.10%降至8.66%。这是诊断消融，不是生产修改。
+     9	- 所测GroupNorm/receptance backward与局部独立FP64公式最大差0.385%/0.427%，未发现本次PP/范数统计/WKV切分逻辑错误。不能证明所有路径无错、两布局长期等价，或把全部28.4%量化归因于第0层一次投影；反向数值贡献及完整28B高精度参考仍未完成。
+    10	- 该差异影响真实梯度裁剪。**用户决定暂不做精度修复**，当前没有把生产TP通信/部分结果切到FP32。
+    11	| CP4半天长跑 | [报告](training-smoke/audit/cp4-longrun-20261021/RESULTS.md)：**2.7B，非28B**，TP2/PP1/CP4+SP、16K，12小时49189步、约16.118亿token，无日志NaN/跳步；固定验证loss13.49113→4.067253；不是CP1收敛等价试验 |
+    12	| 长跑模型质量 | [报告](training-smoke/audit/cp4-quality-20261022/RESULTS.md)：heldout PPL显著下降，但生成仍重复，通用基准无一致提升，不能归因为CP |
+    13	| 数据来源 | [来源审计](training-smoke/audit/cp4-quality-20261022/data-source-audit.json)：0056为英文网页混合文本；确切上游集合未知，不能直接命名为FineWeb/CommonCrawl |
+    14	
+    15	2.7B模型：`/mnt/data/Models/RWKV-7/rwkv7-qwen-vocab-2.7b-from-28b.pt`。
+    16	长跑W&B：[cp4-halfday-20261021](http://dian.sea-group.org:9098/mobius/Mobius-r7-28b-qwen-pretrain/runs/cp4-halfday-20261021)。
+--- CP branch tracked training-smoke file count ---
+1041 files
+--- CP branch tracked 28B configs ---
+configs/config-rwkv7-28b-qwen3.8-0056-cp2-no-offload-smoke.yaml
+configs/config-rwkv7-28b-qwen3.8-0056-cp2-offload.yaml
+configs/config-rwkv7-28b-qwen3.8-0056-cp2-smoke.yaml
+configs/config-rwkv7-28b-qwen3.8-0056-day1-cp2.yaml
+configs/config-rwkv7-28b-qwen3.8-0056-tp2-pp4-no-offload-smoke.yaml
+--- no CI on any Megatron branch: [0 repo-level .github files]
+
+### (6b) Megatron 14B config / 26,892 tok/s / 77 tests claim
+--- muon default branch 14B config exists? ---
+config-mobius-r7-pretrain-14b-megatron.yaml
+--- grep 26892 / tok\/s across muon tracked tree ---
+--- muon README lines count: 280 ---
+
+### (7) Helicopter — existence probes (all quota-free except one noted API call)
+--- GitHub HTTP probes (@ 2026-11-05T20:16:49Z UTC) ---
+404  https://github.com/rwkv-rs/Helicopter
+404  https://github.com/rwkv-rs/helicopter
+404  https://github.com/rwkv-rs/scoreboard
+404  https://raw.githubusercontent.com/rwkv-rs/Helicopter/main/README.md
+404  https://github.com/rwkv-rs/Helicopter.atom
+200  https://github.com/orgs/rwkv-rs/repositories?type=all
+200  https://github.com/rwkv-rs/browsecomp-plus-eval
+200  https://github.com/rwkv-rs/rwkv-skills
+--- unauthenticated api.github.com single call (1 of allowed 4) ---
+HTTP 404  https://api.github.com/repos/rwkv-rs/Helicopter
+{
+  "message": "Not Found",
+  "documentation_url": "https://docs.github.com/rest/repos/repos#get-a-repository",
+  "statu
+--- rwkv-rs public repos extracted from org page (grep names) ---
+/rwkv-rs/antidoom-rwkv /rwkv-rs/any2rwkv /rwkv-rs/browsecomp-plus-eval /rwkv-rs/chinese-babylm-eval-pipeline /rwkv-rs/codex-compact-router /rwkv-rs/evalscope-rwkv /rwkv-rs/fla-rwkv /rwkv-rs/FlashRWKV2 /rwkv-rs/hf-adapter /rwkv-rs/lighteval-rwkv /rwkv-rs/llm-compressor-rwkv /rwkv-rs/lm-evaluation-harness-rwkv /rwkv-rs/Megatrwkv-Bridge /rwkv-rs/rwkv7-ascend-npu /rwkv-rs/RWKV-AUTODECO /rwkv-rs/RWKV-LH /rwkv-rs/rwkv-rs /rwkv-rs/rwkv-rs-stable /rwkv-rs/rwkv-rs-test /rwkv-rs/RWKV-Scout /rwkv-rs/rwkv-skills /rwkv-rs/skyrl-rwkv /rwkv-rs/tokenizers-rwkv /rwkv-rs/torchtitan-rwkv /rwkv-rs/torchtitan-rwkv-old /rwkv-rs/transformers-rwkv /rwkv-rs/verl-rwkv /rwkv-rs/vllm-rwkv /rwkv-rs/wandb-rs /rwkv-rs/wx-cli 
+--- Codeberg API search helicopter (top hits) ---
+['eatincrispies/NFSMWHelicopterOptions', 'sascha-lurz/unity-helicopter-prototype', 'cabzim/victoria-falls-helicopter-operators-comparison-gui']
+--- HuggingFace search helicopter: no RWKV/scoreboard entries (see 39_residual_checks) ---
+
+--- rwkv-skills main README line 8 (the Helicopter claim) ---
+Third-party benchmark data and evaluation artifacts stay out of the source package. The public scoreboard is maintained separately in the Helicopter repository.
+--- when was that README line introduced? (main atom, 6c9282b 2026-08-09 consolidation) ---
+2026-08-09T04:38:10Z c1743218c34f320bb4ee878feb41bc2a84e1ebad Remove duplicate package and vendor development assets
+2026-08-09T04:18:27Z f5765f4c1872e807cfa419919309f3cf49a9f945 Merge organization main history, keeping local runtime
+2026-08-09T04:14:31Z 6c9282b4fe5ea89f73f75474e7b1de9a358e30ca Consolidate local evaluation runtime on main
+--- older README (2026-07-20, sha 54639619) — no Helicopter line, scoreboard API vars only ---
+58:Open `http://localhost:3000` in development. Set `SCOREBOARD_API_BASE_URL` when the FastAPI backend
+64:NEXT_PUBLIC_BASE_PATH=/new-eval SCOREBOARD_API_BASE_URL=http://127.0.0.1:7860 pnpm build
+65:NEXT_PUBLIC_BASE_PATH=/new-eval SCOREBOARD_API_BASE_URL=http://127.0.0.1:7860 pnpm start
+
+--- scoreboard machinery DOES exist in rwkv-skills (vllm-rwkv branch README) ---
+The frontend (`client/`) and backend (`src/`) are strictly separated; third-party benchmark data and evaluation artifacts stay out of the source package.
+
+- `client/`: dashboard frontend (Next.js + React); `/api/*` is proxied to the FastAPI backend by Next rewrites.
+- `src/`: backend Python package
+  - `src/eval/tasks/`: per-domain evaluation runners/pipelines — `knowledge`, `maths`, `coding`, `instruction_following`, `function_calling`, `agent_bench`.
+  - `src/eval/scheduler`: CLI for queueing eval jobs, GPU/remote-worker detection, and dispatch.
+  - `src/eval/datasets`: data structures, JSONL loaders, and per-dataset preppers.
+  - `src/eval/{evaluating,evaluators,metrics,results,checkers}`: evaluation engine and metric/result handling.
+  - `src/infer`: remote OpenAI/vLLM inference client, sampling configuration, and constraints.
+  - `src/dashboard/{web,core}`: dashboard backend (FastAPI web layer + framework-agnostic core logic).
+  - `src/db`: PostgreSQL data layer.
+  - `src/plugins/lexical_chunk_router`: lexical chunking / tool-routing plugin.
+`results/space/score_index.jsonl` and pulls eval records / completion context directly from the
+`PG_*` Postgres database.
+
+```bash
+# 1. Backend - serves the JSON API on :7860
+cp .env.example .env            # fill in PG_* connection settings
+rwkv-skills-dashboard           # or: python -m src.bin.run_dashboard --reload
+
+# 2. Frontend (development) - Next.js server on :3000, rewrites /api -> :7860
+cd client
+pnpm install
+pnpm dev
+```
+
+Open `http://localhost:3000` in development. Set `SCOREBOARD_API_BASE_URL` when the FastAPI backend
+is not on `http://127.0.0.1:7860`. For deployment behind `/new-eval`, also set
+`NEXT_PUBLIC_BASE_PATH=/new-eval`:
+
+```bash
+cd client
+NEXT_PUBLIC_BASE_PATH=/new-eval SCOREBOARD_API_BASE_URL=http://127.0.0.1:7860 pnpm build
+NEXT_PUBLIC_BASE_PATH=/new-eval SCOREBOARD_API_BASE_URL=http://127.0.0.1:7860 pnpm start
+```
+
+The dashboard also includes an **admin panel** (the "管理面板" tab) that drives the eval scheduler:
+start / pause / resume / cancel runs, watch the live job queue and progress, and view GPU /
+remote-worker telemetry. It wraps `SchedulerAdminController` under `/api/admin/*`.
+--- rwkv-skills main: docs/function_calling_open_leaderboard.zh-CN.md + .env.example dashboard lines ---
+# Evaluation dashboard (FastAPI API + Next.js frontend).
+#   Backend:  rwkv-skills-dashboard            (serves JSON API on :7860)
+#   Frontend: cd client && pnpm dev             (Next.js server on :3000, rewrites /api -> :7860)
+#   Optional deploy prefix: NEXT_PUBLIC_BASE_PATH=/new-eval
+# Optional overrides for the leaderboard score index location:
+# RWKV_SPACE_SCORE_INDEX=/path/to/score_index.jsonl
+# RWKV_SPACE_RESULTS_DIR=/path/to/results
+--- skyrl-rwkv feat/heli-r00-training-eval branch: last commits (quota-free atom) ---
+entries: 20
+2026-10-28T08:54:46Z | fix(rwkv): resume bounded training and evaluation phases
+2026-10-28T07:56:20Z | feat(rwkv): reuse full baseline responses for probe scoring
+2026-10-28T04:56:49Z | fix(rwkv): bound evaluation graph preparation
+2026-10-24T19:45:23Z | fix(rwkv): preserve padded sequence length during chunking
+2026-10-24T19:45:23Z | feat(rwkv): align SAO launcher with async value training
+--- browsecomp-plus-eval README: separate eval package, no Helicopter/scoreboard refs ---
+# BrowseComp-Plus RWKV evaluation package
+
+This directory is a self-contained source package for reproducing the current
+BrowseComp-Plus evaluation path with RWKV-vLLM and the parallel-candidate
+router. It is a physical extraction: the evaluator and vendored vLLM sources
+are copied into this directory and do not import files from the parent checkout.
+0
+
+### (8) §7 license spot-checks
+--- rwkv_lightning (RWKV-Vibe/rwkv_lightning): main tree files (no LICENSE) ---
+"name":"main" "name":"API_servers" "name":"infer" "name":"model_load" "name":"state_manager" "name":"test" "name":".gitignore" "name":"README.md" "name":"README.md.bak" "name":"app.py" "name":"app_big_batch.py" "name":"benchmark.py" "name":"test_gemm.py" "name":"webui_rwkv.py" 
+raw LICENSE main: 404; pyproject main: 404; README license mentions: 0
+--- FlashRWKV2 (rwkv-rs/FlashRWKV2): LICENSE http=200 bytes=1110 ---
+MIT License
+
+Copyright (c) 2026 MoonshotAI
+--- json2binidx_tool (Abel2076): main tree files (no LICENSE) ---
+"name":"main" "name":"data" "name":"tools" "name":"20B_tokenizer.json" "name":"README.md" "name":"requirements.txt" "name":"rwkv_vocab_v20230424.txt" "name":"sample.jsonl" 
+raw LICENSE main: 404; README license mentions: 0
+--- toolcaller-bench (Codeberg scarletwolf_ai/rwkv-toolcaller-bench): raw LICENSE ---
+HTTP 200 bytes=11358
+
+                                 Apache License
+--- rwkv-skills (rwkv-rs/rwkv-skills): no LICENSE ---
+raw LICENSE: 404; pyproject license line: 0

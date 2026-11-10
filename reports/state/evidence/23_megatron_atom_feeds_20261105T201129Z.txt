@@ -1,0 +1,85 @@
+=== Megatron branch atom feeds @ 2026-11-05T20:11:29Z ===
+===== branch: codex/qwen-rwkv28b-distill =====
+2026-10-30T01:30:24Z | Revert "feat(distill): stop JSONL training at the finite epoch boundary"
+2026-10-30T01:17:50Z | feat(distill): stop JSONL training at the finite epoch boundary
+2026-10-28T11:48:34Z | fix(distill): resume long runs and retain teacher outage diagnostics
+2026-10-28T08:05:56Z | feat(distill): supervise 28B PP4 stability runs with sparse checkpoints
+2026-10-28T07:50:40Z | fix(rwkv): load correct global layers for uneven pipeline partitions
+2026-10-28T07:39:42Z | feat(distill): add tested 28B training layouts and capacity probes
+2026-10-28T06:48:20Z | feat(distill): support CP2 continuous stability runs and configurable…
+2026-10-28T02:25:59Z | test(distill): run real 2.7B CP training with boundary-logit alignment
+2026-10-28T02:20:24Z | test(distill): cover CP4 teacher outage checkpoints and deterministic…
+2026-10-28T02:13:07Z | test(distill): validate CP4 and CP8 precision and exact checkpoint re…
+2026-10-28T01:59:49Z | feat(distill): add 4096-token CP2 and CP4 teacher pool training configs
+2026-10-27T10:09:31Z | feat(distill): allow teacher pool concurrency selection for long runs
+2026-10-27T07:50:36Z | feat(distill): configure longrun sequence batch size and recomputation
+2026-10-27T07:35:13Z | fix(distill): report emergency checkpoint exits as failed in W&B
+2026-10-27T07:23:01Z | fix(distill): checkpoint complete steps before exiting on teacher dat…
+2026-10-27T06:57:59Z | fix(distill): wait through transient teacher outages with a bounded r…
+2026-10-27T06:11:43Z | fix(distill): bound fixed validation teacher prefetch to one round
+2026-10-27T03:13:12Z | feat(distill): run continuous stability acceptance with pool telemetry
+2026-10-27T03:09:26Z | fix(distill): retain pooled samples until all readers acknowledge rec…
+2026-10-27T01:52:42Z | feat(distill): evaluate final checkpoints on frozen validation tokens
+===== branch: muon =====
+2026-07-06T09:09:04Z | chore: refresh README and update tracked assets
+2026-07-03T07:56:35Z | Clean stale submodule and use relative submodule URLs
+2026-05-22T07:49:37Z | Fix RWKV7 TimeMix dist ckpt sharding metadata
+2026-05-19T07:03:40Z | Harden RWKV checkpoint sample shard selection
+2026-05-18T01:33:46Z | Revert RWKV6 SP tag changes and narrow tests to RWKV7
+2026-05-15T08:03:06Z | Add RWKV sequence-parallel param tag checks
+2026-05-15T07:57:17Z | Fix sequence-parallel grad sync tags for RWKV params
+2026-05-15T07:27:18Z | Update Megatron submodule after probe removal
+2026-05-15T07:27:00Z | Remove temporary RWKV7 training probes
+2026-05-15T06:56:24Z | Fix RWKV7 SP TP+PP regression test shape assertion
+2026-05-15T06:53:39Z | Fix RWKV7 SP TP+PP regression test packing
+2026-05-15T06:41:28Z | Update Megatron submodule for RWKV7 probe filters
+2026-05-15T06:41:10Z | Add RWKV7 static contract audit and probe filters
+2026-05-15T06:25:48Z | Update Megatron submodule for RWKV7 SP+PP fixes
+2026-05-15T06:25:17Z | Add RWKV7 SP+PP training probes and update SP test
+2026-05-14T09:40:18Z | Add RWKV7 SP TP+PP v0 contract regression test
+2026-05-14T08:43:05Z | Guard unsupported RWKV7 rwkv-lm debug reference path
+2026-05-14T08:41:47Z | Remove temporary RWKV7 GroupNorm runtime check
+2026-05-14T08:33:33Z | Tie RWKV7 GroupNorm epsilon to config
+2026-05-14T08:18:30Z | Fix RWKV7 GroupNorm epsilon handling
+===== branch: 2026-10-10 =====
+2026-10-15T06:52:36Z | Update Megatron and FLA release submodules
+2026-10-15T06:52:36Z | Validate RWKV-LM head layout before loading
+2026-10-12T04:39:59Z | Shard RWKV7 value residuals across SP pipeline stages
+2026-10-10T07:59:24Z | Add tested RWKV7 3B reference configuration and usage docs
+2026-10-10T07:30:20Z | Fix RWKV FP8 dispatch and validate single-GPU resume
+2026-10-10T07:00:57Z | Add configurable fixed validation sample groups
+2026-10-10T06:42:00Z | Evaluate unused FLA RWKV7 operators and WKV recomputation
+2026-10-10T06:21:01Z | Add configurable RWKV L2Wrap and YAML key fusion controls
+2026-10-10T06:02:40Z | Use fused FP32 key preparation with Torch fallback
+2026-10-10T03:53:47Z | Evaluate FP32 key fusion accuracy and single GPU performance
+2026-10-10T03:27:58Z | Diagnose BF16 precision and validate FP32 value-gradient accumulation
+2026-10-10T02:33:55Z | Align precision reference with BlinkDL RWKV7 source and CUDA operators
+2026-10-10T02:04:55Z | Diagnose RWKV7 BF16 v0 gradient addition grouping
+2026-10-10T01:48:23Z | Update FLA to the October 10 upstream snapshot
+2026-10-10T01:16:15Z | Update RWKV7 upstream dependencies and unify TE LayerNorm
+2026-07-06T09:09:04Z | chore: refresh README and update tracked assets
+2026-07-03T07:56:35Z | Clean stale submodule and use relative submodule URLs
+2026-05-22T07:49:37Z | Fix RWKV7 TimeMix dist ckpt sharding metadata
+2026-05-19T07:03:40Z | Harden RWKV checkpoint sample shard selection
+2026-05-18T01:33:46Z | Revert RWKV6 SP tag changes and narrow tests to RWKV7
+===== branch: codex/rwkv7-cp =====
+2026-10-22T08:18:50Z | Archive CP validation, TP precision findings, and branch isolation re…
+2026-10-22T08:13:39Z | Enable RWKV7 CP with sequence parallelism and validated 28B training …
+2026-10-21T07:24:54Z | Add RWKV7 context parallel training and numerical validation
+2026-10-15T06:52:36Z | Update Megatron and FLA release submodules
+2026-10-15T06:52:36Z | Validate RWKV-LM head layout before loading
+2026-10-12T04:39:59Z | Shard RWKV7 value residuals across SP pipeline stages
+2026-10-10T07:59:24Z | Add tested RWKV7 3B reference configuration and usage docs
+2026-10-10T07:30:20Z | Fix RWKV FP8 dispatch and validate single-GPU resume
+2026-10-10T07:00:57Z | Add configurable fixed validation sample groups
+2026-10-10T06:42:00Z | Evaluate unused FLA RWKV7 operators and WKV recomputation
+2026-10-10T06:21:01Z | Add configurable RWKV L2Wrap and YAML key fusion controls
+2026-10-10T06:02:40Z | Use fused FP32 key preparation with Torch fallback
+2026-10-10T03:53:47Z | Evaluate FP32 key fusion accuracy and single GPU performance
+2026-10-10T03:27:58Z | Diagnose BF16 precision and validate FP32 value-gradient accumulation
+2026-10-10T02:33:55Z | Align precision reference with BlinkDL RWKV7 source and CUDA operators
+2026-10-10T02:04:55Z | Diagnose RWKV7 BF16 v0 gradient addition grouping
+2026-10-10T01:48:23Z | Update FLA to the October 10 upstream snapshot
+2026-10-10T01:16:15Z | Update RWKV7 upstream dependencies and unify TE LayerNorm
+2026-07-06T09:09:04Z | chore: refresh README and update tracked assets
+2026-07-03T07:56:35Z | Clean stale submodule and use relative submodule URLs

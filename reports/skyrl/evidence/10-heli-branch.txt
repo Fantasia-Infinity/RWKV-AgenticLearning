@@ -1,0 +1,98 @@
+# 采集时间: 2026-11-05T20:23:29Z (UTC)
+# 分支: origin/feat/heli-r00-training-eval vs origin/main
+
+## heli 分支相对 main 的提交（git log --oneline main..heli）
+785a231a fix(rwkv): resume bounded training and evaluation phases
+0c584e4b feat(rwkv): reuse full baseline responses for probe scoring
+c6fa5248 fix(rwkv): bound evaluation graph preparation
+d9661360 fix(rwkv): allow exact SFT training steps
+f2414a61 fix(rwkv): bound evaluation startup state memory
+7ad5e438 fix(rwkv): prepare inference profiles before evaluation
+ad26084d fix(rwkv): isolate checkpoint evaluation dependencies
+36da5f80 feat(rwkv): integrate bounded post-training evaluation
+
+## 提交数: main..heli = 8, heli..main = 1
+
+## main 独有的提交
+04a5c985 chore: configure code owners
+
+## 提交日期
+785a231a 2026-10-28T01:54:46-07:00 Caizus <email redacted> fix(rwkv): resume bounded training and evaluation phases
+0c584e4b 2026-10-28T00:56:20-07:00 Caizus <email redacted> feat(rwkv): reuse full baseline responses for probe scoring
+c6fa5248 2026-10-27T21:56:49-07:00 Caizus <email redacted> fix(rwkv): bound evaluation graph preparation
+d9661360 2026-10-27T21:56:49-07:00 Caizus <email redacted> fix(rwkv): allow exact SFT training steps
+f2414a61 2026-10-27T21:42:57-07:00 Caizus <email redacted> fix(rwkv): bound evaluation startup state memory
+7ad5e438 2026-10-27T21:26:43-07:00 Caizus <email redacted> fix(rwkv): prepare inference profiles before evaluation
+ad26084d 2026-10-27T21:06:42-07:00 Caizus <email redacted> fix(rwkv): isolate checkpoint evaluation dependencies
+36da5f80 2026-10-27T20:39:07-07:00 Caizus <email redacted> feat(rwkv): integrate bounded post-training evaluation
+5bda7a65 2026-10-26T16:47:47-07:00 Caizus <email redacted> fix(rwkv): share verified tuning cache with inference workers [skip ci]
+32d6ace3 2026-10-25T20:10:19-07:00 Caizus <email redacted> feat(rwkv): prepare upstream data and filter by eval pass rate
+
+## diff --name-status main..heli
+D	.github/CODEOWNERS
+M	AGENTS.md
+M	examples/train/rwkv/README.md
+M	examples/train/rwkv/eval/prepare.py
+M	examples/train/rwkv/eval/run.sh
+M	examples/train/rwkv/train/flashreinforce/run.sh
+M	examples/train/rwkv/train/launcher_common.sh
+M	examples/train/rwkv/train/opd/run.sh
+M	examples/train/rwkv/train/sft/prepare.py
+M	examples/train/rwkv/train/sft/run.sh
+M	pyproject.toml
+M	skyrl/train/entrypoints/main_base.py
+M	skyrl/train/main_sft.py
+M	tests/train/test_sft_pretokenized.py
+M	uv.lock
+
+## diff --stat main..heli
+ .github/CODEOWNERS                              |   1 -
+ AGENTS.md                                       |   2 +-
+ examples/train/rwkv/README.md                   |  71 ++++++
+ examples/train/rwkv/eval/prepare.py             | 283 +++++++++++++++++++++++-
+ examples/train/rwkv/eval/run.sh                 |  85 +++++--
+ examples/train/rwkv/train/flashreinforce/run.sh |   2 +-
+ examples/train/rwkv/train/launcher_common.sh    |   9 +
+ examples/train/rwkv/train/opd/run.sh            |   2 +-
+ examples/train/rwkv/train/sft/prepare.py        |  45 +++-
+ examples/train/rwkv/train/sft/run.sh            |   4 +-
+ pyproject.toml                                  |   2 +-
+ skyrl/train/entrypoints/main_base.py            |   5 +-
+ skyrl/train/main_sft.py                         |   5 +-
+ tests/train/test_sft_pretokenized.py            |  44 +++-
+ uv.lock                                         |   4 +-
+ 15 files changed, 516 insertions(+), 48 deletions(-)
+
+## heli 关键字（只在代码/文档/脚本中，不用全文件避免 SVG 误伤）
+origin/feat/heli-r00-training-eval:examples/train/rwkv/README.md:70:  "model": "/weights/rwkv7-g1l-13.3b-heli-r01-sft",
+origin/feat/heli-r00-training-eval:examples/train/rwkv/README.md:74:    "SERVED_MODEL_NAME": "rwkv7-g1l-13.3b-heli-r01-sft",
+origin/feat/heli-r00-training-eval:examples/train/rwkv/README.md:79:  "callback": ["/project/.venv/bin/python", "-m", "helicopter", "checkpoint-result", "/run/spec.json", "train"]
+
+## README 差异片段（+ 行为新增；含 helicopter 回调）
++Evaluation defaults to 128 concurrent sequences per worker, matching the OPD
++Before evaluation on a new GPU/model profile, run `eval/run.sh --prepare-flashrwkv2`
++overall budget. Evaluation requires verified profiles with tuning mode `require`
++`LIGHTEVAL_PROJECT` to the pinned producer checkout with its own `.venv`. skyrl-rwkv
++and `PROMPT_TEMPLATE` configure the evaluation. The existing fixed Math avg/pass
++`eval/prepare.py` adapter accepts `--producer-timeout` in seconds (default: 21600).
++SFT, FlashREINFORCE and OPD support a bounded training-and-evaluation lifecycle
++through `RWKV_TRAIN_EVAL=<json-path>` and `TRAIN_MAX_SECONDS=<seconds>`. The launcher
++persists a sibling `.progress.json` with training, publication, evaluation and callback progress.
++training checkpoint. A completed training phase is skipped when only evaluation needs to resume.
++  "model": "/weights/rwkv7-g1l-13.3b-heli-r01-sft",
++    "LIGHTEVAL_PROJECT": "/project/third_party/lighteval-rwkv",
++    "SERVED_MODEL_NAME": "rwkv7-g1l-13.3b-heli-r01-sft",
++  "probe": {"output": "/run/evaluation/probe", "max_samples": 100, "seconds": 3600},
++  "full": {"output": "/run/evaluation/full", "seconds": 21600},
++  "callback": ["/project/.venv/bin/python", "-m", "helicopter", "checkpoint-result", "/run/spec.json", "train"]
++exit 1 ends evaluation normally after a failed gate, and other exit codes fail
++checkpoint. Training and each evaluation have separate wall budgets. Native
++training behavior remains available by leaving `RWKV_TRAIN_EVAL` unset.
+
+## main 分支 antidoom/train.py 中 scoreboard 引用
+44:# Dataset-card source IDs mapped to scoreboard benchmark names and task fields.
+140:    """Select whole tasks from current scoreboard score metadata."""
+142:    for row in read_jsonl(args.scoreboard_records):
+175:        "scoreboard": "https://eval.rwkv.rs/scoreboard",
+182:        "scoreboard_num_samples": sum(row["num_samples"] for row in selected),
+1466:    select_parser.add_argument("--scoreboard-records", type=Path, required=True)

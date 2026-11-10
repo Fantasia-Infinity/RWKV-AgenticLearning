@@ -1,0 +1,8 @@
+# wx-cli check (2026-11-05 UTC)
+## curl status
+HTTP 451  https://github.com/rwkv-rs/wx-cli
+HTTP 451  https://github.com/rwkv-rs/wx-cli/commits.atom
+HTTP 404  https://raw.githubusercontent.com/rwkv-rs/wx-cli/main/README.md
+
+## wx-cli info available only from org listing:
+wx-cli	fork	0★	Apache License 2.0	2026-04-19	WeChat local data CLI with daemon architecture

@@ -1,0 +1,108 @@
+# 采集时间: 2026-11-05T20:22:43Z (UTC)
+# 命令: git -C ~/AlchemyRepos/RWKV-AgenticLearning/repos/skyrl-rwkv grep ... 全部为原始输出
+
+## .github/workflows 文件清单
+cpu_harbor_skycap.yaml
+cpu_jax.yaml
+cpu_skycap.yaml
+cpu_skyrl.yaml
+gpu_ci_h100.yaml
+gpu_e2e_ci_fully_async.yaml
+gpu_e2e_ci_megatron.yaml
+gpu_e2e_ci_sft.yaml
+gpu_e2e_ci_tinker_fully_async.yaml
+gpu_e2e_ci_tinker.yaml
+gpu_e2e_ci.yaml
+gpu_jax.yaml
+gpu_skyrl_megatron_models.yaml
+gpu_skyrl_megatron.yaml
+gpu_skyrl.yaml
+tinker_skyrl_backend_gpu.yaml
+
+## ci/ 文件清单(截断)
+anyscale_gpu_ci_h100.yaml
+anyscale_gpu_ci_jax.yaml
+anyscale_gpu_ci_skyrl_megatron_models.yaml
+anyscale_gpu_ci_skyrl_megatron.yaml
+anyscale_gpu_ci_skyrl.yaml
+anyscale_gpu_e2e_test_fully_async.yaml
+anyscale_gpu_e2e_test_megatron.yaml
+anyscale_gpu_e2e_test_sft.yaml
+anyscale_gpu_e2e_test_tinker_fully_async.yaml
+anyscale_gpu_e2e_test_tinker.yaml
+anyscale_gpu_e2e_test.yaml
+anyscale_tinker_skyrl_backend_gpu.yaml
+gpu_ci_run_h100.sh
+gpu_ci_run_jax.sh
+gpu_ci_run_skyrl_megatron_models.sh
+gpu_ci_run_skyrl_megatron.sh
+gpu_ci_run_skyrl.sh
+gpu_ci_run_tinker_skyrl_backend.sh
+gpu_e2e_test_run_fully_async.sh
+gpu_e2e_test_run_megatron.sh
+gpu_e2e_test_run_sft.sh
+gpu_e2e_test_run.sh
+gpu_e2e_test_run_tinker_fully_async.sh
+gpu_e2e_test_run_tinker.sh
+submit_anyscale_job.sh
+terminate_anyscale_jobs.sh
+
+## 全仓 grep -i rwkv .github/ ci/ 结果 (空=无命中)
+(end)
+
+## 每个 workflow 的 github.repository 门禁数
+4  cpu_skyrl.yaml
+2  cpu_skycap.yaml
+1  tinker_skyrl_backend_gpu.yaml
+1  gpu_skyrl.yaml
+1  gpu_skyrl_megatron.yaml
+1  gpu_skyrl_megatron_models.yaml
+1  gpu_jax.yaml
+1  gpu_e2e_ci.yaml
+1  gpu_e2e_ci_tinker.yaml
+1  gpu_e2e_ci_tinker_fully_async.yaml
+1  gpu_e2e_ci_sft.yaml
+1  gpu_e2e_ci_megatron.yaml
+1  gpu_e2e_ci_fully_async.yaml
+1  gpu_ci_h100.yaml
+1  cpu_jax.yaml
+1  cpu_harbor_skycap.yaml
+
+## 门禁原文示例 cpu_skyrl.yaml:36-40
+  check_code_quality:
+    # CI runs only in the upstream repo. This workflow needs no secrets and would pass
+    # on a fork, but fork CI is off by policy -- fork PRs are tested here, in the base
+    # repository's context.
+    if: github.repository == 'NovaSky-AI/SkyRL'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+## CPU workflow 的 pytest 收集路径 cpu_skyrl.yaml:78-84
+        with:
+          activate-environment: true
+      - name: Run cpu tests (without vllm or megatron)
+        run:  uv run --isolated --extra skyrl-train --extra dev pytest tests/train/ tests/backends/skyrl_train/ --ignore=tests/backends/skyrl_train/gpu -m "not (vllm or megatron)"
+      - name: Run cpu tests (with vllm)
+        run: uv run --isolated --extra fsdp --extra dev pytest tests/train/ tests/backends/skyrl_train/ --ignore=tests/backends/skyrl_train/gpu -m "vllm and not megatron"
+      - name: Run cpu tests (with megatron)
+        run: uv run --isolated --extra megatron --extra dev pytest tests/train/ tests/backends/skyrl_train/ --ignore=tests/backends/skyrl_train/gpu -m "megatron"
+      - name: Run tinker tests
+        run: uv run --isolated --extra fsdp --extra tinker --extra dev pytest tests/tinker/skyrl_train/
+  
+
+## fork 相对 merge-base 对 .github/ci 的改动
+A	.github/CODEOWNERS
+
+## CI 脚本中 pytest 调用（GPU）
+~/AlchemyRepos/RWKV-AgenticLearning/repos/skyrl-rwkv/ci/gpu_ci_run_h100.sh:10:uv run --directory . --isolated --extra dev --extra fsdp pytest -s -vvv -m h100 \
+~/AlchemyRepos/RWKV-AgenticLearning/repos/skyrl-rwkv/ci/gpu_ci_run_h100.sh:14:uv run --directory . --isolated --extra dev --extra megatron pytest -s -vvv -m h100 \
+~/AlchemyRepos/RWKV-AgenticLearning/repos/skyrl-rwkv/ci/gpu_ci_run_jax.sh:7:uv run --extra gpu --extra tinker --extra dev pytest tests/tx/gpu
+~/AlchemyRepos/RWKV-AgenticLearning/repos/skyrl-rwkv/ci/gpu_ci_run_skyrl_megatron_models.sh:8:uv run --directory . --isolated --extra dev --extra megatron pytest -s tests/backends/skyrl_train/gpu/gpu_ci -m "megatron_models"
+~/AlchemyRepos/RWKV-AgenticLearning/repos/skyrl-rwkv/ci/gpu_ci_run_skyrl_megatron.sh:8:uv run --directory . --isolated --extra dev --extra megatron pytest -s tests/backends/skyrl_train/gpu/gpu_ci -m "megatron"
+~/AlchemyRepos/RWKV-AgenticLearning/repos/skyrl-rwkv/ci/gpu_ci_run_skyrl.sh:10:uv run --directory . --isolated --extra dev --extra fsdp pytest -s tests/backends/skyrl_train/gpu/gpu_ci -m "not (integrations or megatron or mooncake)" --ignore=tests/backends/skyrl_train/gpu/gpu_ci/megatron --ignore=tests/backends/skyrl_train/gpu/gpu_ci/patches/megatron
+~/AlchemyRepos/RWKV-AgenticLearning/repos/skyrl-rwkv/ci/gpu_ci_run_skyrl.sh:14:uv run --directory . --isolated --extra dev --extra fsdp --extra mooncake pytest -s tests/backends/skyrl_train/gpu/gpu_ci -m "mooncake" --ignore=tests/backends/skyrl_train/gpu/gpu_ci/megatron --ignore=tests/backends/skyrl_train/gpu/gpu_ci/patches/megatron
+~/AlchemyRepos/RWKV-AgenticLearning/repos/skyrl-rwkv/ci/gpu_ci_run_skyrl.sh:21:#     uv run --directory . --isolated --extra dev --extra vllm --with verifiers@git+https://github.com/PrimeIntellect-ai/verifiers.git@15f68 pytest -s tests/gpu/gpu_ci/ -m "integrations"
+~/AlchemyRepos/RWKV-AgenticLearning/repos/skyrl-rwkv/ci/gpu_ci_run_tinker_skyrl_backend.sh:10:uv run --directory . --isolated --extra tinker --extra megatron --with pytest --with pytest-timeout --with pytest-asyncio \
+~/AlchemyRepos/RWKV-AgenticLearning/repos/skyrl-rwkv/ci/gpu_ci_run_tinker_skyrl_backend.sh:11:    pytest -s --timeout=600 tests/tinker/skyrl_train/

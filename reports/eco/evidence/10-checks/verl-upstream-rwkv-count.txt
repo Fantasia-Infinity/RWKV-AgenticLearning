@@ -1,0 +1,5 @@
+# upstream verl vs fork RWKV file count (2026-11-05)
+upstream verl-project/verl tree files: 1328
+upstream files with 'rwkv' in name: 0
+fork rwkv-rs/verl-rwkv (branch rwkv) tree files: 1244
+fork files with 'rwkv' in name: 43

@@ -1,0 +1,111 @@
+=== wkvm branch analysis @ 2026-11-05T20:10:38Z ===
+--- fetch other branches shallow ---
+From https://github.com/xiaol/wkvm
+ * [new branch]      demo/open-webui-video -> origin/demo/open-webui-video
+From https://github.com/xiaol/wkvm
+ * [new branch]      m4-qwen35-hybrid -> origin/m4-qwen35-hybrid
+--- branch heads + dates ---
+== origin/main ==
+93e7a8714588875b2766160ce6aae5f7b17be933 2026-08-02T11:15:22+08:00 Publish rendered WKVM technical report
+== origin/demo/open-webui-video ==
+5a5fda5ceb48eacded5098fe9dc3b6a05e356776 2026-07-17T13:29:03+08:00 Add validated Open WebUI concurrency demo
+== origin/m4-qwen35-hybrid ==
+241affd2f6d172f8ee1e4f492e1badbc65ef68ac 2026-09-10T11:18:07+08:00 Docs: R=144 RULER-lite grid for the routed bank
+
+--- diffstat main..m4-qwen35-hybrid ---
+ ...kvm_ring1024_ctx36864_b32_t8_serialprefill.json |  145 +++
+ .../results/qwen35_hybrid_vs_vllm_20260910.md      |  143 +++
+ experiments/results/qwen35_ring_wall_20260910.md   |  109 +++
+ experiments/results/qwen35_routed_bank_20260910.md |  215 +++++
+ experiments/results/ruler_lite_hf_part1.json       |    1 +
+ experiments/results/ruler_lite_hf_part2.json       |    1 +
+ experiments/results/ruler_lite_wkvm.json           |    1 +
+ experiments/results/ruler_lite_wkvm_ring1024.json  |    1 +
+ .../vllm_qwen35_ctx13824_out128_ladder.json        | 1000 ++++++++++++++++++++
+ .../results/vllm_qwen35_ctx348_out128_ladder.json  | 1000 ++++++++++++++++++++
+ .../wkvm_hybrid_qwen35_ctx13824_out128_ladder.json |  163 ++++
+ .../wkvm_hybrid_qwen35_ctx348_out128_ladder.json   |  163 ++++
+ experiments/routed_probe.py                        |  174 ++++
+ experiments/ruler_lite.py                          |  524 ++++++++++
+ scripts/convert_rwkv7_pth.py                       |  174 ++++
+ .../tokenization_rwkv_world.py                     |  103 ++
+ scripts/rwkv_world_tokenizer/tokenizer_config.json |    8 +
+ tests/test_engine_gpu.py                           |   21 +-
+ tests/test_hybrid_graph_gpu.py                     |  399 ++++++++
+ tests/test_pages.py                                |  176 ++++
+ tests/test_qwen35_hybrid_cpu.py                    |  385 ++++++++
+ tests/test_qwen35_ring_cpu.py                      |  199 ++++
+ tests/test_qwen35_routed_cpu.py                    |  225 +++++
+ tests/test_rwkv7_gpu.py                            |   38 +-
+ wkvm/core/arena.py                                 |  119 ++-
+ wkvm/core/config.py                                |   59 +-
+ wkvm/core/scheduler.py                             |   18 +-
+ wkvm/engine.py                                     |  232 ++++-
+ wkvm/models/qwen35.py                              |  521 ++++++++++
+ wkvm/models/rwkv7.py                               |   15 +
+ wkvm/runner/__init__.py                            |   20 +-
+ wkvm/runner/hybrid_graph.py                        |  429 +++++++++
+ wkvm/runner/hybrid_routed.py                       |  592 ++++++++++++
+ wkvm/runner/hybrid_runner.py                       |  129 +++
+ wkvm/runner/hybrid_state.py                        |  645 +++++++++++++
+ wkvm/runner/kernels.py                             |   95 ++
+ wkvm/runner/state.py                               |   31 +
+ wkvm/server.py                                     |   28 +-
+ wkvm/store.py                                      |  132 ++-
+ 61 files changed, 12086 insertions(+), 116 deletions(-)
+
+--- m4 branch commit log (shallow => 1) ---
+241affd2f6d172f8ee1e4f492e1badbc65ef68ac
+2026-09-10T11:18:07+08:00
+Docs: R=144 RULER-lite grid for the routed bank
+Co-Authored-By: Claude Fable 5.1 <email redacted>
+
+
+--- diffstat main..demo/open-webui-video ---
+ .../results/open_webui_live_demo_20260717.gif      |  Bin 1798389 -> 1184373 bytes
+ .../results/open_webui_live_demo_20260717.mp4      |  Bin 3239928 -> 1569740 bytes
+ .../open_webui_parent_token_b32_t8_20260723.json   |  228 ----
+ .../open_webui_parent_token_b32_t8_20260723.md     |  134 --
+ experiments/wkvm_serving_bench.py                  |  925 -------------
+ paper/.gitignore                                   |    1 -
+ paper/CLAIMS.md                                    |   53 -
+ paper/Makefile                                     |   21 -
+ paper/README.md                                    |   56 -
+ paper/arxiv-metadata.md                            |   61 -
+ paper/main.tex                                     |  720 ----------
+ paper/references.bib                               |  148 ---
+ paper/wkvm-technical-report.pdf                    |  Bin 297094 -> 0 bytes
+ scripts/a800_incumbent_profile_validation.py       |  738 -----------
+ scripts/fetch_open_webui_demo_source.sh            |   22 -
+ scripts/open_webui_demo.sh                         |  119 +-
+ scripts/run_a800_incumbent_profile_sweep.sh        | 1281 ------------------
+ scripts/run_wkvm_10x_http_4090.sh                  |   63 +-
+ scripts/run_wkvm_10x_http_a800.sh                  | 1400 --------------------
+ tests/test_10x_http_4090_runner.py                 |  131 +-
+ tests/test_10x_http_a800_runner.py                 |  805 -----------
+ tests/test_a800_incumbent_profile_sweep.py         |  906 -------------
+ tests/test_gemma_server.py                         |  580 +-------
+ tests/test_multiturn_http_10x_report.py            |  627 ---------
+ tests/test_open_webui_demo_render.py               |    7 -
+ tests/test_open_webui_demo_runner.py               |  185 +--
+ tests/test_open_webui_demo_scenario.py             |  205 +--
+ tests/test_open_webui_multiturn_bench.py           |  119 +-
+ wkvm/gemma_server.py                               |  528 +-------
+ 41 files changed, 356 insertions(+), 11857 deletions(-)
+
+--- .github / CI presence ---
+(no CI config tracked)
+
+--- LICENSE-ish in other branches? ---
+.gitignore
+.keel
+README.md
+ROADMAP.md
+deploy
+docs
+experiments
+paper
+pyproject.toml
+scripts
+tests
+wkvm

@@ -1,0 +1,8 @@
+# Helicopter existence check (2026-11-05 ~21:20 UTC)
+## curl HTTP status for https://github.com/rwkv-rs/Helicopter
+HTTP 404
+
+## git ls-remote output
+fatal: could not read Username for 'https://github.com': No such device or address
+
+## note: git prompts for credentials => repo not publicly readable (private or nonexistent); GitHub returns 404 to unauthenticated web for both.

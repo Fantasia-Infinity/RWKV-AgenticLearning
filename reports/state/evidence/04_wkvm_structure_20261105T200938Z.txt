@@ -1,0 +1,137 @@
+=== wkvm structure @ 2026-11-05T20:09:38Z ===
+--- full tracked file list (sizes) ---
+1307 deploy/open-webui/compose.yaml
+44375 docs/10X_E2E_PLAN.md
+19731 docs/ANGLE.md
+15844 docs/COMPARISON.md
+5045 docs/gemma_native_contract.md
+18568 docs/NATIVE_ENGINE_PLAN.md
+14349 docs/OPEN_WEBUI_DEMO.md
+10237 docs/RECURRENT_MODE.md
+8356 docs/RECURRENT_MODE_QUALITY.md
+12893 docs/VRAM_SPEED_PLAN_4090.md
+6320 docs/WHY_RWKV_WINS.md
+22609 experiments/benchmark_contract.py
+8862 experiments/benchmark_identity.py
+6312 experiments/bench_prompt_utils.py
+32149 experiments/gemma_bench_report.py
+24265 experiments/gemma_demo_video.py
+113152 experiments/gemma_multiturn_bench.py
+64774 experiments/gemma_multiturn_http_bench.py
+116498 experiments/gemma_recurrent_poc.py
+20541 experiments/gemma_routed_span_video.py
+25643 experiments/gemma_wkvm_style_video.py
+14835 experiments/hf_gemma_bench.py
+82359 experiments/incumbent_gemma_bench.py
+24131 experiments/long_generation_compare.py
+2775 experiments/m1_decode_bench.py
+9071 experiments/m2_engine_bench.py
+13391 experiments/m3_demos.py
+72777 experiments/multiturn_10x_report.py
+80998 experiments/multiturn_http_10x_report.py
+74700 experiments/native_gemma_bench.py
+8086 experiments/native_gemma_engine_smoke.py
+7014 experiments/native_gemma_fused_residual_bench.py
+17173 experiments/native_gemma_graph_check.py
+9982 experiments/native_gemma_layer_parity.py
+20812 experiments/native_gemma_metrics_smoke.py
+15694 experiments/native_gemma_prefix_parity.py
+43224 experiments/native_gemma_quality.py
+11287 experiments/native_gemma_server_smoke.py
+13504 experiments/native_gemma_smoke.py
+59745 experiments/open_webui_demo_render.py
+74205 experiments/open_webui_demo_scenario.py
+52994 experiments/open_webui_live_demo.mjs
+73589 experiments/open_webui_multiturn_bench.py
+40557 experiments/phase3_gemma_report.py
+21452 experiments/quality_eval.py
+70615 experiments/reliable_gemma_report.py
+2319 experiments/results/bench_albatross_2.9b.log
+5089 experiments/results/bench_sglang_gemma4e4b.md
+2024 experiments/results/bench_vllm_gemma4e4b.md
+3044 experiments/results/both_quality_concurrency_plan.md
+8282 experiments/results/gemma_4090_48turn_10x_20260717.md
+23787 experiments/results/gemma_a800_reliable_20260716/artifacts/sglang-r1.json
+23788 experiments/results/gemma_a800_reliable_20260716/artifacts/sglang-r2.json
+23790 experiments/results/gemma_a800_reliable_20260716/artifacts/sglang-r3.json
+26054 experiments/results/gemma_a800_reliable_20260716/artifacts/vllm-r1.json
+26061 experiments/results/gemma_a800_reliable_20260716/artifacts/vllm-r2.json
+26053 experiments/results/gemma_a800_reliable_20260716/artifacts/vllm-r3.json
+75694 experiments/results/gemma_a800_reliable_20260716/artifacts/wkvm-r1.json
+75663 experiments/results/gemma_a800_reliable_20260716/artifacts/wkvm-r2.json
+75682 experiments/results/gemma_a800_reliable_20260716/artifacts/wkvm-r3.json
+31341 experiments/results/gemma_a800_reliable_20260716/prefill-gate-b8.json
+13229 experiments/results/gemma_a800_reliable_20260716/report.md
+88720 experiments/results/gemma_a800_reliable_20260716/summary.json
+14081 experiments/results/gemma_b16_evidence_audit_20260713.md
+8205 experiments/results/gemma_b16_evidence_bundle_20260713/artifacts/final/vllm-final-baseline1620-16384-b16-1.json
+30678 experiments/results/gemma_b16_evidence_bundle_20260713/artifacts/final/wkvm-final-o1-accounting-16384-b16-2.json
+30676 experiments/results/gemma_b16_evidence_bundle_20260713/artifacts/final/wkvm-final-o1-accounting-16384-b16-3.json
+30676 experiments/results/gemma_b16_evidence_bundle_20260713/artifacts/final/wkvm-final-o1-accounting-16384-b16-probe.json
+30678 experiments/results/gemma_b16_evidence_bundle_20260713/artifacts/final/wkvm-final-o1-accounting-32768-b16-1.json
+5051 experiments/results/gemma_b16_evidence_bundle_20260713/artifacts/sglang-gemma-16384-b16-current-monitor-1.json
+5051 experiments/results/gemma_b16_evidence_bundle_20260713/artifacts/sglang-gemma-32768-b16-current-monitor-1.json
+8210 experiments/results/gemma_b16_evidence_bundle_20260713/artifacts/vllm-gemma-16384-b16-current-fingerprint.json
+5104 experiments/results/gemma_b16_evidence_bundle_20260713/artifacts/vllm-gemma-16384-b16-current-monitor-1.json
+5102 experiments/results/gemma_b16_evidence_bundle_20260713/artifacts/vllm-gemma-16384-b16-current-monitor-2.json
+5105 experiments/results/gemma_b16_evidence_bundle_20260713/artifacts/vllm-gemma-16384-b16-current-monitor-3.json
+5104 experiments/results/gemma_b16_evidence_bundle_20260713/artifacts/vllm-gemma-32768-b16-current-monitor-1.json
+30686 experiments/results/gemma_b16_evidence_bundle_20260713/artifacts/wkvm-prefill-batch2-boundedfold-32768-b16-1.json
+30696 experiments/results/gemma_b16_evidence_bundle_20260713/artifacts/wkvm-prefill-batch2-boundedfold-alignedtimer-16384-b16-1.json
+30690 experiments/results/gemma_b16_evidence_bundle_20260713/artifacts/wkvm-prefill-batch2-boundedfold-alignedtimer-16384-b16-2.json
+30697 experiments/results/gemma_b16_evidence_bundle_20260713/artifacts/wkvm-prefill-batch2-boundedfold-alignedtimer-16384-b16-3.json
+13906 experiments/results/gemma_b16_evidence_bundle_20260713/comparison_report.md
+4031 experiments/results/gemma_b16_evidence_bundle_20260713/provenance/artifact_inventory.tsv
+192 experiments/results/gemma_b16_evidence_bundle_20260713/provenance/capture_context.json
+20198 experiments/results/gemma_b16_evidence_bundle_20260713/provenance/commands.tsv
+212 experiments/results/gemma_b16_evidence_bundle_20260713/provenance/cuda_toolkit.txt
+283 experiments/results/gemma_b16_evidence_bundle_20260713/provenance/git_head.txt
+2503 experiments/results/gemma_b16_evidence_bundle_20260713/provenance/git_status.txt
+0 experiments/results/gemma_b16_evidence_bundle_20260713/provenance/git_submodules.txt
+38 experiments/results/gemma_b16_evidence_bundle_20260713/provenance/glibc.txt
+110 experiments/results/gemma_b16_evidence_bundle_20260713/provenance/gpu.csv
+608 experiments/results/gemma_b16_evidence_bundle_20260713/provenance/model_files.sha256
+178 experiments/results/gemma_b16_evidence_bundle_20260713/provenance/model_files.tsv
+6368 experiments/results/gemma_b16_evidence_bundle_20260713/provenance/model_identity.json
+30 experiments/results/gemma_b16_evidence_bundle_20260713/provenance/os_kernel.txt
+1829 experiments/results/gemma_b16_evidence_bundle_20260713/provenance/python_environments.jsonl
+1243 experiments/results/gemma_b16_evidence_bundle_20260713/provenance/source_identity.json
+551 experiments/results/gemma_b16_evidence_bundle_20260713/provenance/tool_binaries.sha256
+422784 experiments/results/gemma_b16_evidence_bundle_20260713/provenance/tracked_worktree.patch
+22609 experiments/results/gemma_b16_evidence_bundle_20260713/provenance/untracked_source/experiments/benchmark_contract.py
+7014 experiments/results/gemma_b16_evidence_bundle_20260713/provenance/untracked_source/experiments/native_gemma_fused_residual_bench.py
+
+--- dirs ---
+.
+./deploy
+./deploy/open-webui
+./docs
+./experiments
+./experiments/results
+./experiments/results/gemma_a800_reliable_20260716
+./experiments/results/gemma_a800_reliable_20260716/artifacts
+./experiments/results/gemma_b16_evidence_bundle_20260713
+./experiments/results/gemma_b16_evidence_bundle_20260713/artifacts
+./experiments/results/gemma_b16_evidence_bundle_20260713/artifacts/final
+./experiments/results/gemma_b16_evidence_bundle_20260713/provenance
+./experiments/results/gemma_b16_evidence_bundle_20260713/provenance/untracked_source
+./experiments/results/gemma_b16_evidence_bundle_20260713/provenance/untracked_source/experiments
+./experiments/results/gemma_b16_evidence_bundle_20260713/provenance/untracked_source/pytest
+./experiments/results/gemma_b16_evidence_bundle_20260713/provenance/untracked_source/tests
+./experiments/results/gemma_b16_evidence_bundle_20260713/provenance/untracked_source/wkvm
+./experiments/results/gemma_b16_evidence_bundle_20260713/provenance/untracked_source/wkvm/runner
+./experiments/results/gemma_b16_evidence_bundle_20260713/quality
+./experiments/results/gemma_b16_evidence_bundle_20260713/quality/history
+./experiments/results/gemma_high_concurrency_b32_provenance_20260713
+./experiments/results/gemma_high_concurrency_b32_provenance_20260713/provenance
+./.keel
+./paper
+./scripts
+./tests
+./wkvm
+./wkvm/core
+./wkvm/models
+./wkvm/runner
+
+--- total files ---
+324

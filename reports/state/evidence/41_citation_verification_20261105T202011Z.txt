@@ -1,0 +1,44 @@
+=== citation detail verification @ 2026-11-05T20:20:11Z ===
+--- (a) rwkv-skills commit 54639619 identity (used for 2026-07-20 old README) ---
+From 54639619f85995b80d9f0a737741241d80a5a97b Mon Sep 17 00:00:00 2001
+From: Chase Jay (email redacted)
+Date: Mon, 20 Jul 2026 14:42:10 +0800
+Subject: [PATCH] Refresh vendored vLLM-RWKV snapshot
+
+Sync the vendored runtime source from the clean vllm-rwkv checkout at f1caf83fe35ccb77e607688955069f8be582089d.
+---
+ .../vllm-rwkv/.buildkite/ci_config_intel.yaml |    1 +
+
+--- (b) distill branch README contains "28B"? (case-insens) ---
+1
+55:以下清单记录分支 `codex/qwen-rwkv28b-distill` 的当前约定。实现完成后将对应项标记为 `[x]`。
+
+--- (c) distill README.md:115 W&B link line ---
+默认教师只在最后一个PP stage的CP0/TP0请求完整上下文；开启JSONL补位后，数据端先校验教师并携带成功响应，随后分发CP目标并广播TP；student 词表保持分片，KL/CE 排除全局 padding 行。配置的词表 padding 必须与 native checkpoint 行数一致：当前 248320 行 Qwen 初始化在 TP4 下使用 `make_vocab_size_divisible_by: 128`，TP2 下使用 256。生产在线 smoke 需要外部 Qwen 服务健康；固定教师测试用于验证并行与精度，不能代替真实 teacher 的训练质量评估。2026-10-23 外部服务恢复后，2.7B 在 dense、TP2、TP2+SP、PP2、TP2+PP2+SP、TP4+PP2+SP 六种布局均完成真实 Qwen 在线3步训练及验证/test，零NaN/skip；[W&B验收报告](http://dian.sea-group.org:9098/mobius/rwkv-qwen-distill-2p7b/runs/v4pf5ud7)与逐布局结果见上述多卡记录。
+
+--- (d) CP TESTING_STATUS.md:64 W&B link line ---
+长跑W&B：[cp4-halfday-20261021](http://dian.sea-group.org:9098/mobius/Mobius-r7-28b-qwen-pretrain/runs/cp4-halfday-20261021)。
+
+--- (e) wkvm README.md:244-253 exact ---
+   244	## Status
+   245	
+   246	**M3—Durable State API:** named, versioned, forkable, mutable state handles over
+   247	a tiered StateStore (GPU slot, pinned host, and NVMe safetensors). Measured demos
+   248	include 2,000 hibernated sessions at 2.29 MiB each, p50 8.2 ms / p99 9.5 ms
+   249	resume, process-restart recovery, 64-way fork, and provenance-recorded mutation.
+   250	
+   251	**M2—native RWKV-7 serving:** a no-phases scheduler drives FLA-kernel decode
+   252	from arena state slots with continuous batching and per-batch-bucket CUDA
+   253	graphs. A 1.5B model measured 8.1k tok/s at B256 on an RTX 4090.
+
+--- (f) wkvm README.md:136-139 exact 10x rows ---
+   136	| RTX 4090 provider HTTP, B16, 48 turns, 36,864-token initial context | 180.415s complete wall | **9.827x throughput** against later mode-3 audit | **26.079x throughput** against original SGLang row | original 10x-vLLM conclusion superseded |
+   137	| **PROVISIONAL:** A800 provider HTTP scout, B32, 12 turns, 98,304-token initial context | 346.300s complete wall | **12.107x throughput** | not matched | clean repeated campaign pending |
+   138	| **OUTDATED:** Real Open WebUI 0.10.2, offered B32, 8 turns | 53.963 output tok/s | 0.586x; vLLM is 70.6% faster | 0.998x; effectively tied | historical only; rerun required |
+   139	| Repeated A800 strict short-session gate, B64/ctx16K/out32 | worst-repeat envelope | 0.790x | 1.400x | overall gate fail |
+
+--- (g) rwkv-skills main README line 8 exact ---
+Third-party benchmark data and evaluation artifacts stay out of the source package. The public scoreboard is maintained separately in the Helicopter repository.
+
+--- (h) skyrl atom entry count check (feat/heli) ---
+20

@@ -16,7 +16,7 @@ TimeMobius/RWKV-Megatron
 howard-hou/RWKV-SFT
 
 # ===== L1 算子 / 推理 / 状态 =====
-rwkv-rs/FlashRWKV2
+rwkv-rs/FlashRWKV2  # 2026-11-11 v0.1.0a19：修复 29→32 padding NaN + 大 batch grid.x（我们 pin a17）
 rwkv-rs/transformers-rwkv  # 2026-11-10 PR#20 工具历史渲染修复 merged 07:48Z；PR#21 FlashRWKV2 a18 merged 08:28Z
 rwkv-rs/hf-adapter
 rwkv-rs/tokenizers-rwkv
@@ -69,7 +69,7 @@ aierwiki/rwkvtune
 RWKV/RWKV-infctx-trainer
 
 # ===== 2026-11-06 新增：原生 RWKV-7 服务框架（Apache-2.0，含 logprobs/weight update 接口）=====
-rwkv-org/irwkv  # 2026-11-10 open PR #7/#12/#14；#13(router) 关闭未合并；mtp 未并 main
+rwkv-org/irwkv  # 2026-11-11 00:58Z #7(grammar 走图 perf)+#4(state continuation) merged；#13 router 关闭未合并；mtp 未并 main
 w1c2j3/irwkv  # 镜像；Chase 的 state-continuation/prefix-cache 分支在此
 
 # ===== 2026-11-06 晚新增：agent 评测 / DSH 集成（同优先级跟踪）=====

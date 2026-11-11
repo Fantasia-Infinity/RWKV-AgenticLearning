@@ -1,7 +1,7 @@
 {
   "site": "RWKV-AgenticLearning · 报告站",
   "repo": "https://github.com/Fantasia-Infinity/RWKV-AgenticLearning",
-  "built": "2026-11-10T21:03:24.471445+00:00",
+  "built": "2026-11-11T08:18:28.695420+00:00",
   "reports": [
     {
       "rel": "README.md",
@@ -9,7 +9,7 @@
       "title": "RWKV-AgenticLearning",
       "category": "项目",
       "date": "",
-      "chars": 9577
+      "chars": 9704
     },
     {
       "rel": "ROADMAP.md",
@@ -98,6 +98,14 @@
       "category": "核心报告",
       "date": "2026-11-10",
       "chars": 7018
+    },
+    {
+      "rel": "reports/2026-11-11-verified-update.md",
+      "html": "reports/2026-11-11-verified-update.html",
+      "title": "2026-11-11 生态核验更新（irwkv 两块能力 + FlashRWKV2 a19）",
+      "category": "核心报告",
+      "date": "2026-11-11",
+      "chars": 3918
     },
     {
       "rel": "reports/EVIDENCE.md",

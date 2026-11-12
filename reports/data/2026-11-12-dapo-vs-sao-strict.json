@@ -1,0 +1,112 @@
+{
+  "date": "2026-11-12",
+  "scope": "strictly matched comparison of DAPO-100 (job 29045605) and SAO-100 (job 29143646)",
+  "identical": [
+    "base=math-SFT step234",
+    "GSM8K train 7473",
+    "reward #### exact",
+    "temp 1.0/top_p1/top_k-1/max_gen 1280/bot template",
+    "16 trajectories/step",
+    "100 steps ckpt@25/50/75/100",
+    "eval=200q k=4 temp1 seed0 same order",
+    "2xA100-40GB each",
+    "dynamic sampling filter disabled"
+  ],
+  "differences": {
+    "algorithm": [
+      "DAPO: grpo+dual_clip+token_mean+overlong",
+      "SAO: gae_adaptive alpha1.5+rollout_is"
+    ],
+    "critic": [
+      "none",
+      "RWKV NoRA r64 lr5e-6 2 epochs/rollout"
+    ],
+    "batch": [
+      "4 prompts x 4 samples",
+      "16 prompts x 1 sample"
+    ],
+    "host_mem": [
+      "64G",
+      "120G"
+    ],
+    "walltime": [
+      "2h16m",
+      "3h21m"
+    ]
+  },
+  "avg4": {
+    "dapo": {
+      "25": 30.5,
+      "50": 40.38,
+      "75": 38.88,
+      "100": 40.75,
+      "mean": 37.63
+    },
+    "sao": {
+      "25": 27.75,
+      "50": 43.5,
+      "75": 28.62,
+      "100": 28.12,
+      "mean": 32.0
+    },
+    "base": 21.0
+  },
+  "pass4": {
+    "dapo": {
+      "25": 58.0,
+      "50": 66.0,
+      "75": 68.0,
+      "100": 66.5,
+      "mean": 64.6
+    },
+    "sao": {
+      "25": 54.5,
+      "50": 71.5,
+      "75": 51.5,
+      "100": 49.5,
+      "mean": 56.8
+    },
+    "base": 50.0
+  },
+  "paired_tests": {
+    "sao_minus_dapo": {
+      "25": {
+        "diff_pp": -2.75,
+        "p": 0.137
+      },
+      "50": {
+        "diff_pp": 3.12,
+        "p": 0.201
+      },
+      "75": {
+        "diff_pp": -10.25,
+        "p": 1.9e-05
+      },
+      "100": {
+        "diff_pp": -12.62,
+        "p": 1e-07
+      },
+      "mean_of_4": {
+        "diff_pp": -5.62,
+        "p": 7.8e-05
+      }
+    },
+    "dapo_vs_base_mean": {
+      "diff_pp": 16.62,
+      "p": "<1e-10"
+    },
+    "sao_vs_base_mean": {
+      "diff_pp": 11.0,
+      "p": 1.9e-08
+    }
+  },
+  "variance_reference": {
+    "dapo100_step100_avg4": 40.75,
+    "dapoB1_step100_avg4": 21.5,
+    "note": "same DAPO config, two runs; difference 19.25pp exceeds algorithm effect"
+  },
+  "not_comparable": [
+    "DAPO-B1 1000-step final (31.0%) vs SAO-100",
+    "any cross-step comparison"
+  ]
+}

@@ -26,6 +26,10 @@
 - Both show large checkpoint-to-checkpoint variance (±5pp+); report means, not only best points.
 - Details: [`2026-11-10-dapo-gsm8k-rlvr.md`](2026-11-10-dapo-gsm8k-rlvr.md) and
   [`2026-11-12-sao-gsm8k.md`](2026-11-12-sao-gsm8k.md).
+- **Strict matched comparison (DAPO-100 vs SAO-100, same base/data/eval/2 GPU/100 steps):
+  DAPO mean 37.63% vs SAO 32.00% (paired p=7.8e-05), but the same DAPO config varies 19.25pp
+  between two runs at step 100 → no reliable single-seed algorithm ranking.
+  See [`2026-11-12-dapo-vs-sao-strict.md`](2026-11-12-dapo-vs-sao-strict.md).**
 
 ### ✅ DAPO on plain GSM8K (details)
 - **avg@4 (200 questions, k=4, temp 1.0): 21.0% → 31.0% (+10.0pp, paired t=3.99, p=6.6e-05)**

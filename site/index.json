@@ -1,7 +1,7 @@
 {
   "site": "RWKV-AgenticLearning · 报告站",
   "repo": "https://github.com/Fantasia-Infinity/RWKV-AgenticLearning",
-  "built": "2026-11-12T12:47:33.679216+00:00",
+  "built": "2026-11-12T13:10:14.806102+00:00",
   "reports": [
     {
       "rel": "README.md",
@@ -9,7 +9,7 @@
       "title": "RWKV-AgenticLearning",
       "category": "项目",
       "date": "",
-      "chars": 10046
+      "chars": 10159
     },
     {
       "rel": "ROADMAP.md",
@@ -89,7 +89,7 @@
       "title": "RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-12)",
       "category": "核心报告",
       "date": "2026-11-10",
-      "chars": 6784
+      "chars": 7123
     },
     {
       "rel": "reports/2026-11-10-verified-update.md",
@@ -106,6 +106,14 @@
       "category": "核心报告",
       "date": "2026-11-11",
       "chars": 3918
+    },
+    {
+      "rel": "reports/2026-11-12-dapo-vs-sao-strict.md",
+      "html": "reports/2026-11-12-dapo-vs-sao-strict.html",
+      "title": "DAPO vs SAO: strict matched comparison (GSM8K, G1l-1.5B)",
+      "category": "核心报告",
+      "date": "2026-11-12",
+      "chars": 4641
     },
     {
       "rel": "reports/2026-11-12-sao-gsm8k.md",

@@ -1,4 +1,4 @@
-# RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)
+# RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-12)
 
 > All numbers from our own runs on Snellius (A100-40GB). Code: this repo (Apache-2.0).
 > Weights: RWKV-7 G1l-1.5B-20261031 (Apache-2.0). GSM8K used for evaluation/training only.
@@ -18,11 +18,29 @@
 
 ## 2. Headline results
 
-### ✅ DAPO on plain GSM8K is the first positive RL result
+### ✅ Two positive RL lines: DAPO (group-relative) and SAO/PPO-style (critic-based)
+- **DAPO, 1,000 steps**: avg@4 21.0% → 31.0% (+10.0pp, p=6.6e-05); pass@4 unchanged.
+- **SAO (critic-based), 100 steps**: checkpoints 27.75 / **43.5** / 28.63 / 28.12%,
+  **mean 32.0%** (best ckpt pass@4 71.5%); all checkpoints beat base significantly.
+  Cost: ~1.6k rollouts vs DAPO's 16k, ~0.9k SBU vs ~4.1k.
+- Both show large checkpoint-to-checkpoint variance (±5pp+); report means, not only best points.
+- Details: [`2026-11-10-dapo-gsm8k-rlvr.md`](2026-11-10-dapo-gsm8k-rlvr.md) and
+  [`2026-11-12-sao-gsm8k.md`](2026-11-12-sao-gsm8k.md).
+
+### ✅ DAPO on plain GSM8K (details)
 - **avg@4 (200 questions, k=4, temp 1.0): 21.0% → 31.0% (+10.0pp, paired t=3.99, p=6.6e-05)**
 - pass@4 unchanged (50.0% → 50.5%, p=1.0) → RL improves per-sample reliability, not coverage
 - last-5-checkpoint mean 29.5%; checkpoint variance ±5pp (small-batch DAPO)
 - Report: [`2026-11-10-dapo-gsm8k-rlvr.md`](2026-11-10-dapo-gsm8k-rlvr.md)
+
+### ✅ SAO (critic-based RL, gae_adaptive) aligns with and slightly exceeds DAPO
+- Same base (math-SFT 234), same data, same eval as the B1 DAPO run; 16 prompts × 1 sample per step
+  (same 16 trajectories/step), critic = RWKV + value head with NoRA r64.
+- 100 steps on 2×A100 (~2.7 h): avg@4 = 27.75 / **43.5** / 28.63 / 28.12% at steps 25/50/75/100;
+  mean 32.0% vs base 21.0%, math-SFT 17.5%, B1 DAPO final 31.0% and DAPO@50 40.4%.
+- Best checkpoint 43.5% (pass@4 71.5%); SAO@50 vs DAPO@50 not significant (p=0.20), vs base p≈0,
+  vs B1 final p=9.7e-08.
+- Report: [`2026-11-12-sao-gsm8k.md`](2026-11-12-sao-gsm8k.md). Recipe: [`recipes/sao-gsm8k`](../recipes).
 
 ### ⚠️ FlashREINFORCE RLVR (50 steps) is not significant
 - greedy pass@1: base 39.58% (1,319 q) → RL 41.39%; **+1.81pp, McNemar p=0.29** — not significant
@@ -71,7 +89,11 @@ Key models: B1 final `runs/p2b-dapo-29048910/exports/global_step_1000/policy`; m
 `runs/p15-sft-29014001/hf_exports/global_step_234/policy`; P2 RL
 `runs/p2-gsm8k-rlvr-29019986/exports/global_step_50/policy`.
 
-Scripts: `tools/eval_gsm8k_avgk.py`, `tools/eval_gsm8k.py`, `tools/build_gsm8k_math_sft.py`,
+SAO checkpoints: `runs/sao-gsm8k-29143646/exports/global_step_{25,50,75,100}/policy` (2×A100 run);
+evaluations in `results/sao-{25,50,75,100}-*.json`.
+
+Launchers: [`recipes/dapo-gsm8k`](../recipes/dapo-gsm8k), [`recipes/sao-gsm8k`](../recipes/sao-gsm8k),
+[`recipes/slurm`](../recipes/slurm). Scripts: `tools/eval_gsm8k_avgk.py`, `tools/eval_gsm8k.py`, `tools/build_gsm8k_math_sft.py`,
 `tools/build_gsm8k_calc.py`, `tools/gen_sft_traj/`, `tools/build_heldout_tool_eval.py`,
 `tools/sync_rwkv_chat_template.py` + regression test.
 
@@ -79,6 +101,8 @@ Scripts: `tools/eval_gsm8k_avgk.py`, `tools/eval_gsm8k.py`, `tools/build_gsm8k_m
 
 - 200-question eval subset for avg@4 (1319 for greedy pass@1); single seed per configuration.
 - g1l-1.5B only; 2.9B/7.2B untested.
+- SAO run: 100 steps, one seed, scaled-down official config (batch 16 vs 128, 2 GPUs vs 8,
+  512 vs 24,576 context, no UltraData, no offline critic pretraining); treat as direction/feasibility.
 - DAPO ran with `dynamic_sampling=null` (filter crashed on all-zero-variance batches); i.e. DAPO
   minus dynamic sampling.
 - External official numbers (59.42 → 71.85) are talk-level claims with undisclosed batch/GPU

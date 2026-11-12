@@ -45,6 +45,7 @@ Before building in that gap, we audited the ecosystem. This repo is the audit: w
 │   ├── repos.txt                        # 35 tracked repositories
 │   ├── check.sh                         # zero-GitHub-API snapshot script
 │   └── runs/                            # dated snapshots
+├── recipes/                            # reproducible launchers (DAPO, SAO on GSM8K) + SLURM templates
 ├── site/                               # 全部报告的 HTML 版本（由 tools/build_report_site.py 生成）
 ├── tools/
 │   ├── sync_rwkv_chat_template.py       # sync post-PR#20 chat template (pinned sha256)

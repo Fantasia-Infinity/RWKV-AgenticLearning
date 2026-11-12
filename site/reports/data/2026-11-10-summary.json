@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-10",
+  "date": "2026-11-12",
   "model": "RWKV-7 G1l-1.5B (2026-10-31, Apache-2.0)",
   "benchmarks": {
     "g3_tool_call_258": {
@@ -82,7 +82,34 @@
       "dapo_1000_pass4_200": 0.505,
       "dapo_1000_plus10pp_paired_p": 6.6e-05,
       "dapo_1000_last5_mean_avg4": 0.295,
-      "note": "FlashREINFORCE +1.8pp greedy not significant (p=0.29); DAPO +10.0pp avg@4 significant (p=6.6e-05), pass@4 unchanged"
+      "note": "FlashREINFORCE +1.8pp greedy not significant (p=0.29); DAPO +10.0pp avg@4 significant (p=6.6e-05), pass@4 unchanged",
+      "sao_100steps": {
+        "avg4_by_checkpoint": {
+          "25": 0.2775,
+          "50": 0.435,
+          "75": 0.2863,
+          "100": 0.2812
+        },
+        "pass4_by_checkpoint": {
+          "25": 0.545,
+          "50": 0.715,
+          "75": 0.515,
+          "100": 0.495
+        },
+        "avg4_mean_checkpoints": 0.32,
+        "paired_t_vs_base": {
+          "sao50": {
+            "diff": 0.225,
+            "p": "approx 0"
+          },
+          "sao100": {
+            "diff": 0.071,
+            "p": 0.0035
+          }
+        },
+        "computed": "2xA100, 100 steps, 16 rollouts/step, ~2.7h train, ~0.9k SBU incl evals",
+        "note": "critic-based SAO; best checkpoint 43.5% (single-seed spike), mean 32.0% vs base 21.0%"
+      }
     }
   },
   "dapo_b1_curve_avg4": {
@@ -99,13 +126,15 @@
   },
   "compute": {
     "b1_training": "2xA100-40GB, 1000 steps, ~16h, ~4.1k SBU incl evals",
-    "cumulative_project_used_sbu": 10836,
-    "remaining_sbu": 109816
+    "cumulative_project_used_sbu": 12171,
+    "remaining_sbu": 108481
   },
   "artifacts": {
     "archive_manifest": "scratch:/scratch-shared/szhang2/rwkv-agentic/archive/2026-11-10/MANIFEST.md",
     "b1_final_policy": "scratch:runs/p2b-dapo-29048910/exports/global_step_1000/policy",
-    "eval_script": "tools/eval_gsm8k_avgk.py"
+    "eval_script": "tools/eval_gsm8k_avgk.py",
+    "sao_recipe": "recipes/sao-gsm8k/run.sh",
+    "sao_report": "reports/2026-11-12-sao-gsm8k.md"
   },
   "license_notes": "Our code Apache-2.0; RWKV-7 weights Apache-2.0; GSM8K used for evaluation only. External claims cited, not reused."
 }

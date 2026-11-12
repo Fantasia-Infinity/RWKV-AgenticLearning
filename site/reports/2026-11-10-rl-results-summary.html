@@ -3,20 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10) · RWKV-AgenticLearning · 报告站</title>
+<title>RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-12) · RWKV-AgenticLearning · 报告站</title>
 <link rel="stylesheet" href="../assets/style.css">
 
 </head>
 <body>
 <header class="topbar"><div class="wrap"><a class="brand" href="../index.html">RWKV-AgenticLearning · 报告站</a>
-<span class="built">built 2026-11-12 05:09 UTC</span></div></header>
+<span class="built">built 2026-11-12 09:51 UTC</span></div></header>
 <div class="layout wrap">
 <nav class="sidebar"><a href="../index.html">首页</a>
 <span class="nav-cat">核心报告</span>
 <a href="../reports/2026-11-12-sao-gsm8k.html">SAO (critic-based RL) on GSM8K for RWKV-7 G1l-1.5B</a>
 <a href="../reports/2026-11-11-verified-update.html">2026-11-11 生态核验更新（irwkv 两块能力 + FlashRWKV2 a19）</a>
 <a href="../reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
-<a href="../reports/2026-11-10-rl-results-summary.html" class="active">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)</a>
+<a href="../reports/2026-11-10-rl-results-summary.html" class="active">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-12)</a>
 <a href="../reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a>
 <a href="../reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
 <a href="../reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
@@ -47,12 +47,14 @@
 <main class="content">
 <article class="report">
 <div class="crumb"><a href="../index.html">首页</a> / reports/2026-11-10-rl-results-summary.md</div>
-<h1 class="report-title">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)</h1>
+<h1 class="report-title">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-12)</h1>
 <div class="meta"><span class="badge">核心报告</span><span class="badge date">2026-11-10</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/reports/2026-11-10-rl-results-summary.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
 <ul>
 <li><a href="#1-what-was-tested">1. What was tested</a></li>
 <li><a href="#2-headline-results">2. Headline results</a><ul>
-<li><a href="#dapo-on-plain-gsm8k-is-the-first-positive-rl-result">✅ DAPO on plain GSM8K is the first positive RL result</a></li>
+<li><a href="#two-positive-rl-lines-dapo-group-relative-and-saoppo-style-critic-based">✅ Two positive RL lines: DAPO (group-relative) and SAO/PPO-style (critic-based)</a></li>
+<li><a href="#dapo-on-plain-gsm8k-details">✅ DAPO on plain GSM8K (details)</a></li>
+<li><a href="#sao-critic-based-rl-gae_adaptive-aligns-with-and-slightly-exceeds-dapo">✅ SAO (critic-based RL, gae_adaptive) aligns with and slightly exceeds DAPO</a></li>
 <li><a href="#flashreinforce-rlvr-50-steps-is-not-significant">⚠️ FlashREINFORCE RLVR (50 steps) is not significant</a></li>
 <li><a href="#multi-turn-tool-rl-p3p3c-underperforms-sft">❌ Multi-turn tool RL (P3/P3c) underperforms SFT</a></li>
 <li><a href="#sft-tool-call-ability-generalizes">✅ SFT tool-call ability generalizes</a></li>
@@ -63,7 +65,7 @@
 <li><a href="#5-caveats">5. Caveats</a></li>
 </ul>
 </div>
-</details><div class="md-body"><h1 id="rwkv-7-g1l-15b-agentic-rl-consolidated-results-2026-11-08-2026-11-10"><a class="toclink" href="#rwkv-7-g1l-15b-agentic-rl-consolidated-results-2026-11-08-2026-11-10">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)</a></h1>
+</details><div class="md-body"><h1 id="rwkv-7-g1l-15b-agentic-rl-consolidated-results-2026-11-08-2026-11-12"><a class="toclink" href="#rwkv-7-g1l-15b-agentic-rl-consolidated-results-2026-11-08-2026-11-12">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-12)</a></h1>
 <blockquote>
 <p>All numbers from our own runs on Snellius (A100-40GB). Code: this repo (Apache-2.0).
 Weights: RWKV-7 G1l-1.5B-20261031 (Apache-2.0). GSM8K used for evaluation/training only.
@@ -117,12 +119,32 @@ Machine-readable copy: <a href="data/2026-11-10-summary.json"><code>reports/data
 </tbody>
 </table>
 <h2 id="2-headline-results"><a class="toclink" href="#2-headline-results">2. Headline results</a></h2>
-<h3 id="dapo-on-plain-gsm8k-is-the-first-positive-rl-result"><a class="toclink" href="#dapo-on-plain-gsm8k-is-the-first-positive-rl-result">✅ DAPO on plain GSM8K is the first positive RL result</a></h3>
+<h3 id="two-positive-rl-lines-dapo-group-relative-and-saoppo-style-critic-based"><a class="toclink" href="#two-positive-rl-lines-dapo-group-relative-and-saoppo-style-critic-based">✅ Two positive RL lines: DAPO (group-relative) and SAO/PPO-style (critic-based)</a></h3>
+<ul>
+<li><strong>DAPO, 1,000 steps</strong>: avg@4 21.0% → 31.0% (+10.0pp, p=6.6e-05); pass@4 unchanged.</li>
+<li><strong>SAO (critic-based), 100 steps</strong>: checkpoints 27.75 / <strong>43.5</strong> / 28.63 / 28.12%,
+  <strong>mean 32.0%</strong> (best ckpt pass@4 71.5%); all checkpoints beat base significantly.
+  Cost: ~1.6k rollouts vs DAPO's 16k, ~0.9k SBU vs ~4.1k.</li>
+<li>Both show large checkpoint-to-checkpoint variance (±5pp+); report means, not only best points.</li>
+<li>Details: <a href="2026-11-10-dapo-gsm8k-rlvr.html"><code>2026-11-10-dapo-gsm8k-rlvr.md</code></a> and
+  <a href="2026-11-12-sao-gsm8k.html"><code>2026-11-12-sao-gsm8k.md</code></a>.</li>
+</ul>
+<h3 id="dapo-on-plain-gsm8k-details"><a class="toclink" href="#dapo-on-plain-gsm8k-details">✅ DAPO on plain GSM8K (details)</a></h3>
 <ul>
 <li><strong>avg@4 (200 questions, k=4, temp 1.0): 21.0% → 31.0% (+10.0pp, paired t=3.99, p=6.6e-05)</strong></li>
 <li>pass@4 unchanged (50.0% → 50.5%, p=1.0) → RL improves per-sample reliability, not coverage</li>
 <li>last-5-checkpoint mean 29.5%; checkpoint variance ±5pp (small-batch DAPO)</li>
 <li>Report: <a href="2026-11-10-dapo-gsm8k-rlvr.html"><code>2026-11-10-dapo-gsm8k-rlvr.md</code></a></li>
+</ul>
+<h3 id="sao-critic-based-rl-gae_adaptive-aligns-with-and-slightly-exceeds-dapo"><a class="toclink" href="#sao-critic-based-rl-gae_adaptive-aligns-with-and-slightly-exceeds-dapo">✅ SAO (critic-based RL, gae_adaptive) aligns with and slightly exceeds DAPO</a></h3>
+<ul>
+<li>Same base (math-SFT 234), same data, same eval as the B1 DAPO run; 16 prompts × 1 sample per step
+  (same 16 trajectories/step), critic = RWKV + value head with NoRA r64.</li>
+<li>100 steps on 2×A100 (~2.7 h): avg@4 = 27.75 / <strong>43.5</strong> / 28.63 / 28.12% at steps 25/50/75/100;
+  mean 32.0% vs base 21.0%, math-SFT 17.5%, B1 DAPO final 31.0% and DAPO@50 40.4%.</li>
+<li>Best checkpoint 43.5% (pass@4 71.5%); SAO@50 vs DAPO@50 not significant (p=0.20), vs base p≈0,
+  vs B1 final p=9.7e-08.</li>
+<li>Report: <a href="2026-11-12-sao-gsm8k.html"><code>2026-11-12-sao-gsm8k.md</code></a>. Recipe: <a href="../recipes"><code>recipes/sao-gsm8k</code></a>.</li>
 </ul>
 <h3 id="flashreinforce-rlvr-50-steps-is-not-significant"><a class="toclink" href="#flashreinforce-rlvr-50-steps-is-not-significant">⚠️ FlashREINFORCE RLVR (50 steps) is not significant</a></h3>
 <ul>
@@ -196,13 +218,18 @@ training logs, run directories and export checkpoints, plus deletable-obsolete l
 Key models: B1 final <code>runs/p2b-dapo-29048910/exports/global_step_1000/policy</code>; math-SFT
 <code>runs/p15-sft-29014001/hf_exports/global_step_234/policy</code>; P2 RL
 <code>runs/p2-gsm8k-rlvr-29019986/exports/global_step_50/policy</code>.</p>
-<p>Scripts: <code>tools/eval_gsm8k_avgk.py</code>, <code>tools/eval_gsm8k.py</code>, <code>tools/build_gsm8k_math_sft.py</code>,
+<p>SAO checkpoints: <code>runs/sao-gsm8k-29143646/exports/global_step_{25,50,75,100}/policy</code> (2×A100 run);
+evaluations in <code>results/sao-{25,50,75,100}-*.json</code>.</p>
+<p>Launchers: <a href="../recipes/dapo-gsm8k"><code>recipes/dapo-gsm8k</code></a>, <a href="../recipes/sao-gsm8k"><code>recipes/sao-gsm8k</code></a>,
+<a href="../recipes/slurm"><code>recipes/slurm</code></a>. Scripts: <code>tools/eval_gsm8k_avgk.py</code>, <code>tools/eval_gsm8k.py</code>, <code>tools/build_gsm8k_math_sft.py</code>,
 <code>tools/build_gsm8k_calc.py</code>, <code>tools/gen_sft_traj/</code>, <code>tools/build_heldout_tool_eval.py</code>,
 <code>tools/sync_rwkv_chat_template.py</code> + regression test.</p>
 <h2 id="5-caveats"><a class="toclink" href="#5-caveats">5. Caveats</a></h2>
 <ul>
 <li>200-question eval subset for avg@4 (1319 for greedy pass@1); single seed per configuration.</li>
 <li>g1l-1.5B only; 2.9B/7.2B untested.</li>
+<li>SAO run: 100 steps, one seed, scaled-down official config (batch 16 vs 128, 2 GPUs vs 8,
+  512 vs 24,576 context, no UltraData, no offline critic pretraining); treat as direction/feasibility.</li>
 <li>DAPO ran with <code>dynamic_sampling=null</code> (filter crashed on all-zero-variance batches); i.e. DAPO
   minus dynamic sampling.</li>
 <li>External official numbers (59.42 → 71.85) are talk-level claims with undisclosed batch/GPU

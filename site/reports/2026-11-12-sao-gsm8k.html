@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAO (critic-based RL) on GSM8K for RWKV-7 G1l-1.5B · RWKV-AgenticLearning · 报告站</title>
+<link rel="stylesheet" href="../assets/style.css">
+
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="brand" href="../index.html">RWKV-AgenticLearning · 报告站</a>
+<span class="built">built 2026-11-12 05:09 UTC</span></div></header>
+<div class="layout wrap">
+<nav class="sidebar"><a href="../index.html">首页</a>
+<span class="nav-cat">核心报告</span>
+<a href="../reports/2026-11-12-sao-gsm8k.html" class="active">SAO (critic-based RL) on GSM8K for RWKV-7 G1l-1.5B</a>
+<a href="../reports/2026-11-11-verified-update.html">2026-11-11 生态核验更新（irwkv 两块能力 + FlashRWKV2 a19）</a>
+<a href="../reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
+<a href="../reports/2026-11-10-rl-results-summary.html">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-10)</a>
+<a href="../reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a>
+<a href="../reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
+<a href="../reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
+<a href="../reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
+<a href="../reports/2026-11-05-verification.html">RWKV 生态核验报告（2026-11-05 接续 session）</a>
+<span class="nav-cat">专题报告</span>
+<a href="../reports/state/evidence/CITATIONS.html">Evidence citations — state/</a>
+<a href="../reports/state/REPORT.html">状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告</a>
+<a href="../reports/skyrl/evidence/CITATIONS.html">Evidence citations — skyrl/</a>
+<a href="../reports/skyrl/evidence/00-env.html">环境与时间快照</a>
+<a href="../reports/skyrl/REPORT.html">skyrl-rwkv 深度核验报告（任务 task-1）</a>
+<a href="../reports/eco/evidence/CITATIONS.html">Evidence citations — eco/</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html">Evidence: rwkv.cn /tutorials/basic/Prompt-Format</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html">RWKV Native Model Templates</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html">RWKV MaxRL configuration</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html">Native rwkv-lm Engine</a>
+<a href="../reports/eco/REPORT.html">RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）</a>
+<a href="../reports/EVIDENCE.html">Evidence — policy, layout, and how to re-verify</a>
+<span class="nav-cat">文档</span>
+<a href="../docs/ecosystem-review-2026-11-05.html">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a>
+<a href="../docs/methodology.html">Methodology — how claims in this repository are produced and checked</a>
+<span class="nav-cat">项目</span>
+<a href="../THIRD_PARTY_NOTICES.html">Third-party notices</a>
+<a href="../ROADMAP.html">ROADMAP — RWKV agentic RL</a>
+<a href="../index.html">RWKV-AgenticLearning</a>
+<a class="ext" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">GitHub ↗</a></nav>
+<main class="content">
+<article class="report">
+<div class="crumb"><a href="../index.html">首页</a> / reports/2026-11-12-sao-gsm8k.md</div>
+<h1 class="report-title">SAO (critic-based RL) on GSM8K for RWKV-7 G1l-1.5B</h1>
+<div class="meta"><span class="badge">核心报告</span><span class="badge date">2026-11-12</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/reports/2026-11-12-sao-gsm8k.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
+<ul>
+<li><a href="#tldr">TL;DR</a></li>
+<li><a href="#setup-aligned-with-b1-dapo">Setup (aligned with B1 DAPO)</a></li>
+<li><a href="#results-avg4-pass4">Results (avg@4 / pass@4)</a></li>
+<li><a href="#interpretation">Interpretation</a></li>
+<li><a href="#next-steps-not-run">Next steps (not run)</a></li>
+</ul>
+</div>
+</details><div class="md-body"><h1 id="sao-critic-based-rl-on-gsm8k-for-rwkv-7-g1l-15b"><a class="toclink" href="#sao-critic-based-rl-on-gsm8k-for-rwkv-7-g1l-15b">SAO (critic-based RL) on GSM8K for RWKV-7 G1l-1.5B</a></h1>
+<blockquote>
+<p>Date: 2026-11-12. Status: first run complete (100 steps, 2×A100, ~2.7 h).
+Code in this repo / the skyrl-rwkv fork; weights Apache-2.0; GSM8K for train/eval.
+This is a deliberately scaled-down, <strong>B1-DAPO-aligned</strong> probe — not a reproduction of the
+official RWKV SAO configuration (which uses UltraData, long context and 8 GPUs).</p>
+</blockquote>
+<h2 id="tldr"><a class="toclink" href="#tldr">TL;DR</a></h2>
+<ul>
+<li>Same base (math-SFT step 234), same GSM8K data, same evaluation protocol as the B1 DAPO run.</li>
+<li><strong>SAO (gae_adaptive + rollout_is + NoRA critic) for 100 steps: avg@4 checkpoints =
+  27.75 / 43.5 / 28.63 / 28.12%</strong> (200 questions, k=4, temp 1.0); <strong>mean 32.0%</strong>.</li>
+<li><strong>Best checkpoint 43.5% (pass@4 71.5%)</strong> — significantly above the B1 DAPO final 31.0%
+  (paired p=9.7e-08) and base 21.0%; vs the earlier DAPO 100-step run's @50 (40.4%) the
+  difference is not significant (p=0.20).</li>
+<li>All four checkpoints beat base significantly (+6.7 to +22.5pp, each p&lt;0.01).</li>
+<li>Checkpoint variance is large (same phenomenon as DAPO): treat the single 43.5% point with care;
+  the robust signal is <strong>~28–32% average vs 21% base</strong>.</li>
+<li>Cost: ~5.4 GPU-hours on 2×A100 (~0.9k SBU incl. evals) for 100 steps / 1,600 rollouts.</li>
+</ul>
+<h2 id="setup-aligned-with-b1-dapo"><a class="toclink" href="#setup-aligned-with-b1-dapo">Setup (aligned with B1 DAPO)</a></h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base</td>
+<td>math-SFT warm start, <code>global_step_234</code> (identical to B1)</td>
+</tr>
+<tr>
+<td>Train data</td>
+<td>GSM8K train, 7,473 prompts</td>
+</tr>
+<tr>
+<td>Reward</td>
+<td><code>#### &lt;number&gt;</code> exact match (non-strict extraction)</td>
+</tr>
+<tr>
+<td>Algorithm</td>
+<td>SAO: <code>advantage_estimator=gae_adaptive</code> (α=1.5, critic_lambd=1.0), <code>policy_loss_type=rollout_is</code>, eps 0.3/5.0, no KL</td>
+</tr>
+<tr>
+<td>Critic</td>
+<td>same RWKV-7 G1l-1.5B + value head (wrapper), <strong>NoRA r64</strong> on <code>mlp.key/value</code>, critic lr 5e-6, 2 critic epochs per rollout</td>
+</tr>
+<tr>
+<td>Policy</td>
+<td>full parameters, lr 1e-6</td>
+</tr>
+<tr>
+<td>Rollouts</td>
+<td>16 prompts × 1 sample = <strong>16 trajectories/step</strong> (same data volume as B1's 4×4)</td>
+</tr>
+<tr>
+<td>Sampling</td>
+<td>temp=1.0 (RWKV raw-logprob constraint), max_gen=1,280, bot chat template</td>
+</tr>
+<tr>
+<td>Training</td>
+<td>100 steps, 2×A100-40GB, colocated sync, ~2 h 41 min; checkpoints @25/50/75/100</td>
+</tr>
+<tr>
+<td>Evaluation</td>
+<td>200 GSM8K test questions, k=4, temp=1.0 → avg@4 / pass@4</td>
+</tr>
+<tr>
+<td>Recipe</td>
+<td><code>sao-gsm8k/run.sh</code> in the skyrl-rwkv fork (adapted from the upstream RWKV SAO launcher)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="results-avg4-pass4"><a class="toclink" href="#results-avg4-pass4">Results (avg@4 / pass@4)</a></h2>
+<table>
+<thead>
+<tr>
+<th>Checkpoint</th>
+<th style="text-align: right;">SAO avg@4</th>
+<th style="text-align: right;">SAO pass@4</th>
+<th style="text-align: right;">B1 DAPO avg@4 (same step)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>step 25</td>
+<td style="text-align: right;">27.75%</td>
+<td style="text-align: right;">54.5%</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>step 50</td>
+<td style="text-align: right;"><strong>43.5%</strong></td>
+<td style="text-align: right;"><strong>71.5%</strong></td>
+<td style="text-align: right;">40.4% (separate 100-step run)</td>
+</tr>
+<tr>
+<td>step 75</td>
+<td style="text-align: right;">28.63%</td>
+<td style="text-align: right;">51.5%</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>step 100</td>
+<td style="text-align: right;">28.12%</td>
+<td style="text-align: right;">49.5%</td>
+<td style="text-align: right;">21.5%</td>
+</tr>
+<tr>
+<td>mean of 4</td>
+<td style="text-align: right;"><strong>32.0%</strong></td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>B1 DAPO final (1,000 steps)</td>
+<td style="text-align: right;">31.0%</td>
+<td style="text-align: right;">50.5%</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>base</td>
+<td style="text-align: right;">21.0%</td>
+<td style="text-align: right;">50.0%</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>math-SFT</td>
+<td style="text-align: right;">17.5%</td>
+<td style="text-align: right;">42.0%</td>
+<td style="text-align: right;">—</td>
+</tr>
+</tbody>
+</table>
+<p>Paired comparisons on the same 200 questions: SAO@50 vs base p≈0; vs B1 final p=9.7e-08;
+vs DAPO@50 (40.4%) p=0.20 (not significant).</p>
+<h2 id="interpretation"><a class="toclink" href="#interpretation">Interpretation</a></h2>
+<ol>
+<li><strong>Critic-based token-level GAE is viable on 1.5B RWKV and competitive with DAPO</strong> — with
+   roughly 1/20 of DAPO's total rollouts (1.6k vs 16k) it reaches a similar or higher range.</li>
+<li><strong>Checkpoint variance dominates</strong>: 43.5% at step 50 vs 28% at steps 75/100. The same ±5pp+
+   oscillation appeared in DAPO; with 200-question eval and one seed, a single spike cannot be
+   attributed to the algorithm. Report mean-of-checkpoints, not just the best point.</li>
+<li>Value learning is stable: <code>critic/values_mean</code> fell from ~0.46 to ~0.27 during training,
+   <code>values_clipfrac</code> stayed ~0.01–0.03, no NaNs/instability.</li>
+<li>Scale caveats: batch 16 vs official 128, 2 GPUs vs 8, 512 vs 24,576 context, no offline
+   critic pretraining, no UltraData. This is a direction/feasibility result, not a benchmark claim.</li>
+</ol>
+<h2 id="next-steps-not-run"><a class="toclink" href="#next-steps-not-run">Next steps (not run)</a></h2>
+<ul>
+<li>Extend to 300 steps (same 2-GPU recipe, ~8 h) to see whether the mean rises or the spike persists.</li>
+<li>Optional critic warm start via Monte-Carlo value targets (<code>value_dataset.py</code> format).</li>
+<li>PPO-<code>gae</code> ablation (one-flag change) to separate SAO advantages from critic-based RL generally.</li>
+<li>Scale-up (4/8 GPUs, batch 128, UltraData/long-context) if the trend is confirmed.</li>
+</ul></div></article>
+<footer class="foot">Generated from the repository Markdown sources · <a href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">source on GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>

@@ -1,7 +1,7 @@
 {
   "site": "RWKV-AgenticLearning · 报告站",
   "repo": "https://github.com/Fantasia-Infinity/RWKV-AgenticLearning",
-  "built": "2026-11-11T08:18:28.695420+00:00",
+  "built": "2026-11-12T05:09:43.799907+00:00",
   "reports": [
     {
       "rel": "README.md",
@@ -9,7 +9,7 @@
       "title": "RWKV-AgenticLearning",
       "category": "项目",
       "date": "",
-      "chars": 9704
+      "chars": 9823
     },
     {
       "rel": "ROADMAP.md",
@@ -106,6 +106,14 @@
       "category": "核心报告",
       "date": "2026-11-11",
       "chars": 3918
+    },
+    {
+      "rel": "reports/2026-11-12-sao-gsm8k.md",
+      "html": "reports/2026-11-12-sao-gsm8k.html",
+      "title": "SAO (critic-based RL) on GSM8K for RWKV-7 G1l-1.5B",
+      "category": "核心报告",
+      "date": "2026-11-12",
+      "chars": 3994
     },
     {
       "rel": "reports/EVIDENCE.md",

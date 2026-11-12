@@ -35,6 +35,7 @@ Before building in that gap, we audited the ecosystem. This repo is the audit: w
 │   ├── 2026-11-10-dapo-gsm8k-rlvr.md    # DAPO 1000 steps on G1l-1.5B: avg@4 21.0→31.0 (+10pp, p=6.6e-05)
 │   ├── 2026-11-10-rl-results-summary.md # consolidated SFT/RL results (positive + negative) + artifacts
 │   ├── 2026-11-11-verified-update.md    # irwkv #7/#4 merged; FlashRWKV2 a19 (NaN fix + large batch); daily-check corrections
+│   ├── 2026-11-12-sao-gsm8k.md          # SAO (critic RL) on GSM8K: avg@4 27.8/43.5/28.6/28.1, mean 32.0 vs base 21.0
 │   ├── data/2026-11-10-summary.json     # machine-readable summary of all results
 │   ├── skyrl/  REPORT.md + evidence/    # skyrl-rwkv deep-dive (CI, pin, multi-turn, 8×GPU)
 │   ├── state/  REPORT.md + evidence/    # wkvm, RWKV-Megatron 28B, Helicopter traces

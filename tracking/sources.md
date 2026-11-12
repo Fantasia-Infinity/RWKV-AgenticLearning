@@ -156,3 +156,16 @@ bash tracking/check.sh --diff          # 与上一轮对比，只打印变化
 4. 待核实（第三方周检报告提及）：`RWKV-v8/` ROSA 实验文件最晚 2026-02-22（停滞 8 个月）——本轮未独立核验，按待验证信号跟踪
 
 **对我们的含义**：外部 RL 基建在快速迭代（合批 adapter、异步），但**仍无公开多轮 RL 结果**；我们的公开空白判断不变，且 license-clean 的可复现结果更有价值。
+
+## 六、2026-11-12 补充：open PR 检查（此前盲区）
+
+`git ls-remote` / `commits.atom` 只看默认分支 HEAD，**看不到 open PR**。2026-11-12 的实质变化有 3 条在
+仅 open 的 PR 里（`rwkv-agent-eval` #1/#2/#3）。此后每轮除 SHA 外，必须查以下仓库的 open PR 列表：
+
+- `rwkv-org/rwkv-agent-eval`（评测/harness 变化最先出现在 PR）
+- `Alic-Li/rwkv_lightning_cuda`（训练/服务性能修复）
+- `rwkv-org/irwkv`（推理服务能力）
+- `rwkv-rs/Megatrwkv-Bridge`、`rwkv-rs/transformers-rwkv`（导出/模板）
+
+API 有限流风险（未认证 60/h）；优先 `GET /repos/<owner>/<repo>/pulls?state=open`，限流时用 raw/
+网页列表替代并在记录里标注"未回源"。

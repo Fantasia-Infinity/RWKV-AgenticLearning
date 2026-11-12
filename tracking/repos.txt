@@ -9,7 +9,7 @@ rwkv-rs/verl-rwkv
 rwkv-rs/torchtitan-rwkv
 rwkv-rs/antidoom-rwkv
 rwkv-rs/fla-rwkv
-rwkv-rs/Megatrwkv-Bridge  # 2026-11-07 PR#1 合入 RWKV7 训练（Megatron Bridge, Apache-2.0）
+rwkv-rs/Megatrwkv-Bridge  # 2026-11-12 PR#2 导出 native LoRA/NoRA merged；11-07 PR#1 合入 RWKV7 训练（Apache-2.0）
 JL-er/RWKV-PEFT  # 原名 Joluck，GitHub 重定向
 OpenMOSE/RWKV-LM-RLHF
 TimeMobius/RWKV-Megatron
@@ -69,11 +69,11 @@ aierwiki/rwkvtune
 RWKV/RWKV-infctx-trainer
 
 # ===== 2026-11-06 新增：原生 RWKV-7 服务框架（Apache-2.0，含 logprobs/weight update 接口）=====
-rwkv-org/irwkv  # 2026-11-11 00:58Z #7(grammar 走图 perf)+#4(state continuation) merged；#13 router 关闭未合并；mtp 未并 main
+rwkv-org/irwkv  # 2026-11-11 #16 版本化 LoRA/NoRA 服务 merged；#7(grammar 走图 perf)+#4(state continuation) merged；mtp 未并 main；Apache-2.0
 w1c2j3/irwkv  # 镜像；Chase 的 state-continuation/prefix-cache 分支在此
 
 # ===== 2026-11-06 晚新增：agent 评测 / DSH 集成（同优先级跟踪）=====
-rwkv-org/rwkv-agent-eval
+rwkv-org/rwkv-agent-eval  # ⚠️ 无 LICENSE；2026-11-12 三个 open PR（#1/#2/#3，DSH/Pi 双 harness），数据只能引用不可复用
 No-22-Github/dsh-rwkv-plugin  # 2026-11-10 PR#1 请求级 adapter + AdapterPicker merged 08:30Z（Alic-Li 作，MIT 插件）
 # 监控（当前 404/私有）：rwkv-agent-pipeline —— 一旦公开即重大信号
 

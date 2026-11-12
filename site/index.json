@@ -1,7 +1,7 @@
 {
   "site": "RWKV-AgenticLearning · 报告站",
   "repo": "https://github.com/Fantasia-Infinity/RWKV-AgenticLearning",
-  "built": "2026-11-12T09:51:12.065698+00:00",
+  "built": "2026-11-12T12:47:33.679216+00:00",
   "reports": [
     {
       "rel": "README.md",
@@ -9,7 +9,7 @@
       "title": "RWKV-AgenticLearning",
       "category": "项目",
       "date": "",
-      "chars": 9927
+      "chars": 10046
     },
     {
       "rel": "ROADMAP.md",
@@ -114,6 +114,14 @@
       "category": "核心报告",
       "date": "2026-11-12",
       "chars": 3994
+    },
+    {
+      "rel": "reports/2026-11-12-verified-update.md",
+      "html": "reports/2026-11-12-verified-update.html",
+      "title": "2026-11-12 生态核验更新：SFT 数据打分的 58.7，以及 eval harness 三条 open PR",
+      "category": "核心报告",
+      "date": "2026-11-12",
+      "chars": 4518
     },
     {
       "rel": "reports/EVIDENCE.md",

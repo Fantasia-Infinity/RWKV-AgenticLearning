@@ -169,3 +169,10 @@ bash tracking/check.sh --diff          # 与上一轮对比，只打印变化
 
 API 有限流风险（未认证 60/h）；优先 `GET /repos/<owner>/<repo>/pulls?state=open`，限流时用 raw/
 网页列表替代并在记录里标注"未回源"。
+### 2026-11-15 失真/迁移登记（追加）
+- **仓库更名**：`rwkv-rs/torchtitan-rwkv` → `rwkv-rs/torchtitan-rwkv-old`（原地址 404）；TorchTitan 路线退役，
+  规模化训练看 `Megatrwkv-Bridge`。
+- **量化版本混淆**：`rwkv_lightning_cuda` 2026-11-14 `323de53` 收敛到 W8A16 + SB6 W4/W6（SB6 = 256 权重超块 /
+  8 组 / 6-bit scale+offset + 共享 FP16 基准）。此前 11-11 的 58.7 评测用的是 **11-09 build**，不含 SB6；
+  跨版本比较 agent 分数时必须记录量化方案与精度守护指标。
+- org 全量仓清单已补齐到 39 个（见 `repos.txt` 末尾 2026-11-15 段）。

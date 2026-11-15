@@ -1,7 +1,7 @@
 {
   "site": "RWKV-AgenticLearning · 报告站",
   "repo": "https://github.com/Fantasia-Infinity/RWKV-AgenticLearning",
-  "built": "2026-11-12T13:10:14.806102+00:00",
+  "built": "2026-11-15T13:25:16.636786+00:00",
   "reports": [
     {
       "rel": "README.md",
@@ -9,7 +9,7 @@
       "title": "RWKV-AgenticLearning",
       "category": "项目",
       "date": "",
-      "chars": 10159
+      "chars": 10278
     },
     {
       "rel": "ROADMAP.md",
@@ -130,6 +130,14 @@
       "category": "核心报告",
       "date": "2026-11-12",
       "chars": 4518
+    },
+    {
+      "rel": "reports/2026-11-15-verified-update.md",
+      "html": "reports/2026-11-15-verified-update.html",
+      "title": "2026-11-15 生态核验更新：量化重构、torchtitan 退役与 39 仓清单",
+      "category": "核心报告",
+      "date": "2026-11-15",
+      "chars": 4078
     },
     {
       "rel": "reports/EVIDENCE.md",

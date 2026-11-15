@@ -6,7 +6,7 @@
 rwkv-rs/skyrl-rwkv
 rwkv-rs/vllm-rwkv | rwkv
 rwkv-rs/verl-rwkv
-rwkv-rs/torchtitan-rwkv
+rwkv-rs/torchtitan-rwkv-old  # 2026-11-15 确认更名（原 torchtitan-rwkv 404）；TorchTitan 路线退役，规模化转 Megatron-Bridge；BSD-3-Clause
 rwkv-rs/antidoom-rwkv
 rwkv-rs/fla-rwkv
 rwkv-rs/Megatrwkv-Bridge  # 2026-11-12 PR#2 导出 native LoRA/NoRA merged；11-07 PR#1 合入 RWKV7 训练（Apache-2.0）
@@ -80,3 +80,20 @@ No-22-Github/dsh-rwkv-plugin  # 2026-11-10 PR#1 请求级 adapter + AdapterPicke
 # ===== Agent 运行时（社区，非 rwkv-rs/rwkv-org） =====
 123123213weqw/rwkv-agent   # RWKV State Agent: state-native 多会话 runtime；**AGPL-3.0-or-later**（目录标 MIT 是错的）；README 实测 31 会话/24GB
 123123213weqw/x-harness-rs # XHarness: 跨平台 coding-agent harness（Rust，durable loop/工具/沙箱/Tauri+Web）；Apache-2.0
+
+# ===== 2026-11-15 org 全量补齐（39 仓） =====
+rwkv-rs/Albatross  # Apache-2.0 高效 RWKV 推理引擎（7.2B fp16 10250 tps @5090）
+rwkv-rs/rwkv7-ascend-npu  # 无 LICENSE；Ascend 910B3 推理/serving 汇总（日检漏列）
+rwkv-rs/llm-compressor-rwkv  # Apache-2.0 压缩库（日检漏列）
+rwkv-rs/rwkv-peft-simple  # Apache-2.0
+rwkv-rs/burn  # Apache-2.0 Rust DL 框架（第三方 fork）
+rwkv-rs/cubecl  # Apache-2.0 Rust 计算语言扩展（第三方 fork）
+rwkv-rs/originium  # 无 LICENSE（Rust）
+rwkv-rs/rhi  # GPL-3.0（仅设计参考，不复制）
+rwkv-rs/rhine  # GPL-3.0（仅设计参考，不复制）
+rwkv-rs/rhine-schema-derive  # MIT
+rwkv-rs/rwkv-cc  # 无 LICENSE；Linear-RNN 生物/化学语言模型
+rwkv-rs/MediaCrawler  # NOASSERTION；第三方爬虫（小红书/抖音/B站等）
+rwkv-rs/wandb-rs  # 无 LICENSE
+rwkv-rs/wx-cli  # Apache-2.0；WeChat local data CLI
+rwkv-org/F-rwkv  # 2026-11-15 仍只有 LICENSE（11357B）；空壳

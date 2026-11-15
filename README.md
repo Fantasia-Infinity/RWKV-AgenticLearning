@@ -38,6 +38,7 @@ Before building in that gap, we audited the ecosystem. This repo is the audit: w
 │   ├── 2026-11-12-sao-gsm8k.md          # SAO (critic RL) on GSM8K: avg@4 27.8/43.5/28.6/28.1, mean 32.0 vs base 21.0
 │   ├── 2026-11-12-verified-update.md    # eval 58.7 (7.2B SFT) / loss breakdown / hashline negative / 3 open eval PRs
 │   ├── 2026-11-12-dapo-vs-sao-strict.md # strict matched comparison: DAPO-100 vs SAO-100 (with variance caveat)
+│   ├── 2026-11-15-verified-update.md    # quant refactor (post-dates 58.7 eval), torchtitan retired, 39-repo org list
 │   ├── data/2026-11-10-summary.json     # machine-readable summary of all results
 │   ├── skyrl/  REPORT.md + evidence/    # skyrl-rwkv deep-dive (CI, pin, multi-turn, 8×GPU)
 │   ├── state/  REPORT.md + evidence/    # wkvm, RWKV-Megatron 28B, Helicopter traces

@@ -1,7 +1,7 @@
 {
   "site": "RWKV-AgenticLearning · 报告站",
   "repo": "https://github.com/Fantasia-Infinity/RWKV-AgenticLearning",
-  "built": "2026-11-15T13:25:16.636786+00:00",
+  "built": "2026-11-17T13:07:16.734067+00:00",
   "reports": [
     {
       "rel": "README.md",
@@ -9,7 +9,7 @@
       "title": "RWKV-AgenticLearning",
       "category": "项目",
       "date": "",
-      "chars": 10278
+      "chars": 10406
     },
     {
       "rel": "ROADMAP.md",
@@ -138,6 +138,14 @@
       "category": "核心报告",
       "date": "2026-11-15",
       "chars": 4078
+    },
+    {
+      "rel": "reports/2026-11-17-verified-update.md",
+      "html": "reports/2026-11-17-verified-update.html",
+      "title": "2026-11-17 生态核验更新：w1c2j3 状态管理 PR 集中提交 / XHarness 无法核实 / 编辑接口双解法",
+      "category": "核心报告",
+      "date": "2026-11-17",
+      "chars": 4633
     },
     {
       "rel": "reports/EVIDENCE.md",

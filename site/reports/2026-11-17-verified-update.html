@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026-11-17 生态核验更新：w1c2j3 状态管理 PR 集中提交 / XHarness 无法核实 / 编辑接口双解法 · RWKV-AgenticLearning · 报告站</title>
+<link rel="stylesheet" href="../assets/style.css">
+
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="brand" href="../index.html">RWKV-AgenticLearning · 报告站</a>
+<span class="built">built 2026-11-17 13:07 UTC</span></div></header>
+<div class="layout wrap">
+<nav class="sidebar"><a href="../index.html">首页</a>
+<span class="nav-cat">核心报告</span>
+<a href="../reports/2026-11-17-verified-update.html" class="active">2026-11-17 生态核验更新：w1c2j3 状态管理 PR 集中提交 / XHarness 无法核实 / 编辑接口双解法</a>
+<a href="../reports/2026-11-15-verified-update.html">2026-11-15 生态核验更新：量化重构、torchtitan 退役与 39 仓清单</a>
+<a href="../reports/2026-11-12-verified-update.html">2026-11-12 生态核验更新：SFT 数据打分的 58.7，以及 eval harness 三条 open PR</a>
+<a href="../reports/2026-11-12-sao-gsm8k.html">SAO (critic-based RL) on GSM8K for RWKV-7 G1l-1.5B</a>
+<a href="../reports/2026-11-12-dapo-vs-sao-strict.html">DAPO vs SAO: strict matched comparison (GSM8K, G1l-1.5B)</a>
+<a href="../reports/2026-11-11-verified-update.html">2026-11-11 生态核验更新（irwkv 两块能力 + FlashRWKV2 a19）</a>
+<a href="../reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
+<a href="../reports/2026-11-10-rl-results-summary.html">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-12)</a>
+<a href="../reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a>
+<a href="../reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
+<a href="../reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
+<a href="../reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
+<a href="../reports/2026-11-05-verification.html">RWKV 生态核验报告（2026-11-05 接续 session）</a>
+<span class="nav-cat">专题报告</span>
+<a href="../reports/state/evidence/CITATIONS.html">Evidence citations — state/</a>
+<a href="../reports/state/REPORT.html">状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告</a>
+<a href="../reports/skyrl/evidence/CITATIONS.html">Evidence citations — skyrl/</a>
+<a href="../reports/skyrl/evidence/00-env.html">环境与时间快照</a>
+<a href="../reports/skyrl/REPORT.html">skyrl-rwkv 深度核验报告（任务 task-1）</a>
+<a href="../reports/eco/evidence/CITATIONS.html">Evidence citations — eco/</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html">Evidence: rwkv.cn /tutorials/basic/Prompt-Format</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html">RWKV Native Model Templates</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html">RWKV MaxRL configuration</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html">Native rwkv-lm Engine</a>
+<a href="../reports/eco/REPORT.html">RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）</a>
+<a href="../reports/EVIDENCE.html">Evidence — policy, layout, and how to re-verify</a>
+<span class="nav-cat">文档</span>
+<a href="../docs/ecosystem-review-2026-11-05.html">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a>
+<a href="../docs/methodology.html">Methodology — how claims in this repository are produced and checked</a>
+<span class="nav-cat">项目</span>
+<a href="../THIRD_PARTY_NOTICES.html">Third-party notices</a>
+<a href="../ROADMAP.html">ROADMAP — RWKV agentic RL</a>
+<a href="../index.html">RWKV-AgenticLearning</a>
+<a class="ext" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">GitHub ↗</a></nav>
+<main class="content">
+<article class="report">
+<div class="crumb"><a href="../index.html">首页</a> / reports/2026-11-17-verified-update.md</div>
+<h1 class="report-title">2026-11-17 生态核验更新：w1c2j3 状态管理 PR 集中提交 / XHarness 无法核实 / 编辑接口双解法</h1>
+<div class="meta"><span class="badge">核心报告</span><span class="badge date">2026-11-17</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/reports/2026-11-17-verified-update.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
+<ul>
+<li><a href="#_1">一、已核验事实</a><ul>
+<li><a href="#1-w1c2j3-4-pr">1. w1c2j3 的 4 个性能/接口 PR</a></li>
+<li><a href="#2-dsh-rwkv-plugin">2. dsh-rwkv-plugin 的编辑接口进展</a></li>
+<li><a href="#3-irwkv-4-open-pr">3. irwkv 4 个 open PR（已核对）</a></li>
+<li><a href="#4-vllm-issue">4. vLLM 上游 issue：归属需修正</a></li>
+<li><a href="#5-x-harness-rs-xharness">5. x-harness-rs → XHarness 改名：无法核实</a></li>
+<li><a href="#6">6. 其他核验</a></li>
+</ul>
+</li>
+<li><a href="#_2">二、对日检判定的评估</a></li>
+<li><a href="#_3">三、对我们项目的影响</a></li>
+<li><a href="#_4">四、引用</a></li>
+</ul>
+</div>
+</details><div class="md-body"><h1 id="2026-11-17-w1c2j3-pr-xharness"><a class="toclink" href="#2026-11-17-w1c2j3-pr-xharness">2026-11-17 生态核验更新：w1c2j3 状态管理 PR 集中提交 / XHarness 无法核实 / 编辑接口双解法</a></h1>
+<blockquote>
+<p>核验时间：2026-11-17 14:10–15:00 CET。GitHub API / raw / curl 回源。
+对应外部摘要：2026-11-17 日检。</p>
+</blockquote>
+<h2 id="_1"><a class="toclink" href="#_1">一、已核验事实</a></h2>
+<h3 id="1-w1c2j3-4-pr"><a class="toclink" href="#1-w1c2j3-4-pr">1. w1c2j3 的 4 个性能/接口 PR</a></h3>
+<table>
+<thead>
+<tr>
+<th>仓库</th>
+<th>PR</th>
+<th>标题（原文）</th>
+<th>状态</th>
+<th>创建</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Alic-Li/rwkv_lightning_cuda</code></td>
+<td><strong>#25</strong></td>
+<td><code>perf(inference): reduce forward scratch and state-copy overhead</code></td>
+<td><strong>open</strong></td>
+<td>2026-11-17</td>
+</tr>
+<tr>
+<td><code>Alic-Li/rwkv_lightning_cuda</code></td>
+<td><strong>#26</strong></td>
+<td><code>perf(training): optimize packed BF16 execution and safe gradient pruning</code></td>
+<td><strong>open</strong></td>
+<td>2026-11-17</td>
+</tr>
+<tr>
+<td><code>rwkv-org/irwkv</code></td>
+<td><strong>#21</strong></td>
+<td><code>[Perf][RWKV] Batch 5D state-pool transfers without host synchronization</code></td>
+<td><strong>open</strong></td>
+<td>2026-11-17</td>
+</tr>
+<tr>
+<td><code>No-22-Github/dsh-rwkv-plugin</code></td>
+<td><strong>#3</strong></td>
+<td><code>edit: add recall-tolerant edit mode with dual-anchor sliding guard and TS sync</code></td>
+<td><strong>closed（未 merge）</strong>，内容以 11-17 commit 合入 main</td>
+<td>2026-11-17</td>
+</tr>
+</tbody>
+</table>
+<p>PR #25 body 关键数字：forward arena channel-sized scratch 从 <code>31 * rows * C</code> 降到 <code>21 * rows * C</code>；
+连续 state 切片用<strong>一次 CUDA launch</strong> 拷贝（vectorized FP16/FP32 state-slice copying + scalar fallback）。
+PR #26 body：packed BF16 训练把<strong>受监督行压紧</strong>做 output-head/CE，并显式省略到不了冻结 embedding 的
+layer-0 输入伴随量；其余含六路 BF16 time-mix 融合、去 WKV 反向递归 register copy、NoRA 投影/梯度 GEMM 特化。
+→ 日检对 PR 内容的概括<strong>属实</strong>；但注意它们目前都是 <strong>open（未合并）</strong>，尚无合并后的基准数字。</p>
+<h3 id="2-dsh-rwkv-plugin"><a class="toclink" href="#2-dsh-rwkv-plugin">2. <code>dsh-rwkv-plugin</code> 的编辑接口进展</a></h3>
+<ul>
+<li>PR #3 作者为 <strong>w1c2j3</strong>，2026-11-17 09:04 关闭且未合并；同日 commit
+  <code>edit: merge PR #3 tolerant-edit mode with line-edit default and TS sync...</code> 把内容合入 main</li>
+<li>实际能力：在标准 <code>edit_file</code> 之上加 <strong><code>editMode: 'tolerant'</code>（内容锚点 + 双锚点滑动保护，容忍缩进/空行/空白漂移）</strong>，
+  可实时在 <code>tolerant</code> / <code>line-edit</code>（<code>edit_lines</code>）/ <code>literal</code> 间切换；<strong>默认仍是 line-edit</strong></li>
+<li>11-16 的 commit 也确认：<code>worklist: add stateful work list, full-CoT history, non-withdrawn budget...</code> 等已合入
+→ 日检"编辑接口双人共演"判断成立；但注意<strong>默认未改变</strong>（line-edit 仍是默认，tolerant 是可选模式）。</li>
+</ul>
+<h3 id="3-irwkv-4-open-pr"><a class="toclink" href="#3-irwkv-4-open-pr">3. irwkv 4 个 open PR（已核对）</a></h3>
+<ul>
+<li><strong>#21</strong> w1c2j3（11-17，state-pool 批量化，无 host 同步）</li>
+<li><strong>#20</strong> Cai-z-us（11-16，<code>fix(rust): render long chats with the upstream template policy</code>）</li>
+<li><strong>#12</strong> Triang-jyed-driung（11-07，better state management）</li>
+<li><strong>#8</strong> w1c2j3（10-31，keep the state before the chat generation prompt）
+→ 日检"4 个 open PR"属实。</li>
+</ul>
+<h3 id="4-vllm-issue"><a class="toclink" href="#4-vllm-issue">4. vLLM 上游 issue：<strong>归属需修正</strong></a></h3>
+<ul>
+<li><strong>#68081 <code>[Bug]: MTP speculative decoding is a net performance negative on Qwen3.5/3.8 hybrid</code>：
+  作者确为 <code>123213213weqw</code></strong>，2026-11-17 创建 ✅</li>
+<li>
+<h1 id="49497-dhruv23536010-nilshellwig36077-yufangbo"><a class="toclink" href="#49497-dhruv23536010-nilshellwig36077-yufangbo">49497 作者 <code>Dhruv235</code>、#36010 作者 <code>NilsHellwig</code>、#36077 作者 <code>yufangbo</code>；</a></h1>
+  这三个 issue 的公开页面 HTML 中 <strong><code>123213213weqw</code> 出现 0 次</strong>（无署名、无可查评论）
+→ 日检把 4 个 issue 并列成"他的 6 个 issue"<strong>不准确</strong>：目前只能确认 #68081 由他提交；
+其余需说明"参与/评论"来源，否则应删去。</li>
+</ul>
+<h3 id="5-x-harness-rs-xharness"><a class="toclink" href="#5-x-harness-rs-xharness">5. <code>x-harness-rs</code> → <code>XHarness</code> 改名：<strong>无法核实</strong></a></h3>
+<ul>
+<li>实测（GitHub 连通性正常，对照 <code>dsh-rwkv-plugin</code>/<code>FlashRWKV2</code> 均 200）：</li>
+<li><code>https://github.com/123213213weqw/x-harness-rs</code> → <strong>404</strong></li>
+<li><code>https://github.com/123213213weqw/XHarness</code> → <strong>404</strong></li>
+<li><code>https://github.com/123213213weqw</code>（用户页）→ <strong>404</strong></li>
+<li>结论：公开 GitHub 上<strong>账号/仓库目前不可见</strong>（转私有、改名后旧链不重定向、或删号均可能）。
+  日检的"301 永久重定向到 XHarness、★16、今天推中文 UI 提交、仓库数 90→99"<strong>均无法回源确认</strong>；
+  若是重命名，旧 URL 通常应 301 而非 404——因此更可能是<strong>转私有/删号</strong>，而非单纯改名。
+  建议在跟踪文件里标记"未核实"，不要沿用 ★16/新名。</li>
+</ul>
+<h3 id="6"><a class="toclink" href="#6">6. 其他核验</a></h3>
+<ul>
+<li><code>rwkv-agent-eval</code> 三个 Pi PR <strong>仍 open</strong>（#1/#2/#3，2026-11-12 创建，第 6 天）✅</li>
+<li><code>rwkv-org/F-rwkv</code> <strong>仍只有 LICENSE</strong>（11357B）✅</li>
+<li><code>any2rwkv</code> MLA/KDA 四个文件 <strong>仍 0 字节</strong> ✅</li>
+<li><code>rwkv-rs</code> org public repo <strong>39 个</strong>（未变）✅</li>
+</ul>
+<h2 id="_2"><a class="toclink" href="#_2">二、对日检判定的评估</a></h2>
+<table>
+<thead>
+<tr>
+<th>日检判断</th>
+<th>评估</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"w1c2j3 一天内 5+ PR，全部指向 state 拷贝/同步/分配开销"</td>
+<td>✅ 事实层面对（4 个 PR 均在 state/scratch/同步上）；但<strong>全部 open 未合并</strong>，"瓶颈被证实"应改为"被这些 PR 的 body 论证/针对"，等合并+基准才算证实</td>
+</tr>
+<tr>
+<td>"编辑接口双人共演"</td>
+<td>✅ 成立（line-edit vs tolerant dual-anchor）；补充：默认仍 line-edit，tolerant 可选</td>
+</tr>
+<tr>
+<td>"w1c2j3 开始给 No-22 的插件提 PR，两条线开始协作"</td>
+<td>✅ 成立（PR #3 作者 w1c2j3，内容已入 main）</td>
+</tr>
+<tr>
+<td>"123213213weqw 在 vLLM 上游的 6 个 issue"</td>
+<td>⚠️ 只核实 1 个（#68081）；列表里另外 3 个是他人 issue</td>
+</tr>
+<tr>
+<td>"x-harness-rs 改名 XHarness（301）"</td>
+<td>❌ 无法核实：新旧 URL 与用户页均 404；更像转私有/删号</td>
+</tr>
+<tr>
+<td>"RL rollout 瓶颈在状态管理"</td>
+<td>🟠 方向合理（state copy/sync/alloc 是 RNN 异步 rollout 的已知成本），但本轮证据是 open PR 的论证，不是实测基准</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3"><a class="toclink" href="#_3">三、对我们项目的影响</a></h2>
+<ol>
+<li><strong>如果 #25/#26/#21 合并</strong>，异步 rollout 的 state 开销会下降，这对我们 RL 线的吞吐/成本是直接利好；
+   我们栈（skyrl + vLLM-RWKV）不用 lightning/irwkv 的 state-pool，短期受益有限，但可作为 P4 异步方案的参考。</li>
+<li><strong>编辑接口</strong>：tolerant/dual-anchor 是"编辑失败 27.7%"问题的第二解；我们自己的多轮工具 RL 负结果里同样有
+   "重复调用/格式失败"成分，值得在后续工具环境里对比 line-based vs tolerant edit 的失败率（不现在跑）。</li>
+<li><strong>信息卫生</strong>：XHarness 与 vLLM issue 两处说明日检在"归因/可见性"上会出错；我们的 tracking 继续坚持
+   "回源 + 标注未核实"，不直接采纳二手结论。</li>
+</ol>
+<h2 id="_4"><a class="toclink" href="#_4">四、引用</a></h2>
+<ul>
+<li>lightning #25: https://github.com/Alic-Li/rwkv_lightning_cuda/pull/25</li>
+<li>lightning #26: https://github.com/Alic-Li/rwkv_lightning_cuda/pull/26</li>
+<li>irwkv #21: https://github.com/rwkv-org/irwkv/pull/21 ；#20: https://github.com/rwkv-org/irwkv/pull/20</li>
+<li>plugin #3: https://github.com/No-22-Github/dsh-rwkv-plugin/pull/3</li>
+<li>vLLM #68081: https://github.com/vllm-project/vllm/issues/68081</li>
+<li>eval PRs: https://github.com/rwkv-org/rwkv-agent-eval/pulls</li>
+</ul></div></article>
+<footer class="foot">Generated from the repository Markdown sources · <a href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">source on GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>

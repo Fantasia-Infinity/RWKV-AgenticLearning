@@ -39,6 +39,7 @@ Before building in that gap, we audited the ecosystem. This repo is the audit: w
 │   ├── 2026-11-12-verified-update.md    # eval 58.7 (7.2B SFT) / loss breakdown / hashline negative / 3 open eval PRs
 │   ├── 2026-11-12-dapo-vs-sao-strict.md # strict matched comparison: DAPO-100 vs SAO-100 (with variance caveat)
 │   ├── 2026-11-15-verified-update.md    # quant refactor (post-dates 58.7 eval), torchtitan retired, 39-repo org list
+│   ├── 2026-11-17-verified-update.md    # state-pool PRs (open), tolerant-edit merge, XHarness 404, vLLM issue attribution fix
 │   ├── data/2026-11-10-summary.json     # machine-readable summary of all results
 │   ├── skyrl/  REPORT.md + evidence/    # skyrl-rwkv deep-dive (CI, pin, multi-turn, 8×GPU)
 │   ├── state/  REPORT.md + evidence/    # wkvm, RWKV-Megatron 28B, Helicopter traces

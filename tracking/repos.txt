@@ -60,7 +60,7 @@ KakaruHayate/RWKV8-ROSA-FPGA
 aabbdev/rosa
 
 # ===== 新增：推理/客户端侧关键单点 =====
-Alic-Li/rwkv_lightning_cuda  # 无 LICENSE（根 LICENSE 404, 2026-11-09 复核）；docs/online-rl.zh-CN.md 实证：MiSS/State/NoRA 三个常驻在线 RL server、GRPO/Dr.GRPO、token loss_mask、/v1/logprobs 教师强制、policy_version CAS、多轮 tool 客户端示例；纯 C++/CUDA、PEFT-only、单 GPU worker
+Alic-Li/rwkv_lightning_cuda  # 无 LICENSE；2026-11-17 open PR #25(inference scratch/state-copy)、#26(packed BF16 training)；11-14 quant 重构 W8A16+SB6 W4/W6；docs/online-rl 实证三种在线 RL server
 RWKV-APP/RWKV_APP
 
 # ===== 2026-11-06 新增（官方目录扫描）：训练适配 / 官方 org =====
@@ -69,17 +69,17 @@ aierwiki/rwkvtune
 RWKV/RWKV-infctx-trainer
 
 # ===== 2026-11-06 新增：原生 RWKV-7 服务框架（Apache-2.0，含 logprobs/weight update 接口）=====
-rwkv-org/irwkv  # 2026-11-11 #16 版本化 LoRA/NoRA 服务 merged；#7(grammar 走图 perf)+#4(state continuation) merged；mtp 未并 main；Apache-2.0
+rwkv-org/irwkv  # 2026-11-17 open: #8/#12/#20(Cai-z-us 长对话模板)/#21(state-pool 批量传输)；#16 版本化 LoRA/NoRA 服务 merged；Apache-2.0
 w1c2j3/irwkv  # 镜像；Chase 的 state-continuation/prefix-cache 分支在此
 
 # ===== 2026-11-06 晚新增：agent 评测 / DSH 集成（同优先级跟踪）=====
 rwkv-org/rwkv-agent-eval  # ⚠️ 无 LICENSE；2026-11-12 三个 open PR（#1/#2/#3，DSH/Pi 双 harness），数据只能引用不可复用
-No-22-Github/dsh-rwkv-plugin  # 2026-11-10 PR#1 请求级 adapter + AdapterPicker merged 08:30Z（Alic-Li 作，MIT 插件）
+No-22-Github/dsh-rwkv-plugin  # 2026-11-17 PR#3 tolerant/双锚点编辑（w1c2j3 作，关闭未 merge 但内容入 main；默认仍 line-edit）；11-10 PR#1 请求级 adapter merged；MIT
 # 监控（当前 404/私有）：rwkv-agent-pipeline —— 一旦公开即重大信号
 
 # ===== Agent 运行时（社区，非 rwkv-rs/rwkv-org） =====
 123123213weqw/rwkv-agent   # RWKV State Agent: state-native 多会话 runtime；**AGPL-3.0-or-later**（目录标 MIT 是错的）；README 实测 31 会话/24GB
-123123213weqw/x-harness-rs # XHarness: 跨平台 coding-agent harness（Rust，durable loop/工具/沙箱/Tauri+Web）；Apache-2.0
+123123213weqw/x-harness-rs # ⚠️ 2026-11-17 复核：账号/旧仓/新名 XHarness 均 404（转私有/删号？改名未证实）；最后公开状态 Apache-2.0
 
 # ===== 2026-11-15 org 全量补齐（39 仓） =====
 rwkv-rs/Albatross  # Apache-2.0 高效 RWKV 推理引擎（7.2B fp16 10250 tps @5090）

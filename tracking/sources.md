@@ -176,3 +176,10 @@ API 有限流风险（未认证 60/h）；优先 `GET /repos/<owner>/<repo>/pull
   8 组 / 6-bit scale+offset + 共享 FP16 基准）。此前 11-11 的 58.7 评测用的是 **11-09 build**，不含 SB6；
   跨版本比较 agent 分数时必须记录量化方案与精度守护指标。
 - org 全量仓清单已补齐到 39 个（见 `repos.txt` 末尾 2026-11-15 段）。
+### 2026-11-17 失真登记（追加）
+- **XHarness 改名不可核实**：`123213213weqw` 用户页、`x-harness-rs`、`XHarness` 三个公开 URL 均 404
+  （GitHub 对照仓 200）；若只是改名应 301。跟踪文件保留旧名并标"不可见/未核实"，不采纳"★16/中文 UI 提交"描述。
+- **vLLM issue 归属**：#68081 确为 `123213213weqw` 提交；#49497/#36010/#36077 作者分别为
+  Dhruv235/NilsHellwig/yufangbo，页面中无该用户痕迹 → 不能合并陈述为"他的 issue"。
+- **open PR ≠ 已合并**：w1c2j3 的 lightning #25/#26、irwkv #21 均为 open；性能收益需等合并后的基准。
+- **PR 关闭但内容已合入**：plugin #3 关闭未 merge，但同日 commit 已把 tolerant-edit 合入 main（默认仍 line-edit）。

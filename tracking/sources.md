@@ -183,3 +183,9 @@ API 有限流风险（未认证 60/h）；优先 `GET /repos/<owner>/<repo>/pull
   Dhruv235/NilsHellwig/yufangbo，页面中无该用户痕迹 → 不能合并陈述为"他的 issue"。
 - **open PR ≠ 已合并**：w1c2j3 的 lightning #25/#26、irwkv #21 均为 open；性能收益需等合并后的基准。
 - **PR 关闭但内容已合入**：plugin #3 关闭未 merge，但同日 commit 已把 tolerant-edit 合入 main（默认仍 line-edit）。
+### 2026-11-18 失真/迁移登记（追加）
+- **许可缺口**：`rwkv-rs/any2rwkv` 无 LICENSE（API `null`）——外部 PR #2 已合入，但代码不可复用，只能引用/设计参考。
+- **路径更正**：any2rwkv 的评审规范是 `.github/PR_REVIEW.md`（不是 `.agents/docs/pr-review.md`）。
+- **版本状态**：FlashRWKV2 "0.2.0a1 迁移"目前是 4 仓 9 个 **open PR**，最新 release 仍 `v0.1.0a19`（2026-11-11）。
+- **PR 计数**：irwkv open=8（Cai-z-us 4 / w1c2j3 3 / 社区 1），非日检的 5+2+1。
+- **精度分层**：irwkv #25 让 serving WKV state 默认 FP16，但 rollout 指令显式可回 FP32；跨版本对比分数时必须记录 state dtype。

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026-11-18 生态核验更新：any2rwkv 首个外部 PR、FlashRWKV2 0.2.0a1 迁移栈 · RWKV-AgenticLearning · 报告站</title>
+<link rel="stylesheet" href="../assets/style.css">
+
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="brand" href="../index.html">RWKV-AgenticLearning · 报告站</a>
+<span class="built">built 2026-11-18 10:17 UTC</span></div></header>
+<div class="layout wrap">
+<nav class="sidebar"><a href="../index.html">首页</a>
+<span class="nav-cat">核心报告</span>
+<a href="../reports/2026-11-18-verified-update.html" class="active">2026-11-18 生态核验更新：any2rwkv 首个外部 PR、FlashRWKV2 0.2.0a1 迁移栈</a>
+<a href="../reports/2026-11-17-verified-update.html">2026-11-17 生态核验更新：w1c2j3 状态管理 PR 集中提交 / XHarness 无法核实 / 编辑接口双解法</a>
+<a href="../reports/2026-11-15-verified-update.html">2026-11-15 生态核验更新：量化重构、torchtitan 退役与 39 仓清单</a>
+<a href="../reports/2026-11-12-verified-update.html">2026-11-12 生态核验更新：SFT 数据打分的 58.7，以及 eval harness 三条 open PR</a>
+<a href="../reports/2026-11-12-sao-gsm8k.html">SAO (critic-based RL) on GSM8K for RWKV-7 G1l-1.5B</a>
+<a href="../reports/2026-11-12-dapo-vs-sao-strict.html">DAPO vs SAO: strict matched comparison (GSM8K, G1l-1.5B)</a>
+<a href="../reports/2026-11-11-verified-update.html">2026-11-11 生态核验更新（irwkv 两块能力 + FlashRWKV2 a19）</a>
+<a href="../reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
+<a href="../reports/2026-11-10-rl-results-summary.html">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-12)</a>
+<a href="../reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a>
+<a href="../reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
+<a href="../reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
+<a href="../reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
+<a href="../reports/2026-11-05-verification.html">RWKV 生态核验报告（2026-11-05 接续 session）</a>
+<span class="nav-cat">专题报告</span>
+<a href="../reports/state/evidence/CITATIONS.html">Evidence citations — state/</a>
+<a href="../reports/state/REPORT.html">状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告</a>
+<a href="../reports/skyrl/evidence/CITATIONS.html">Evidence citations — skyrl/</a>
+<a href="../reports/skyrl/evidence/00-env.html">环境与时间快照</a>
+<a href="../reports/skyrl/REPORT.html">skyrl-rwkv 深度核验报告（任务 task-1）</a>
+<a href="../reports/eco/evidence/CITATIONS.html">Evidence citations — eco/</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html">Evidence: rwkv.cn /tutorials/basic/Prompt-Format</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html">RWKV Native Model Templates</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html">RWKV MaxRL configuration</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html">Native rwkv-lm Engine</a>
+<a href="../reports/eco/REPORT.html">RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）</a>
+<a href="../reports/EVIDENCE.html">Evidence — policy, layout, and how to re-verify</a>
+<span class="nav-cat">文档</span>
+<a href="../docs/ecosystem-review-2026-11-05.html">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a>
+<a href="../docs/methodology.html">Methodology — how claims in this repository are produced and checked</a>
+<span class="nav-cat">项目</span>
+<a href="../THIRD_PARTY_NOTICES.html">Third-party notices</a>
+<a href="../ROADMAP.html">ROADMAP — RWKV agentic RL</a>
+<a href="../index.html">RWKV-AgenticLearning</a>
+<a class="ext" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">GitHub ↗</a></nav>
+<main class="content">
+<article class="report">
+<div class="crumb"><a href="../index.html">首页</a> / reports/2026-11-18-verified-update.md</div>
+<h1 class="report-title">2026-11-18 生态核验更新：any2rwkv 首个外部 PR、FlashRWKV2 0.2.0a1 迁移栈</h1>
+<div class="meta"><span class="badge">核心报告</span><span class="badge date">2026-11-18</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/reports/2026-11-18-verified-update.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
+<ul>
+<li><a href="#_1">一、已核验事实</a><ul>
+<li><a href="#1-rwkv-rsany2rwkv">1. rwkv-rs/any2rwkv 首个外部贡献（结构性变化，属实）</a></li>
+<li><a href="#2-flashrwkv2-020a1-open">2. FlashRWKV2 0.2.0a1 协调迁移（全部 open，尚未发布）</a></li>
+<li><a href="#3-fp16-serving-vs-fp32-rollout">3. FP16 serving vs FP32 rollout（已核验原文）</a></li>
+<li><a href="#4">4. 其他核验</a></li>
+</ul>
+</li>
+<li><a href="#_2">二、对日检判定的评估</a></li>
+<li><a href="#_3">三、对我们的影响</a></li>
+<li><a href="#_4">四、引用</a></li>
+</ul>
+</div>
+</details><div class="md-body"><h1 id="2026-11-18-any2rwkv-prflashrwkv2-020a1"><a class="toclink" href="#2026-11-18-any2rwkv-prflashrwkv2-020a1">2026-11-18 生态核验更新：any2rwkv 首个外部 PR、FlashRWKV2 0.2.0a1 迁移栈</a></h1>
+<blockquote>
+<p>核验时间：2026-11-18 11:20–12:00 CET。GitHub API / raw / atom 回源。
+对应外部摘要：2026-11-18 日检。</p>
+</blockquote>
+<h2 id="_1"><a class="toclink" href="#_1">一、已核验事实</a></h2>
+<h3 id="1-rwkv-rsany2rwkv"><a class="toclink" href="#1-rwkv-rsany2rwkv">1. <code>rwkv-rs/any2rwkv</code> 首个外部贡献（结构性变化，属实）</a></h3>
+<ul>
+<li><strong>PR #2</strong> <code>feat(qwen3.5): add opt-in signed GQA priming with adaptive heads</code>，作者 <strong><code>EntropyPhoton</code></strong>（社区账号），
+  <strong>merged 2026-11-17T14:54:05Z</strong>，+1806/−4，6 文件</li>
+<li>内容与日检一致：opt-in Qwen3.5 <strong>GQA→RWKV7 priming</strong>，自适应 K/V head 扩展 + 每 query head 一个 signed DPLR state；
+  迁移 Q/K/V/O、QK norm、text partial RoPE、output gate，再加 token shift / learned decay-erase / first-GQA value residual /
+  per-head readout；<strong>初始化不保证 softmax 等价</strong>（PR body 明说）；层内训练只动 GQA mixer、packed train/val、冻结 GDA adapter、
+  strict delta ckpt、epoch resume、输出锁</li>
+<li>实体文件确认：<code>docs/gqa2rwkv.md</code>（11,029B）、<code>docs/gqa_priming.md</code>、
+  <code>src/any2rwkv/qwen2rwkv/qwen3_5/gqa2rwkv.py</code>（34,818B）</li>
+<li><strong>评审规范实际路径是 <code>.github/PR_REVIEW.md</code></strong>（另有 <code>AGENTS.md</code>），不是日检写的 <code>.agents/docs/pr-review.md</code></li>
+<li><strong><code>mla2rwkv.py</code> / <code>kda2rwkv.py</code> 仍 0 字节</strong>（<code>docs/mla2rwkv.md</code>、<code>docs/kda2rwkv.md</code>、两个 .py 均 0）✅</li>
+<li>⚠️ <strong>该仓无 LICENSE</strong>（API <code>license: null</code>）→ 按我们的许可政策：可读/设计参考，<strong>不可复制代码</strong></li>
+</ul>
+<h3 id="2-flashrwkv2-020a1-open"><a class="toclink" href="#2-flashrwkv2-020a1-open">2. FlashRWKV2 0.2.0a1 协调迁移（全部 open，尚未发布）</a></h3>
+<table>
+<thead>
+<tr>
+<th>仓库</th>
+<th>PR</th>
+<th>内容</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rwkv-rs/FlashRWKV2</code></td>
+<td><strong>#29（P3）</strong></td>
+<td><code>refactor: replace runtime tuning profiles and simplify GPU CI</code>：移除 tuning session/磁盘 profile/fingerprint/lock/在线计时；删 <code>prepare_tuning</code>/<code>get_tuning_cache_dir</code>；根导出 23→21；stacked on #28</td>
+<td><strong>open</strong></td>
+</tr>
+<tr>
+<td><code>rwkv-rs/FlashRWKV2</code></td>
+<td>#28</td>
+<td><code>perf: accelerate TileLang WKV7 and vocabulary head backward</code>（P1/#29 的基底）</td>
+<td><strong>open</strong></td>
+</tr>
+<tr>
+<td><code>rwkv-org/irwkv</code></td>
+<td><strong>#22</strong></td>
+<td><code>[RWKV] Adapt native inference to FlashRWKV2 0.2.0a1</code></td>
+<td><strong>open</strong></td>
+</tr>
+<tr>
+<td><code>rwkv-org/irwkv</code></td>
+<td><strong>#23（P3）</strong></td>
+<td><code>[RWKV] Remove online tuning from inference with offline dispatch</code></td>
+<td><strong>open</strong></td>
+</tr>
+<tr>
+<td><code>rwkv-org/irwkv</code></td>
+<td><strong>#25</strong></td>
+<td><code>[RWKV] Default serving WKV state to FP16</code></td>
+<td><strong>open</strong></td>
+</tr>
+<tr>
+<td><code>rwkv-rs/vllm-rwkv</code></td>
+<td><strong>#86</strong></td>
+<td><code>[RWKV] Adapt serving to FlashRWKV2 0.2.0a1</code></td>
+<td><strong>open</strong></td>
+</tr>
+<tr>
+<td><code>rwkv-rs/vllm-rwkv</code></td>
+<td><strong>#87（P3）</strong></td>
+<td><code>[RWKV] Remove runtime tuning from serving</code></td>
+<td><strong>open</strong></td>
+</tr>
+<tr>
+<td><code>rwkv-rs/vllm-rwkv</code></td>
+<td><strong>#88</strong></td>
+<td><code>[RWKV] Default serving WKV state to FP16</code></td>
+<td><strong>open</strong></td>
+</tr>
+<tr>
+<td><code>rwkv-rs/transformers-rwkv</code></td>
+<td><strong>#26</strong></td>
+<td><code>fix(rwkv): support FlashRWKV2 0.2.0a1 training and deferred FP16 state</code></td>
+<td><strong>open</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>修正</strong>：<code>FlashRWKV2</code> 最新 release 仍是 <strong>v0.1.0a19（2026-11-11）</strong>，<strong>0.2.0a1 尚未发布</strong>；
+所以"迁移"是<strong>进行中的 PR 栈</strong>，不是已落地版本。</p>
+<h3 id="3-fp16-serving-vs-fp32-rollout"><a class="toclink" href="#3-fp16-serving-vs-fp32-rollout">3. FP16 serving vs FP32 rollout（已核验原文）</a></h3>
+<p>irwkv #25 body 原文要点：
+- <code>mamba_ssm_cache_dtype="auto"</code> → <strong>FP16 WKV state</strong>；serving 示例用默认值
+- <strong>BF16 weights / activations / shift state，FP32 递推算术与 head logits</strong>（沿用既有执行路径）
+- <strong>rollout instructions explicitly select FP32 recurrence</strong>；显式 FP16 与 FP32 仍可选
+- seeded 回归：eager 用显式 FP16，graph 用 auto；显式 FP32 用例继续覆盖 rollout 精度
+→ 设计取舍与日检判断一致：serving 省显存 vs <strong>RL rollout 保 logprob 数值保真</strong></p>
+<h3 id="4"><a class="toclink" href="#4">4. 其他核验</a></h3>
+<ul>
+<li><code>lightning_cuda</code> <strong>#25 已合并</strong>：merged <strong>2026-11-18T07:35:11Z</strong>；#26（training packed BF16）<strong>仍 open</strong></li>
+<li><code>dsh-rwkv-plugin</code> tolerant-edit 集成：11-17 16:17 <code>fix(tolerant-edit): read fs via ctx.get...</code>、
+  17:07 <code>feat: add auto-fold context mode and set empty-think + tolerant-edit...</code> ✅；默认仍为 line-edit</li>
+<li><strong>irwkv open PR = 8</strong>：Cai-z-us 4（#20/#22/#23/#25）+ w1c2j3 3（#8/#21/#24）+ 社区 1（#12）
+  → 日检"Cai-z-us 5 + w1c2j3 2 + 社区 1"计数有误</li>
+<li><strong>vllm-rwkv open = 5</strong>（#85/#86/#87/#88/#50）✅</li>
+<li><code>rwkv-agent-eval</code> 三个 Pi PR <strong>第 7 天仍 open</strong> ✅</li>
+<li><code>rwkv-org/F-rwkv</code> 仍只有 LICENSE（11,357B）✅</li>
+</ul>
+<h2 id="_2"><a class="toclink" href="#_2">二、对日检判定的评估</a></h2>
+<table>
+<thead>
+<tr>
+<th>日检判断</th>
+<th>评估</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"any2rwkv 首个外部贡献，评审规范→外部 PR→合并 7 天闭环"</td>
+<td>✅ 事实成立；修正文档路径为 <code>.github/PR_REVIEW.md</code>；补充：<strong>该仓无 LICENSE</strong>，外部贡献的代码不可按 Apache/MIT 复用</td>
+</tr>
+<tr>
+<td>"0.2.0a1 跨 4 仓库协调迁移"</td>
+<td>✅ PR 栈属实（4 仓 9 个 open PR）；修正：<strong>0.2.0a1 尚未发布</strong>，最新 release 仍 a19</td>
+</tr>
+<tr>
+<td>"serving 用 FP16、rollout 用 FP32"</td>
+<td>✅ 原文确认；这是 RL 侧最重要的设计点（重要性远超普通 perf PR）</td>
+</tr>
+<tr>
+<td>"移除 runtime tuning = 可复现性"</td>
+<td>✅ 方向正确；但 PR 仍 open，需等合并后确认</td>
+</tr>
+<tr>
+<td>"lightning #25 已合并；tolerant-edit 合流"</td>
+<td>✅ 均属实；#26 仍 open，默认仍 line-edit</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3"><a class="toclink" href="#_3">三、对我们的影响</a></h2>
+<ol>
+<li><strong>精度分层直接关系 RL</strong>：我们训练/评测用 vLLM-RWKV + FP32 state；若未来切到 irwkv/vLLM 新默认（serving FP16），
+   rollout logprob 必须显式 FP32，否则 importance ratio 会因数值偏移失真——这与我们已知的
+   "RWKV raw logprobs 要求未修改分布"是同一类约束。</li>
+<li><strong>去 runtime tuning</strong>：对我们"paired eval 可复现"是好消息；等 0.2.0a1 发布后再考虑 pin 升级（仍需 parity 测试）。</li>
+<li><strong>外部贡献 + 评审规范</strong>：说明该生态开始有正常治理流程；但 any2rwkv/lightning 均无 LICENSE，公开交付仍只能引用。</li>
+<li><strong>无新 RL 分数</strong>：58.7 基线不变，仍是 SFT。</li>
+</ol>
+<h2 id="_4"><a class="toclink" href="#_4">四、引用</a></h2>
+<ul>
+<li>any2rwkv PR #2: https://github.com/rwkv-rs/any2rwkv/pull/2</li>
+<li>any2rwkv 评审规范: https://github.com/rwkv-rs/any2rwkv/blob/main/.github/PR_REVIEW.md</li>
+<li>FlashRWKV2 #29: https://github.com/rwkv-rs/FlashRWKV2/pull/29</li>
+<li>irwkv #22/#23/#25: https://github.com/rwkv-org/irwkv/pulls</li>
+<li>vllm-rwkv #86/#87/#88: https://github.com/rwkv-rs/vllm-rwkv/pulls</li>
+<li>transformers-rwkv #26: https://github.com/rwkv-rs/transformers-rwkv/pull/26</li>
+<li>lightning #25: https://github.com/Alic-Li/rwkv_lightning_cuda/pull/25</li>
+</ul></div></article>
+<footer class="foot">Generated from the repository Markdown sources · <a href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">source on GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>

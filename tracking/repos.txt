@@ -16,8 +16,8 @@ TimeMobius/RWKV-Megatron
 howard-hou/RWKV-SFT
 
 # ===== L1 算子 / 推理 / 状态 =====
-rwkv-rs/FlashRWKV2  # 2026-11-11 v0.1.0a19：修复 29→32 padding NaN + 大 batch grid.x（我们 pin a17）
-rwkv-rs/transformers-rwkv  # 2026-11-10 PR#20 工具历史渲染修复 merged 07:48Z；PR#21 FlashRWKV2 a18 merged 08:28Z
+rwkv-rs/FlashRWKV2  # MIT；2026-11-18 0.2.0a1 迁移栈 open：#28(perf TileLang WKV7)+#29(P3 去 runtime tuning，根导出 23→21)；最新 release 仍 v0.1.0a19（我们 pin a17）
+rwkv-rs/transformers-rwkv  # 2026-11-18 open #26：支持 FlashRWKV2 0.2.0a1 训练 + deferred FP16 state；11-10 #20 工具历史渲染、#21 a18 merged
 rwkv-rs/hf-adapter
 rwkv-rs/tokenizers-rwkv
 rwkv-rs/rwkv-rs
@@ -38,7 +38,7 @@ rwkv-rs/chinese-babylm-eval-pipeline
 rwkv-rs/RWKV-Scout
 rwkv-rs/RWKV-LH
 rwkv-rs/RWKV-AUTODECO
-rwkv-rs/any2rwkv
+rwkv-rs/any2rwkv  # ⚠️ 无 LICENSE；2026-11-17 首个外部 PR #2(EntropyPhoton) merged：Qwen3.5 GQA→RWKV7 priming；评审规范 .github/PR_REVIEW.md；mla/kda 仍 0 字节
 rwkv-rs/codex-compact-router
 rwkv-rs/llm-compressor-rwkv
 rwkv-rs/rwkv7-ascend-npu
@@ -60,7 +60,7 @@ KakaruHayate/RWKV8-ROSA-FPGA
 aabbdev/rosa
 
 # ===== 新增：推理/客户端侧关键单点 =====
-Alic-Li/rwkv_lightning_cuda  # 无 LICENSE；2026-11-17 open PR #25(inference scratch/state-copy)、#26(packed BF16 training)；11-14 quant 重构 W8A16+SB6 W4/W6；docs/online-rl 实证三种在线 RL server
+Alic-Li/rwkv_lightning_cuda  # 无 LICENSE；2026-11-18 #25(inference scratch/state-copy) merged 07:35Z；#26(packed BF16 training) open；11-14 quant 重构 W8A16+SB6 W4/W6
 RWKV-APP/RWKV_APP
 
 # ===== 2026-11-06 新增（官方目录扫描）：训练适配 / 官方 org =====
@@ -69,12 +69,12 @@ aierwiki/rwkvtune
 RWKV/RWKV-infctx-trainer
 
 # ===== 2026-11-06 新增：原生 RWKV-7 服务框架（Apache-2.0，含 logprobs/weight update 接口）=====
-rwkv-org/irwkv  # 2026-11-17 open: #8/#12/#20(Cai-z-us 长对话模板)/#21(state-pool 批量传输)；#16 版本化 LoRA/NoRA 服务 merged；Apache-2.0
+rwkv-org/irwkv  # Apache-2.0；2026-11-18 open 8 个：Cai-z-us #20/#22(0.2.0a1)/#23(离线 dispatch)/#25(FP16 serving state)，w1c2j3 #8/#21/#24，社区 #12；#16 版本化 adapter merged
 w1c2j3/irwkv  # 镜像；Chase 的 state-continuation/prefix-cache 分支在此
 
 # ===== 2026-11-06 晚新增：agent 评测 / DSH 集成（同优先级跟踪）=====
 rwkv-org/rwkv-agent-eval  # ⚠️ 无 LICENSE；2026-11-12 三个 open PR（#1/#2/#3，DSH/Pi 双 harness），数据只能引用不可复用
-No-22-Github/dsh-rwkv-plugin  # 2026-11-17 PR#3 tolerant/双锚点编辑（w1c2j3 作，关闭未 merge 但内容入 main；默认仍 line-edit）；11-10 PR#1 请求级 adapter merged；MIT
+No-22-Github/dsh-rwkv-plugin  # MIT；2026-11-17 tolerant-edit 入 main（16:17 fix、17:07 auto-fold），默认仍 line-edit；#3 关闭未 merge 但内容已合入；11-10 #1 请求级 adapter merged
 # 监控（当前 404/私有）：rwkv-agent-pipeline —— 一旦公开即重大信号
 
 # ===== Agent 运行时（社区，非 rwkv-rs/rwkv-org） =====

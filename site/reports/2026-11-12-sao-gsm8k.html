@@ -203,7 +203,7 @@ vs DAPO@50 (40.4%) p=0.20 (not significant).</p>
 <h2 id="interpretation"><a class="toclink" href="#interpretation">Interpretation</a></h2>
 <ol>
 <li><strong>Critic-based token-level GAE is viable on 1.5B RWKV and competitive with DAPO</strong> — with
-   roughly 1/20 of DAPO's total rollouts (1.6k vs 16k) it reaches a similar or higher range.</li>
+   roughly 1/10 of DAPO's total rollouts (1.6k vs 16k) it reaches a similar or higher range.</li>
 <li><strong>Checkpoint variance dominates</strong>: 43.5% at step 50 vs 28% at steps 75/100. The same ±5pp+
    oscillation appeared in DAPO; with 200-question eval and one seed, a single spike cannot be
    attributed to the algorithm. Report mean-of-checkpoints, not just the best point.</li>

@@ -2,7 +2,7 @@
 
 **Verifiable research on RWKV agentic reinforcement learning** — ecosystem audit, SFT/RL experiments on RWKV-7 G1l-1.5B, multi-turn tool-use evaluation, and fully reproducible recipes.
 
-> **Status:** results update `2026-11-20`. Since the founding audit snapshot (2026-11-05) this repository has run and published its own SFT/RL experiments on **RWKV-7 G1l-1.5B**: tool-call SFT, multi-turn tool RL (negative result), DAPO RLVR (+31.0% avg@4), and critic-based SAO (32.0% mean avg@4). All numbers below are from our runs; every claim links to a report with commands, JSONs and checkpoints. Experiments are currently paused.
+> **Status:** results update `2026-11-20`. Since the founding audit snapshot (2026-11-05) this repository has run and published its own SFT/RL experiments on **RWKV-7 G1l-1.5B**: tool-call SFT, multi-turn tool RL (negative result), DAPO RLVR (+31.0% avg@4), and critic-based SAO (32.0% mean avg@4). All numbers below are from our runs; every claim links to a report with commands, result JSONs and cluster-local checkpoint paths (produced checkpoints are not published). Experiments are currently paused.
 
 ---
 
@@ -16,24 +16,27 @@ This repository does three things:
 2. **Runs reproducible SFT/RL experiments** on a small Apache-2.0 RWKV-7 model and publishes both positive and negative results.
 3. **Ships the code** — data builders, eval scripts, training recipes, SLURM templates, and a static HTML report site.
 
+**Scope note on priority.** The official `skyrl-rwkv` stack already reports positive RLVR gains; we do **not** claim algorithm or ecosystem priority. Our contribution is a **public, reproducible positive RLVR result at 1.5B** with code, recipes and JSON. The multi-turn tool RL result is our negative-result contribution to the public record.
+
 ## Results at a glance (2026-11-08 → 2026-11-12)
 
 Model: **RWKV-7 G1l-1.5B** (2026-10-31, Apache-2.0, latest G1 generation at 1.5B). Eval unless noted: GSM8K, **avg@4 = 200 questions × k=4 samples at temp 1.0** (same protocol as the official RWKV RLVR talk); greedy pass@1 on 1,319 questions where noted.
 
 | Experiment | Setup | Result | Verdict |
 |---|---|---|---|
-| **Tool-call SFT (P1.5 v3)** | 2,242 synthetic trajectories, 3 iterations | G3 tool-name **21.6% → 92.96%**, parse 100%; held-out 120: tool-name **98.9%**, args 100% | ✅ SFT learns tools + generalizes |
-| **GSM8K-calc multi-turn SFT** | 7,473 GSM8K → `calc` tool trajectories; 262 eval | base **3.4%** → SFT **42.0%** | ✅ strong SFT baseline |
-| **Multi-turn tool RL (P3 / P3c)** | FlashREINFORCE, answer-only reward (+ min-call shaping) | best RL **38.6%** < SFT 42.0%; avg tool calls 3.15 → 1.44 | ❌ tool-call shortcut |
-| **Held-out tool benchmark** | 120 self-built tasks (independent seed) | tool-name **98.9% (SFT) → 82.2% (RL)**; direct no-call 3.3% → 0% | ❌ RL degrades tool selection |
+| **Tool-call SFT (P1.5 v3)** | 2,242 synthetic trajectories, 3 iterations | G3 tool-name **21.6% → 92.96%**, parse 100%; held-out 120 (same generators, new seed): 90 tool tasks → tool-name **98.9%**, args 100%; 30 direct → only **3.3%** correct no-call | ✅ SFT generalizes to held-out samples from the same task generators |
+| **GSM8K-calc multi-turn SFT** | 7,473 GSM8K → `calc` tool trajectories; 262 eval | base **3.4%** → SFT **42.0%**, avg **3.15** tool calls | ✅ strong SFT baseline |
+| **P3 multi-turn tool RL (answer-only)** | FlashREINFORCE, 100 steps | accuracy **35.9%**, avg calls **1.44** (collapse) | ❌ answer reward kills tool use |
+| **P3c multi-turn tool RL (reward shaping)** | FlashREINFORCE + min-tool-calls shaping, 50 steps | accuracy **38.6%**, avg calls **2.97** | ❌ partial recovery, still below SFT |
+| **Held-out tool benchmark** | 120 tasks from the **same generators, new seed** (90 tool + 30 direct) | tool-name **98.9% (SFT) → 82.2% (RL)** over the 90 tool tasks; direct no-call 3.3% → 0% | ❌ RL degrades held-out tool selection |
 | **Plain GSM8K base** | greedy, 1,319 q | pass@1 **39.58%** (format 60.2%); avg@4 21.0% | — baseline |
 | **Math-SFT warm start** | 7,473 solutions, 234 steps | greedy 40.5% (200 q); avg@4 17.5% | SFT learns format, not math |
 | **FlashREINFORCE RLVR** | 50 steps, math-SFT start | greedy **41.39%** vs 39.58% (+1.81pp, **p=0.29 ns**); format 60→98% | ⚠️ not significant |
-| **DAPO RLVR** | 1,000 steps, 16 rollouts/step, 2×A100, ~16h | **avg@4 21.0% → 31.0% (+10.0pp, p=6.6e-05)**; pass@4 50.0→50.5 (ns) | ✅ first public positive RWKV RLVR |
+| **DAPO RLVR** | 1,000 steps, 16 rollouts/step, 2×A100, ~16h | **avg@4 21.0% → 31.0% (+10.0pp, p=6.6e-05)**; pass@4 50.0→50.5 (ns) | ✅ positive RLVR reproduced on G1l-1.5B |
 | **SAO (critic-based RL)** | 100 steps, `gae_adaptive` + NoRA critic, 2×A100, ~3h | avg@4 **27.75 / 43.5 / 28.63 / 28.12%** at steps 25/50/75/100, **mean 32.0%**, best pass@4 71.5% | ✅ positive; ~1.6k rollouts |
 | **DAPO vs SAO (strict matched)** | both 2×A100, 100 steps, ckpt@25/50/75/100, same base/data/eval | DAPO-100 mean **37.63%** vs SAO **32.00%** (p=7.8e-05); same DAPO config varies **19.25pp** between two runs | ⚠️ no reliable single-seed ranking |
 
-**Compute:** cumulative ≈**12,171 SBU** of the 180k project allocation (~**89.9% remaining**); DAPO 1,000-step run ≈4.1k SBU, SAO 100-step run ≈0.9k SBU incl. evals.
+**Compute (this phase):** ≈**12,171 SBU** used since 2026-11-07; project balance ≈**108,481 SBU** — ≈**90%** of the 120,652 SBU phase-start balance and ≈**60%** of the original 180,000 SBU allocation. The DAPO 1,000-step run ≈4.1k SBU; the SAO 100-step run ≈0.9k SBU incl. evals.
 
 Headline reports: [`reports/2026-11-10-rl-results-summary.md`](reports/2026-11-10-rl-results-summary.md) ·
 [`reports/2026-11-10-dapo-gsm8k-rlvr.md`](reports/2026-11-10-dapo-gsm8k-rlvr.md) ·
@@ -45,7 +48,7 @@ machine-readable: [`reports/data/2026-11-10-summary.json`](reports/data/2026-11-
 
 1. **RLVR works on RWKV-1.5B — but the recipe and budget matter.** FlashREINFORCE at 50 steps added nothing significant; DAPO at 1,000 steps added **+10pp avg@4**; SAO (critic-based) reached a similar range with **1/10 of the rollouts** (1.6k vs 16k) in 100 steps.
 2. **Checkpoint variance dominates single-run comparisons** (±5pp; the same DAPO configuration differed by 19.25pp between two runs at step 100). Report means over checkpoints, not best points.
-3. **SFT teaches format/tool selection extremely well, but multi-turn tool RL is the hard part.** Answer-only rewards produce a tool-call shortcut and degrade held-out tool selection. This is the clearest public RWKV *negative* result and the motivation for process rewards / tool constraints / KL-capable algorithms next.
+3. **SFT teaches format/tool selection extremely well, but multi-turn tool RL is the hard part.** Note that our held-out set reuses the P1.5 task generators with a **new seed** — it measures held-out-sample generalization, not generalization to novel task types or unseen tools. Answer-only rewards still produce a tool-call shortcut and degrade even this same-generator held-out tool selection. This is the clearest public RWKV *negative* result and the motivation for process rewards / tool constraints / KL-capable algorithms next.
 4. **Repo is license-clean and reproducible**: Apache-2.0 weights, our own code, GSM8K for train/eval; external ecosystem claims are cited, never copied.
 
 ## Ecosystem audit findings (2026-11-05, still relevant)
@@ -105,11 +108,26 @@ python tools/build_report_site.py --out site
 #    summaries + evidence JSONs live in reports/data/
 ```
 
-Training recipes need a `skyrl-rwkv` checkout and a recent RWKV-7 HF export — see
+Training recipes are reproducible end-to-end, but **produced checkpoints stay on the cluster** and are not published as public weights. They need a `skyrl-rwkv` checkout and a recent RWKV-7 HF export — see
 [`recipes/README.md`](recipes/README.md) for the exact DAPO / SAO settings, hardware
 (2×A100-40GB) and the environment constraints (sampling temperature must stay 1.0 for
 the RWKV raw-logprob backend; NoRA critic requires `model_type="rwkv"`; host RAM ≥120 GB
 for 4-GPU colocated runs).
+
+## Artifacts & availability
+
+**Public in this repository**
+- training recipes (`recipes/`), data builders and eval scripts (`tools/`), SLURM templates;
+- all result JSONs (`reports/data/` summaries; per-checkpoint eval JSONs are summarized in the reports);
+- reports (Markdown) and their HTML build (`site/`), ecosystem tracking data.
+
+**Not public**
+- training checkpoints and training logs: they remain on the Snellius scratch filesystem
+  (`runs/...`; each report lists the exact paths) and are **not** released as public weights;
+- environment-specific Slurm scripts and cluster paths.
+
+Base model weights are the official **RWKV-7 G1l-1.5B-20261031** (Apache-2.0) from Hugging Face; all fine-tuned/RL
+checkpoints in this project are derived from it and are cluster-local.
 
 ## Evidence policy (short version)
 
@@ -123,7 +141,7 @@ See [`reports/EVIDENCE.md`](reports/EVIDENCE.md) and each `evidence/CITATIONS.md
 | Phase | Deliverable | Status |
 |---|---|---|
 | P0 audit | verified ecosystem map, signal tracker | ✅ done (2026-11-05, kept current by verified updates) |
-| P1 single-turn SFT | tool-call + math SFT data + training | ✅ done (G3 tool-name 92.96%; held-out 98.9%) |
+| P1 single-turn SFT | tool-call + math SFT data + training | ✅ done (G3 tool-name 92.96%; held-out tool-name 98.9% over 90 same-generator tasks) |
 | P2 single-turn RLVR | DAPO on GSM8K | ✅ done (avg@4 +10.0pp, p=6.6e-05) |
 | P2b critic RL | SAO on GSM8K (with a critic) | ✅ done (mean avg@4 32.0%; best 43.5%) |
 | P3 multi-turn tool RL | GSM8K-calc multi-turn | ❌ negative (RL < SFT; tool-call shortcut) |
@@ -156,16 +174,20 @@ Apache-2.0 for this repository's own content. Third-party quotations are attribu
 
 | 实验 | 结果 | 判定 |
 |---|---|---|
-| 工具调用 SFT（P1.5 v3） | G3 tool-name **21.6%→92.96%**，parse 100%；自建 held-out 120 题 tool-name **98.9%** | ✅ SFT 学会工具并泛化 |
-| GSM8K-calc 多轮 SFT | 262 题：base 3.4% → **SFT 42.0%** | ✅ 强 SFT 基线 |
-| 多轮工具 RL（P3/P3c） | 最好 **38.6% < SFT 42%**；held-out tool-name 98.9%→**82.2%**，出现 tool-call shortcut | ❌ 公开负结果 |
-| DAPO RLVR（1000 步，2×A100，~16h） | GSM8K **avg@4 21.0%→31.0%（+10.0pp，p=6.6e-05）**；pass@4 不变（50.0→50.5） | ✅ 首个公开正向 RWKV RLVR |
+| 工具调用 SFT（P1.5 v3） | G3 tool-name **21.6%→92.96%**，parse 100%；自建 held-out 120 题（**同生成器、新 seed**）：90 工具题 tool-name **98.9%**，30 direct 题仅 **3.3%** 正确不调工具 | ✅ 同生成器 held-out 样本上泛化（非全新任务泛化） |
+| GSM8K-calc 多轮 SFT | 262 题：base 3.4% → **SFT 42.0%**，平均 **3.15** 次工具调用 | ✅ 强 SFT 基线 |
+| P3 多轮工具 RL（纯答案奖励） | FlashREINFORCE 100 步：准确率 **35.9%**，平均调用 **1.44** 次（坍缩） | ❌ 答案奖励导致工具调用偷懒 |
+| P3c 多轮工具 RL（奖励塑形） | FlashREINFORCE + 最少调用塑形 50 步：准确率 **38.6%**，平均 **2.97** 次 | ❌ 部分修复，但仍低于 SFT |
+| held-out 工具集 | 120 题（**同生成器、新 seed**；90 工具 + 30 direct）：tool-name 98.9%→**82.2%**；direct 不调工具率 3.3%→0% | ❌ RL 降低 held-out 工具选择 |
+| DAPO RLVR（1000 步，2×A100，~16h） | GSM8K **avg@4 21.0%→31.0%（+10.0pp，p=6.6e-05）**；pass@4 不变（50.0→50.5） | ✅ 在 G1l-1.5B 上复现正向 RLVR |
 | SAO critic RL（100 步，2×A100，~3h） | avg@4 27.75/43.5/28.63/28.12，**均值 32.0%**，best pass@4 71.5%；rollout 数仅 1.6k | ✅ 正向、成本更低 |
 | DAPO vs SAO 严格对照 | 同为 100 步/同基座/同数据/同评测：DAPO 均值 37.63 vs SAO 32.00（p=7.8e-05）；但同 DAPO 配置两次 run 相差 **19.25pp** | ⚠️ 单 seed 排名不可靠 |
 
-**关键结论**：RLVR 在 1.5B 上有效，但**配方与预算决定成败**（50 步 FlashREINFORCE 无显著增益；1000 步 DAPO +10pp；SAO 用 1/10 rollout 达到同区间）；**检查点方差 ±5pp 且同配置可差 19pp**，必须报告多点均值；**SFT 教格式与工具选择极强，多轮工具 RL 是最难的一环**（答案级奖励导致工具调用偷懒）。
+**关键结论**：RLVR 在 1.5B 上有效，但**配方与预算决定成败**（50 步 FlashREINFORCE 无显著增益；1000 步 DAPO +10pp；SAO 用 1/10 rollout 达到同区间）；**检查点方差 ±5pp 且同配置可差 19pp**，必须报告多点均值；**SFT 教格式与工具选择极强，多轮工具 RL 是最难的一环**（答案级奖励导致工具调用偷懒）。需注意：held-out 集与训练**同一批任务生成器**、只换 seed，只能说明"同生成器新样本泛化"，不能说明"全新任务/工具泛化"。
 
 **生态审计（2026-11-05，持续更新）**：`rwkv-rs` 组织现有 **39 个公开仓库**；官方 `rwkv-agent-eval` 的 1,019 题多轮 agent 考卷已发 SFT 分数（30.9%→52.8%，后到 **58.7**，仍**非 RL**，且仓库**无 LICENSE**）；**仍空白**的是公开的多轮 agentic RL 配方/结果、标准 agent benchmark 分数、state-native rollout 层。审计纠正了 12 处事实，详见 [`reports/2026-11-05-verification.md`](reports/2026-11-05-verification.md)。
+
+**表述边界**：官方 `skyrl-rwkv` 已报告正向 RLVR 增益；本仓库不主张算法或生态首创权，贡献是**在 1.5B 上公开、可复现的正向 RLVR 结果**（含配方/脚本/JSON）。
 
 **怎么用**：`bash tracking/check.sh` 约 90 秒打一份生态快照（不消耗 GitHub API 配额），`--diff` 看变化；`python tools/build_report_site.py --out site` 重建全部报告的 HTML 版（入口 [`site/index.html`](site/index.html)）；训练配方见 [`recipes/`](recipes/)。**证据政策**：不重新分发第三方全文，删除的副本以 sha256 记录，可随时重抓校验。**许可**：自有内容 Apache-2.0；第三方引用均署名。
 

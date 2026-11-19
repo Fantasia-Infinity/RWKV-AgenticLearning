@@ -9,7 +9,7 @@
 </head>
 <body>
 <header class="topbar"><div class="wrap"><a class="brand" href="../index.html">RWKV-AgenticLearning · 报告站</a>
-<span class="built">built 2026-11-19 23:08 UTC</span></div></header>
+<span class="built">built 2026-11-19 23:17 UTC</span></div></header>
 <div class="layout wrap">
 <nav class="sidebar"><a href="../index.html">首页</a>
 <span class="nav-cat">核心报告</span>
@@ -22,7 +22,7 @@
 <a href="../reports/2026-11-11-verified-update.html">2026-11-11 生态核验更新（irwkv 两块能力 + FlashRWKV2 a19）</a>
 <a href="../reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
 <a href="../reports/2026-11-10-rl-results-summary.html" class="active">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-12)</a>
-<a href="../reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a>
+<a href="../reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: positive RLVR result (avg@4 +10pp)</a>
 <a href="../reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
 <a href="../reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
 <a href="../reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
@@ -98,8 +98,8 @@ Machine-readable copy: <a href="data/2026-11-10-summary.json"><code>reports/data
 </tr>
 <tr>
 <td>held-out tool benchmark</td>
-<td>120 self-built tasks (calc/search/stats/direct, independent seed)</td>
-<td>generalization of tool selection</td>
+<td>120 tasks from the <strong>same P1.5 generators, new seed</strong> (90 tool + 30 direct)</td>
+<td>held-out-sample generalization of tool selection</td>
 </tr>
 <tr>
 <td>GSM8K-calc</td>
@@ -195,13 +195,13 @@ Machine-readable copy: <a href="data/2026-11-10-summary.json"><code>reports/data
 </table>
 <ul>
 <li>Answer-only RL learns a <strong>tool-call shortcut</strong> (calls per sample drop 3.15 → 1.44) and loses accuracy</li>
-<li>Held-out benchmark confirms degradation: tool-name accuracy <strong>98.9% (SFT) → 82.2% (P3c)</strong>, direct no-call rate 3.3% → 0%</li>
+<li>Held-out benchmark (same generators, new seed; 120 tasks = 90 tool + 30 direct) confirms degradation: tool-name accuracy <strong>98.9% (SFT) → 82.2% (P3c)</strong> over the 90 tool tasks; direct no-call rate 3.3% → 0% (30 direct tasks)</li>
 <li>No-KL constraint of FlashREINFORCE blocked the usual KL-regularized fix; reward shaping only partially recovered</li>
 </ul>
 <h3 id="sft-tool-call-ability-generalizes"><a class="toclink" href="#sft-tool-call-ability-generalizes">✅ SFT tool-call ability generalizes</a></h3>
 <ul>
 <li>G3 tool-call tool-name accuracy: 21.6% (base) → <strong>92.96%</strong> (SFT v3), parse rate 100%</li>
-<li>held-out 120 tasks: tool-name <strong>98.9%</strong>, argument validity 100%</li>
+<li>held-out 120 tasks from the same generators (new seed): tool-name <strong>98.9% over the 90 tool tasks</strong>, argument validity 100%; direct no-call only 3.3% (30 tasks)</li>
 </ul>
 <h2 id="3-interpretation"><a class="toclink" href="#3-interpretation">3. Interpretation</a></h2>
 <ol>
@@ -210,7 +210,7 @@ Machine-readable copy: <a href="data/2026-11-10-summary.json"><code>reports/data
    difference is consistent with the official report (g1k + 155 SFT + 1,000 DAPO steps:
    GSM8K avg@4 59.42 → 71.85, +12.4pp), though their scale is ~320× ours per step
    (upstream DAPO reference: 1,024 prompts × 5 samples = 5,120 rollouts/step vs our 16).</li>
-<li><strong>SFT teaches format and tool selection extremely well</strong> (G3 +71pp, held-out 98.9%) but a
+<li><strong>SFT teaches format and tool selection extremely well</strong> (G3 +71pp, held-out tool-name 98.9% over 90 same-generator tasks) but a
    short math SFT does not improve math accuracy (avg@4 21 → 17.5). RL then recovers and exceeds
    the base on sampling reliability.</li>
 <li><strong>Multi-turn tool RL is the hard part.</strong> Answer-only rewards create shortcuts; no-KL

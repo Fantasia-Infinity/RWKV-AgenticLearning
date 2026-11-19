@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp) · RWKV-AgenticLearning · 报告站</title>
+<title>DAPO on GSM8K for RWKV-7 G1l-1.5B: positive RLVR result (avg@4 +10pp) · RWKV-AgenticLearning · 报告站</title>
 <link rel="stylesheet" href="../assets/style.css">
 
 </head>
 <body>
 <header class="topbar"><div class="wrap"><a class="brand" href="../index.html">RWKV-AgenticLearning · 报告站</a>
-<span class="built">built 2026-11-19 23:08 UTC</span></div></header>
+<span class="built">built 2026-11-19 23:17 UTC</span></div></header>
 <div class="layout wrap">
 <nav class="sidebar"><a href="../index.html">首页</a>
 <span class="nav-cat">核心报告</span>
@@ -22,7 +22,7 @@
 <a href="../reports/2026-11-11-verified-update.html">2026-11-11 生态核验更新（irwkv 两块能力 + FlashRWKV2 a19）</a>
 <a href="../reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
 <a href="../reports/2026-11-10-rl-results-summary.html">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-12)</a>
-<a href="../reports/2026-11-10-dapo-gsm8k-rlvr.html" class="active">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a>
+<a href="../reports/2026-11-10-dapo-gsm8k-rlvr.html" class="active">DAPO on GSM8K for RWKV-7 G1l-1.5B: positive RLVR result (avg@4 +10pp)</a>
 <a href="../reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
 <a href="../reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
 <a href="../reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
@@ -52,7 +52,7 @@
 <main class="content">
 <article class="report">
 <div class="crumb"><a href="../index.html">首页</a> / reports/2026-11-10-dapo-gsm8k-rlvr.md</div>
-<h1 class="report-title">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</h1>
+<h1 class="report-title">DAPO on GSM8K for RWKV-7 G1l-1.5B: positive RLVR result (avg@4 +10pp)</h1>
 <div class="meta"><span class="badge">核心报告</span><span class="badge date">2026-11-10</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/reports/2026-11-10-dapo-gsm8k-rlvr.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
 <ul>
 <li><a href="#tldr">TL;DR</a></li>
@@ -63,10 +63,13 @@
 <li><a href="#limitations">Limitations</a></li>
 </ul>
 </div>
-</details><div class="md-body"><h1 id="dapo-on-gsm8k-for-rwkv-7-g1l-15b-first-positive-rl-result-avg4-10pp"><a class="toclink" href="#dapo-on-gsm8k-for-rwkv-7-g1l-15b-first-positive-rl-result-avg4-10pp">DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)</a></h1>
+</details><div class="md-body"><h1 id="dapo-on-gsm8k-for-rwkv-7-g1l-15b-positive-rlvr-result-avg4-10pp"><a class="toclink" href="#dapo-on-gsm8k-for-rwkv-7-g1l-15b-positive-rlvr-result-avg4-10pp">DAPO on GSM8K for RWKV-7 G1l-1.5B: positive RLVR result (avg@4 +10pp)</a></h1>
 <blockquote>
 <p>Date: 2026-11-10. Status: complete. All numbers are from our own runs on Snellius
 (A100-40GB), license-clean: code in this repo, weights Apache-2.0, eval data from GSM8K.</p>
+<p><strong>Scope note on priority:</strong> the official <code>skyrl-rwkv</code> stack already reports positive RLVR gains;
+we do <strong>not</strong> claim algorithm or ecosystem priority. This report documents a public, reproducible
+positive RLVR result at the 1.5B scale, with code/recipes/JSON.</p>
 </blockquote>
 <h2 id="tldr"><a class="toclink" href="#tldr">TL;DR</a></h2>
 <ul>

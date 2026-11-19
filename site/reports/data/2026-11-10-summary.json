@@ -125,9 +125,17 @@
     "1000": 0.31
   },
   "compute": {
+    "phase_used_sbu": 12171,
+    "phase_start_balance_sbu": 120652,
+    "remaining_sbu": 108481,
+    "remaining_pct_of_phase_start": 89.9,
+    "allocation_total_sbu": 180000,
+    "prior_phase_used_sbu": 59348,
+    "remaining_pct_of_allocation": 60.27,
+    "arithmetic_check": "59348 + 12171 + 108481 = 180000; 12171 + 108481 = 120652",
     "b1_training": "2xA100-40GB, 1000 steps, ~16h, ~4.1k SBU incl evals",
-    "cumulative_project_used_sbu": 12171,
-    "remaining_sbu": 108481
+    "sao_100step_training": "2xA100-40GB, 100 steps, ~2.7h, ~0.9k SBU incl evals",
+    "note": "phase usage since 2026-11-07; phase-start balance after prior usage"
   },
   "artifacts": {
     "archive_manifest": "scratch:/scratch-shared/szhang2/rwkv-agentic/archive/2026-11-10/MANIFEST.md",

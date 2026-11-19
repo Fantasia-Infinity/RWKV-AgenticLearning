@@ -1,7 +1,11 @@
-# DAPO on GSM8K for RWKV-7 G1l-1.5B: first positive RL result (avg@4 +10pp)
+# DAPO on GSM8K for RWKV-7 G1l-1.5B: positive RLVR result (avg@4 +10pp)
 
 > Date: 2026-11-10. Status: complete. All numbers are from our own runs on Snellius
 > (A100-40GB), license-clean: code in this repo, weights Apache-2.0, eval data from GSM8K.
+>
+> **Scope note on priority:** the official `skyrl-rwkv` stack already reports positive RLVR gains;
+> we do **not** claim algorithm or ecosystem priority. This report documents a public, reproducible
+> positive RLVR result at the 1.5B scale, with code/recipes/JSON.
 
 ## TL;DR
 

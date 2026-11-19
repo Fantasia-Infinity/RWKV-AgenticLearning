@@ -10,7 +10,7 @@
 |---|---|---|
 | P1.5 SFT v3 | 2,242 synthetic tool-call trajectories (6 categories), 3 iterations | teach fenced-JSON tool calls + tool discipline |
 | G3 tool-call eval | 258 single-step tasks (held-in style) | did SFT learn tool selection? |
-| held-out tool benchmark | 120 self-built tasks (calc/search/stats/direct, independent seed) | generalization of tool selection |
+| held-out tool benchmark | 120 tasks from the **same P1.5 generators, new seed** (90 tool + 30 direct) | held-out-sample generalization of tool selection |
 | GSM8K-calc | 7,473 GSM8K train → tool-call trajectories; 262 eval (multi-turn, `calc` tool) | does tool RL help math? |
 | P3 / P3c tool RL | FlashREINFORCE multi-turn, answer-only reward (P3), +min-tool-calls shaping (P3c) | RL on multi-turn tool use |
 | P2 plain GSM8K RLVR | math-SFT warm start → FlashREINFORCE 50 steps | RLVR without tools |
@@ -60,12 +60,12 @@
 | P3c RL (50 steps, min-call shaping) | 38.6% | 2.97 |
 
 - Answer-only RL learns a **tool-call shortcut** (calls per sample drop 3.15 → 1.44) and loses accuracy
-- Held-out benchmark confirms degradation: tool-name accuracy **98.9% (SFT) → 82.2% (P3c)**, direct no-call rate 3.3% → 0%
+- Held-out benchmark (same generators, new seed; 120 tasks = 90 tool + 30 direct) confirms degradation: tool-name accuracy **98.9% (SFT) → 82.2% (P3c)** over the 90 tool tasks; direct no-call rate 3.3% → 0% (30 direct tasks)
 - No-KL constraint of FlashREINFORCE blocked the usual KL-regularized fix; reward shaping only partially recovered
 
 ### ✅ SFT tool-call ability generalizes
 - G3 tool-call tool-name accuracy: 21.6% (base) → **92.96%** (SFT v3), parse rate 100%
-- held-out 120 tasks: tool-name **98.9%**, argument validity 100%
+- held-out 120 tasks from the same generators (new seed): tool-name **98.9% over the 90 tool tasks**, argument validity 100%; direct no-call only 3.3% (30 tasks)
 
 ## 3. Interpretation
 
@@ -74,7 +74,7 @@
    difference is consistent with the official report (g1k + 155 SFT + 1,000 DAPO steps:
    GSM8K avg@4 59.42 → 71.85, +12.4pp), though their scale is ~320× ours per step
    (upstream DAPO reference: 1,024 prompts × 5 samples = 5,120 rollouts/step vs our 16).
-2. **SFT teaches format and tool selection extremely well** (G3 +71pp, held-out 98.9%) but a
+2. **SFT teaches format and tool selection extremely well** (G3 +71pp, held-out tool-name 98.9% over 90 same-generator tasks) but a
    short math SFT does not improve math accuracy (avg@4 21 → 17.5). RL then recovers and exceeds
    the base on sampling reliability.
 3. **Multi-turn tool RL is the hard part.** Answer-only rewards create shortcuts; no-KL

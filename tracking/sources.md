@@ -189,3 +189,13 @@ API 有限流风险（未认证 60/h）；优先 `GET /repos/<owner>/<repo>/pull
 - **版本状态**：FlashRWKV2 "0.2.0a1 迁移"目前是 4 仓 9 个 **open PR**，最新 release 仍 `v0.1.0a19`（2026-11-11）。
 - **PR 计数**：irwkv open=8（Cai-z-us 4 / w1c2j3 3 / 社区 1），非日检的 5+2+1。
 - **精度分层**：irwkv #25 让 serving WKV state 默认 FP16，但 rollout 指令显式可回 FP32；跨版本对比分数时必须记录 state dtype。
+### 2026-11-20 官方口径更新（追加）
+- **官方首次办 RWKV Agent 专场**（2026-11-26 19:30，rwkv.cn news #23423445）：三位嘉宾被官方称为 **"RWKV 算法专家"**：
+  顾真牛（混合推理 Ai00-X）、chase（Pi 执行路线）、No.22（DSH 训练/推理/评测闭环）。
+  公告导语第一次把 **DeepSeek Harness** 写进 Agent 实践主线。
+- **身份口径**：官方称谓已确认；但公告**未给出 GitHub 账号映射**，`cgisky1980`/`w1c2j3`/`No-22-Github`
+  的对应用**推断**标注，不要写成官方事实。
+- **数字口径**：只有相对数字（3×+、数倍、58/94/103、省 84–92% token），**无绝对分数/标准 benchmark**。
+- **新仓**：`cgisky1980/rwkv-rsv`（MIT，Rust+Vulkan RWKV-7 推理运行时，★4）——license-clean，可作公开复现参考。
+- **FlashRWKV2 0.2.0a1** 已发 PyPI（2026-11-19T20:42Z）；四个仓库 open PR 全部清零；
+  serving 默认 FP16 state，但训练/rollout/eval 用 FP32 state 复现 logprobs。

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026-11-20 生态核验更新：官方 RWKV Agent 专场（11-26）+ FlashRWKV2 0.2.0a1 一夜迁移 · RWKV-AgenticLearning · 报告站</title>
+<link rel="stylesheet" href="../assets/style.css">
+
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="brand" href="../index.html">RWKV-AgenticLearning · 报告站</a>
+<span class="built">built 2026-11-20 16:52 UTC</span></div></header>
+<div class="layout wrap">
+<nav class="sidebar"><a href="../index.html">首页</a>
+<span class="nav-cat">核心报告</span>
+<a href="../reports/2026-11-20-verified-update.html" class="active">2026-11-20 生态核验更新：官方 RWKV Agent 专场（11-26）+ FlashRWKV2 0.2.0a1 一夜迁移</a>
+<a href="../reports/2026-11-18-verified-update.html">2026-11-18 生态核验更新：any2rwkv 首个外部 PR、FlashRWKV2 0.2.0a1 迁移栈</a>
+<a href="../reports/2026-11-17-verified-update.html">2026-11-17 生态核验更新：w1c2j3 状态管理 PR 集中提交 / XHarness 无法核实 / 编辑接口双解法</a>
+<a href="../reports/2026-11-15-verified-update.html">2026-11-15 生态核验更新：量化重构、torchtitan 退役与 39 仓清单</a>
+<a href="../reports/2026-11-12-verified-update.html">2026-11-12 生态核验更新：SFT 数据打分的 58.7，以及 eval harness 三条 open PR</a>
+<a href="../reports/2026-11-12-sao-gsm8k.html">SAO (critic-based RL) on GSM8K for RWKV-7 G1l-1.5B</a>
+<a href="../reports/2026-11-12-dapo-vs-sao-strict.html">DAPO vs SAO: strict matched comparison (GSM8K, G1l-1.5B)</a>
+<a href="../reports/2026-11-11-verified-update.html">2026-11-11 生态核验更新（irwkv 两块能力 + FlashRWKV2 a19）</a>
+<a href="../reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
+<a href="../reports/2026-11-10-rl-results-summary.html">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-12)</a>
+<a href="../reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: positive RLVR result (avg@4 +10pp)</a>
+<a href="../reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
+<a href="../reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
+<a href="../reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
+<a href="../reports/2026-11-05-verification.html">RWKV 生态核验报告（2026-11-05 接续 session）</a>
+<span class="nav-cat">专题报告</span>
+<a href="../reports/state/evidence/CITATIONS.html">Evidence citations — state/</a>
+<a href="../reports/state/REPORT.html">状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告</a>
+<a href="../reports/skyrl/evidence/CITATIONS.html">Evidence citations — skyrl/</a>
+<a href="../reports/skyrl/evidence/00-env.html">环境与时间快照</a>
+<a href="../reports/skyrl/REPORT.html">skyrl-rwkv 深度核验报告（任务 task-1）</a>
+<a href="../reports/eco/evidence/CITATIONS.html">Evidence citations — eco/</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html">Evidence: rwkv.cn /tutorials/basic/Prompt-Format</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html">RWKV Native Model Templates</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html">RWKV MaxRL configuration</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html">Native rwkv-lm Engine</a>
+<a href="../reports/eco/REPORT.html">RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）</a>
+<a href="../reports/EVIDENCE.html">Evidence — policy, layout, and how to re-verify</a>
+<span class="nav-cat">文档</span>
+<a href="../docs/ecosystem-review-2026-11-05.html">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a>
+<a href="../docs/methodology.html">Methodology — how claims in this repository are produced and checked</a>
+<span class="nav-cat">项目</span>
+<a href="../THIRD_PARTY_NOTICES.html">Third-party notices</a>
+<a href="../ROADMAP.html">ROADMAP — RWKV agentic RL</a>
+<a href="../index.html">RWKV-AgenticLearning</a>
+<a class="ext" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">GitHub ↗</a></nav>
+<main class="content">
+<article class="report">
+<div class="crumb"><a href="../index.html">首页</a> / reports/2026-11-20-verified-update.md</div>
+<h1 class="report-title">2026-11-20 生态核验更新：官方 RWKV Agent 专场（11-26）+ FlashRWKV2 0.2.0a1 一夜迁移</h1>
+<div class="meta"><span class="badge">核心报告</span><span class="badge date">2026-11-20</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/reports/2026-11-20-verified-update.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
+<ul>
+<li><a href="#_1">一、官方公告（已回源）</a><ul>
+<li><a href="#_2">公告中的数字（原文已核对）</a></li>
+<li><a href="#_3">身份/定级修正（重要）</a></li>
+<li><a href="#_4">四条旧判断的更新</a></li>
+<li><a href="#cgisky1980rwkv-rsv">新发现仓库：cgisky1980/rwkv-rsv（此前未追踪）</a></li>
+</ul>
+</li>
+<li><a href="#flashrwkv2-020a1">二、FlashRWKV2 0.2.0a1 迁移（一夜合并，已核验）</a></li>
+<li><a href="#_5">三、未变项（复核）</a></li>
+<li><a href="#_6">四、对我们的影响</a></li>
+<li><a href="#_7">五、引用</a></li>
+</ul>
+</div>
+</details><div class="md-body"><h1 id="2026-11-20-rwkv-agent-11-26-flashrwkv2-020a1"><a class="toclink" href="#2026-11-20-rwkv-agent-11-26-flashrwkv2-020a1">2026-11-20 生态核验更新：官方 RWKV Agent 专场（11-26）+ FlashRWKV2 0.2.0a1 一夜迁移</a></h1>
+<blockquote>
+<p>核验时间：2026-11-20 17:55–18:30 CET。来源：rwkv.cn news API、PyPI JSON、GitHub PR/contents API。
+对应外部摘要：2026-11-20 日检。</p>
+</blockquote>
+<h2 id="_1"><a class="toclink" href="#_1">一、官方公告（已回源）</a></h2>
+<p><code>rwkv.cn/news</code> 条目 <strong>#23423445</strong>（2026-11-19，作者「RWKV元始智能」）：
+<strong>《【直播预告】RWKV Agent专场》</strong></p>
+<ul>
+<li>时间：<strong>2026-11-26（星期四）19:30–21:00</strong>，平台：微信视频号「RWKV元始智能」</li>
+<li>三位嘉宾，官方统一称谓 <strong>「RWKV 算法专家」</strong>：
+  1. <strong>顾真牛</strong> — 《基于 RWKV 的混合推理 Agent 系统》（Ai00-X）
+  2. <strong>chase</strong> — 《RWKV Agent 的构建——从检索到执行》
+  3. <strong>No.22</strong> — 《从续写到干活：RWKV Agent 的训练、推理与评测闭环》</li>
+<li>公告导语明确写：<strong>"接入 DeepSeek Harness，通过 Harness 和微调增强模型能力，以及与大模型的协作"</strong> ——官方口径第一次把 DSH 写进 Agent 实践主线。</li>
+</ul>
+<h3 id="_2"><a class="toclink" href="#_2">公告中的数字（原文已核对）</a></h3>
+<table>
+<thead>
+<tr>
+<th>嘉宾</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>顾真牛</td>
+<td>自研运行时 <strong>rwkv-rsv</strong>（纯 Rust + Vulkan/CUDA，已开源）：3B 模型 <strong>3.2 GB</strong> 显存；单张 <strong>RTX 2080 Ti</strong> B=128 稳态 <strong>1039 tok/s</strong>，256 槽批量 <strong>4264 tok/s</strong>；160 题长对话：纯本地 <strong>58</strong> / 混合 <strong>94</strong> / 纯远端全量直灌 <strong>103</strong>；混合单跳 1,862 token p50 <strong>0.95s</strong>、双跳 3,839 token p50 <strong>2.3s</strong>，相对 23,683 token 全量直灌省 <strong>84%–92%</strong></td>
+</tr>
+<tr>
+<td>chase</td>
+<td>RWKV 原生接入通用编程 Agent 框架 <strong>Pi</strong>；推理/训练逐字节一致协议、工具容错、针对循环状态的长程上下文压缩；<strong>7.2B 与 13.3B 两种规模任务完成率均提升到原来的 3 倍以上</strong>；将讲"走过的弯路与放弃的方案"</td>
+</tr>
+<tr>
+<td>No.22</td>
+<td>端侧纯本地 <strong>7B</strong>、<strong>W8A16 / W4A16</strong> 量化；从早期自研框架<strong>全面转向 DSH 插件化路线</strong>；依托 <strong>rwkv_lightning_cuda</strong>；打通 DSH 插件 + 轨迹蒸馏 + 沙箱评测闭环；<strong>7B 实际任务完成率较基模数倍提升</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="_3"><a class="toclink" href="#_3">身份/定级修正（重要）</a></h3>
+<ul>
+<li>官方确认为 <strong>"RWKV 算法专家"</strong> 三人 → 此前我们标为"独立开发者/疑内部/外部"的定性需要升级为<strong>官方认证专家</strong>。</li>
+<li>但<strong>公告没有直接写 GitHub 账号映射</strong>：</li>
+<li>顾真牛 ↔ <code>cgisky1980</code>：<strong>推断</strong>（Ai00-X / rwkv-rsv 作者）</li>
+<li>chase ↔ <code>w1c2j3</code>：强推断（rwkv-pi 与 eval Pi backend 作者、插件/irwkv PR 作者）</li>
+<li>No.22 ↔ <code>No-22-Github</code>：强推断（dsh-rwkv-plugin 作者）
+  记录时应标"官方称谓已确认；账号映射为推断"。</li>
+</ul>
+<h3 id="_4"><a class="toclink" href="#_4">四条旧判断的更新</a></h3>
+<table>
+<thead>
+<tr>
+<th>旧判断</th>
+<th>更新</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"RWKV 没有官方 Agent 路线"</td>
+<td>❌ 需修正：官方首次办 <strong>Agent 专场</strong>并称三人都为算法专家；但<strong>仍是研讨会披露，不等于官方产品/路线图</strong>，且无绝对分数</td>
+</tr>
+<tr>
+<td>"DSH 只是社区选择"</td>
+<td>❌ 修正：官方公告把 DSH 写入 Agent 实践导语；No.22 也明确"全面转向 DSH 插件化"</td>
+</tr>
+<tr>
+<td>"没有 agent 能力数字"</td>
+<td>🟡 部分修正：首次给出<strong>相对数字</strong>（3×+、数倍、58/94/103、省 84–92% token），但<strong>仍无绝对分数与标准 benchmark</strong></td>
+</tr>
+<tr>
+<td>"顾真牛是独立开发者"</td>
+<td>❌ 修正：官方称其为 <strong>RWKV 算法专家</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="cgisky1980rwkv-rsv"><a class="toclink" href="#cgisky1980rwkv-rsv">新发现仓库：<code>cgisky1980/rwkv-rsv</code>（此前未追踪）</a></h3>
+<ul>
+<li>GitHub API 实测：<strong>★4</strong>，created <strong>2026-08-07T02:30:33Z</strong>，last push 2026-11-09，<strong>MIT License</strong></li>
+<li>描述："RWKV-7 inference engine in Rust (Vulkan compute shaders) with fp16/any4/int8 quantization paths"</li>
+<li>与公告中的 rwkv-rsv 对应 → <strong>license-clean（MIT）的 Rust/Vulkan 推理运行时</strong>，值得纳入跟踪</li>
+</ul>
+<h2 id="flashrwkv2-020a1"><a class="toclink" href="#flashrwkv2-020a1">二、FlashRWKV2 0.2.0a1 迁移（一夜合并，已核验）</a></h2>
+<ul>
+<li><strong>PyPI</strong>：<code>FlashRWKV2 0.2.0a1</code> <strong>已发布</strong>（upload 2026-11-19T20:42:56Z，MIT，<code>torch&gt;=2.11,&lt;2.15</code>、<code>tilelang==0.1.15</code>）；
+  README 明确：serving 在 SM89/SM120 建议 FP16 recurrent state；<strong>训练 / RL rollout / eval 与采样搜索用 FP32 state 以复现 learner logprobs</strong></li>
+<li><strong>open PR 数（2026-11-20 实测）</strong>：<code>irwkv</code> <strong>0</strong>、<code>vllm-rwkv</code> <strong>0</strong>、<code>transformers-rwkv</code> <strong>0</strong>、<code>FlashRWKV2</code> <strong>0</strong></li>
+<li>关键合并：
+  | PR | 标题 | merged |
+  |---|---|---|
+  | irwkv <strong>#28</strong> | <code>[Core][RWKV] Default serving WKV state to FP16</code>（supersedes #25，基于已合并 #27） | 2026-11-19T21:21:35Z |
+  | irwkv <strong>#29</strong> | <code>[Perf][RWKV] Bound overlapping state-pool transfers</code>（supersedes #21） | 2026-11-19T22:09:25Z |
+  | transformers-rwkv <strong>#25</strong> | <code>chore: sync Transformers v5.23.0 into RWKV fork</code> | 2026-11-20T02:04:28Z |
+  | FlashRWKV2 <strong>#32</strong> | <code>feat(mtp): add verifier checkpoints and offline draft dispatch</code> | 2026-11-19T21:53:50Z |
+  | Megatrwkv-Bridge <strong>#4</strong> | <code>perf(model): use FlashRWKV2 token cross entropy for RWKV7 training</code> | 2026-11-19T21:33:23Z |</li>
+<li>我们栈仍 pin <strong>FlashRWKV2 0.1.0a17 / vLLM-RWKV 旧 pin</strong>；0.2.0a1 是否升级需先做 parity（这次 API 变化较大：去 runtime tuning、MTP、FP16 state 默认）</li>
+</ul>
+<h2 id="_5"><a class="toclink" href="#_5">三、未变项（复核）</a></h2>
+<ul>
+<li><code>rwkv-agent-eval</code> 三个 Pi PR <strong>仍 open（第 9 天）</strong> ✅</li>
+<li><code>rwkv-org/F-rwkv</code> 仍只有 LICENSE（11,357B）✅</li>
+<li><code>any2rwkv</code> MLA/KDA 四个文件仍 <strong>0 字节</strong> ✅</li>
+<li><code>rwkv-rs</code> org public repo 仍 <strong>39</strong> ✅</li>
+<li><code>rwkv-agent-pipeline</code> 未公开、JD/news 未变（按上次核验）</li>
+</ul>
+<h2 id="_6"><a class="toclink" href="#_6">四、对我们的影响</a></h2>
+<ol>
+<li><strong>11-26 直播是下一个关键信息源</strong>：三条路线（本地混合推理 / Pi 执行 / DSH 闭环）正好覆盖我们 P4/P5 的候选方向；
+   chase 的"逐字节一致协议 + 长程上下文压缩"和 No.22 的"DSH + 轨迹蒸馏 + 沙箱评测闭环"与我们多轮 agentic RL 的空缺直接相关。</li>
+<li><strong>官方口径把 DSH 纳入 Agent 主线</strong>后，我们此前"DSH 是社区选择"的判断需要更新；但<strong>仍无公开绝对 benchmark 分数</strong>，我们的公开评测结果依然稀缺。</li>
+<li><strong>FlashRWKV2 0.2.0a1（MIT）</strong>落地：去 runtime tuning 对可复现性有利；FP16 serving / FP32 rollout 的分层与我们已知的 raw-logprob 约束一致。
+   升级前需 parity；不急于改我们 pin 的 a17。</li>
+<li><strong>rwkv-rsv（MIT）</strong>是少数 license-clean 的推理运行时，适合公开可复现实验参考（lightning 无 LICENSE，不能直接用）。</li>
+</ol>
+<h2 id="_7"><a class="toclink" href="#_7">五、引用</a></h2>
+<ul>
+<li>公告: https://www.rwkv.cn/news/read/23423445 （API <code>/api/news/23423445</code>）</li>
+<li>rwkv-rsv: https://github.com/cgisky1980/rwkv-rsv</li>
+<li>FlashRWKV2 0.2.0a1: https://pypi.org/project/FlashRWKV2/0.2.0a1/</li>
+<li>irwkv #28/#29: https://github.com/rwkv-org/irwkv/pulls</li>
+<li>transformers-rwkv #25: https://github.com/rwkv-rs/transformers-rwkv/pull/25</li>
+<li>FlashRWKV2 #32: https://github.com/rwkv-rs/FlashRWKV2/pull/32</li>
+<li>Megatrwkv-Bridge #4: https://github.com/rwkv-rs/Megatrwkv-Bridge/pull/4</li>
+</ul></div></article>
+<footer class="foot">Generated from the repository Markdown sources · <a href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">source on GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>

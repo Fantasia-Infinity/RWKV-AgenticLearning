@@ -4,7 +4,7 @@
 
 # ===== L2 训练 / RL =====
 rwkv-rs/skyrl-rwkv
-rwkv-rs/vllm-rwkv | rwkv
+rwkv-rs/vllm-rwkv | rwkv  # 2026-11-20 open=0（0.2.0a1 适配/FP16 state/去 runtime tuning 已合并）
 rwkv-rs/verl-rwkv
 rwkv-rs/torchtitan-rwkv-old  # 2026-11-15 确认更名（原 torchtitan-rwkv 404）；TorchTitan 路线退役，规模化转 Megatron-Bridge；BSD-3-Clause
 rwkv-rs/antidoom-rwkv
@@ -16,8 +16,8 @@ TimeMobius/RWKV-Megatron
 howard-hou/RWKV-SFT
 
 # ===== L1 算子 / 推理 / 状态 =====
-rwkv-rs/FlashRWKV2  # MIT；2026-11-18 0.2.0a1 迁移栈 open：#28(perf TileLang WKV7)+#29(P3 去 runtime tuning，根导出 23→21)；最新 release 仍 v0.1.0a19（我们 pin a17）
-rwkv-rs/transformers-rwkv  # 2026-11-18 open #26：支持 FlashRWKV2 0.2.0a1 训练 + deferred FP16 state；11-10 #20 工具历史渲染、#21 a18 merged
+rwkv-rs/FlashRWKV2  # MIT；2026-11-20 0.2.0a1 已发 PyPI（去 runtime tuning、MTP、FP16 serving state / FP32 rollout）；我们仍 pin a17
+rwkv-rs/transformers-rwkv  # 2026-11-20 open=0（#25 sync Transformers v5.23.0 merged）；11-10 #20 工具历史渲染、#21 a18 merged
 rwkv-rs/hf-adapter
 rwkv-rs/tokenizers-rwkv
 rwkv-rs/rwkv-rs
@@ -69,11 +69,11 @@ aierwiki/rwkvtune
 RWKV/RWKV-infctx-trainer
 
 # ===== 2026-11-06 新增：原生 RWKV-7 服务框架（Apache-2.0，含 logprobs/weight update 接口）=====
-rwkv-org/irwkv  # Apache-2.0；2026-11-18 open 8 个：Cai-z-us #20/#22(0.2.0a1)/#23(离线 dispatch)/#25(FP16 serving state)，w1c2j3 #8/#21/#24，社区 #12；#16 版本化 adapter merged
+rwkv-org/irwkv  # Apache-2.0；2026-11-20 open=0（#28 FP16 serving state、#29 state-pool 传输等已合并）；#16 版本化 adapter
 w1c2j3/irwkv  # 镜像；Chase 的 state-continuation/prefix-cache 分支在此
 
 # ===== 2026-11-06 晚新增：agent 评测 / DSH 集成（同优先级跟踪）=====
-rwkv-org/rwkv-agent-eval  # ⚠️ 无 LICENSE；2026-11-12 三个 open PR（#1/#2/#3，DSH/Pi 双 harness），数据只能引用不可复用
+rwkv-org/rwkv-agent-eval  # ⚠️ 无 LICENSE；2026-11-20 三个 Pi PR 仍 open（第 9 天），数据只能引用不可复用
 No-22-Github/dsh-rwkv-plugin  # MIT；2026-11-17 tolerant-edit 入 main（16:17 fix、17:07 auto-fold），默认仍 line-edit；#3 关闭未 merge 但内容已合入；11-10 #1 请求级 adapter merged
 # 监控（当前 404/私有）：rwkv-agent-pipeline —— 一旦公开即重大信号
 
@@ -97,3 +97,6 @@ rwkv-rs/MediaCrawler  # NOASSERTION；第三方爬虫（小红书/抖音/B站等
 rwkv-rs/wandb-rs  # 无 LICENSE
 rwkv-rs/wx-cli  # Apache-2.0；WeChat local data CLI
 rwkv-org/F-rwkv  # 2026-11-15 仍只有 LICENSE（11357B）；空壳
+
+# ===== 2026-11-20 官方 Agent 专场披露的新仓库 =====
+cgisky1980/rwkv-rsv  # MIT；Ai00-X 的 Rust+Vulkan/CUDA RWKV-7 推理运行时（★4，2026-08-07 建；3B 3.2GB 显存，2080Ti B=128 1039 tok/s）

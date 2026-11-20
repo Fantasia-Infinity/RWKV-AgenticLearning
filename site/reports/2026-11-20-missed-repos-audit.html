@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026-11-20 漏库审计核验：评测/RL/推理/数据四层补课 · RWKV-AgenticLearning · 报告站</title>
+<link rel="stylesheet" href="../assets/style.css">
+
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="brand" href="../index.html">RWKV-AgenticLearning · 报告站</a>
+<span class="built">built 2026-11-20 17:13 UTC</span></div></header>
+<div class="layout wrap">
+<nav class="sidebar"><a href="../index.html">首页</a>
+<span class="nav-cat">核心报告</span>
+<a href="../reports/2026-11-20-verified-update.html">2026-11-20 生态核验更新：官方 RWKV Agent 专场（11-26）+ FlashRWKV2 0.2.0a1 一夜迁移</a>
+<a href="../reports/2026-11-20-missed-repos-audit.html" class="active">2026-11-20 漏库审计核验：评测/RL/推理/数据四层补课</a>
+<a href="../reports/2026-11-18-verified-update.html">2026-11-18 生态核验更新：any2rwkv 首个外部 PR、FlashRWKV2 0.2.0a1 迁移栈</a>
+<a href="../reports/2026-11-17-verified-update.html">2026-11-17 生态核验更新：w1c2j3 状态管理 PR 集中提交 / XHarness 无法核实 / 编辑接口双解法</a>
+<a href="../reports/2026-11-15-verified-update.html">2026-11-15 生态核验更新：量化重构、torchtitan 退役与 39 仓清单</a>
+<a href="../reports/2026-11-12-verified-update.html">2026-11-12 生态核验更新：SFT 数据打分的 58.7，以及 eval harness 三条 open PR</a>
+<a href="../reports/2026-11-12-sao-gsm8k.html">SAO (critic-based RL) on GSM8K for RWKV-7 G1l-1.5B</a>
+<a href="../reports/2026-11-12-dapo-vs-sao-strict.html">DAPO vs SAO: strict matched comparison (GSM8K, G1l-1.5B)</a>
+<a href="../reports/2026-11-11-verified-update.html">2026-11-11 生态核验更新（irwkv 两块能力 + FlashRWKV2 a19）</a>
+<a href="../reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
+<a href="../reports/2026-11-10-rl-results-summary.html">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-12)</a>
+<a href="../reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: positive RLVR result (avg@4 +10pp)</a>
+<a href="../reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
+<a href="../reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
+<a href="../reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
+<a href="../reports/2026-11-05-verification.html">RWKV 生态核验报告（2026-11-05 接续 session）</a>
+<span class="nav-cat">专题报告</span>
+<a href="../reports/state/evidence/CITATIONS.html">Evidence citations — state/</a>
+<a href="../reports/state/REPORT.html">状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告</a>
+<a href="../reports/skyrl/evidence/CITATIONS.html">Evidence citations — skyrl/</a>
+<a href="../reports/skyrl/evidence/00-env.html">环境与时间快照</a>
+<a href="../reports/skyrl/REPORT.html">skyrl-rwkv 深度核验报告（任务 task-1）</a>
+<a href="../reports/eco/evidence/CITATIONS.html">Evidence citations — eco/</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html">Evidence: rwkv.cn /tutorials/basic/Prompt-Format</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html">RWKV Native Model Templates</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html">RWKV MaxRL configuration</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html">Native rwkv-lm Engine</a>
+<a href="../reports/eco/REPORT.html">RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）</a>
+<a href="../reports/EVIDENCE.html">Evidence — policy, layout, and how to re-verify</a>
+<span class="nav-cat">文档</span>
+<a href="../docs/ecosystem-review-2026-11-05.html">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a>
+<a href="../docs/methodology.html">Methodology — how claims in this repository are produced and checked</a>
+<span class="nav-cat">项目</span>
+<a href="../THIRD_PARTY_NOTICES.html">Third-party notices</a>
+<a href="../ROADMAP.html">ROADMAP — RWKV agentic RL</a>
+<a href="../index.html">RWKV-AgenticLearning</a>
+<a class="ext" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">GitHub ↗</a></nav>
+<main class="content">
+<article class="report">
+<div class="crumb"><a href="../index.html">首页</a> / reports/2026-11-20-missed-repos-audit.md</div>
+<h1 class="report-title">2026-11-20 漏库审计核验：评测/RL/推理/数据四层补课</h1>
+<div class="meta"><span class="badge">核心报告</span><span class="badge date">2026-11-20</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/reports/2026-11-20-missed-repos-audit.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
+<ul>
+<li><a href="#stars">一、元数据核验（stars / 日期 / 许可）</a></li>
+<li><a href="#readme">二、内容核验（README/结果原文）</a><ul>
+<li><a href="#1-rwkv-harbor-scratchterminal-bench-20">1. rwkv-harbor-scratch：Terminal-Bench 2.0 唯一公开跑分（数字属实）</a></li>
+<li><a href="#2-rwkv-skills">2. rwkv-skills：六域评测脚手架（属实）</a></li>
+<li><a href="#3-rwkv-rl-search-r1-agentic-rl">3. RWKV-RL-Search-R1：唯一公开 agentic RL 数字（属实）</a></li>
+<li><a href="#4-rwkv_lightning_grpostate-only-grpo">4. rwkv_lightning_grpo：state-only 在线 GRPO（属实）</a></li>
+<li><a href="#5-rwkv-autodeco15">5. RWKV-AUTODECO：15 分钟起训（属实）</a></li>
+<li><a href="#6-rwkv_lightning_xdna-queqiao-router">6. rwkv_lightning_xdna / QueQiao-Router（属实）</a></li>
+<li><a href="#7-helicopter-fork">7. helicopter：社区 fork 现在公开存在（对旧审计的修正）</a></li>
+</ul>
+</li>
+<li><a href="#_1">三、需要修正/未核实的外部说法</a></li>
+<li><a href="#_2">四、建议加入我们基线的清单</a></li>
+<li><a href="#_3">五、引用</a></li>
+</ul>
+</div>
+</details><div class="md-body"><h1 id="2026-11-20-rl"><a class="toclink" href="#2026-11-20-rl">2026-11-20 漏库审计核验：评测/RL/推理/数据四层补课</a></h1>
+<blockquote>
+<p>核验时间：2026-11-20 18:15–19:00 CET。GitHub API / raw README 回源。
+对应外部摘要：2026-11-20 "我们漏掉的库：统一补课"。</p>
+</blockquote>
+<h2 id="stars"><a class="toclink" href="#stars">一、元数据核验（stars / 日期 / 许可）</a></h2>
+<table>
+<thead>
+<tr>
+<th>仓库</th>
+<th>外部摘要</th>
+<th>实测</th>
+<th>许可</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>No-22-Github/rwkv-harbor-scratch</code></td>
+<td>★0，10-28</td>
+<td>★0，created 2026-10-28，desc "Running RWKV on Harbor / Terminal-Bench 2.0"</td>
+<td><strong>无 LICENSE</strong></td>
+</tr>
+<tr>
+<td><code>No-22-Github/RWKV-RL-Search-R1</code></td>
+<td>★0，11-01</td>
+<td>★0，created 2026-10-29，pushed 11-01，desc "RWKV-7 2.9B 在 Search-R1 上的 SFT + GRPO"</td>
+<td><strong>无 LICENSE</strong></td>
+</tr>
+<tr>
+<td><code>Alic-Li/rwkv_lightning_grpo</code></td>
+<td>★0，10-12</td>
+<td>★0，created 2026-10-12，pushed 10-12</td>
+<td><strong>Apache-2.0</strong></td>
+</tr>
+<tr>
+<td><code>Alic-Li/rwkv_lightning_xdna</code></td>
+<td>★0，10-04</td>
+<td>★0，created 10-02，pushed 10-04</td>
+<td><strong>Apache-2.0</strong></td>
+</tr>
+<tr>
+<td><code>Alic-Li/Mini_RWKV_7</code></td>
+<td>★95</td>
+<td>★95，34.2M 参数</td>
+<td><strong>Apache-2.0</strong></td>
+</tr>
+<tr>
+<td><code>Alic-Li/rwkv-mobile</code> / <code>rwkvcn-docs</code> / <code>RWKV_Qbot</code></td>
+<td>★0</td>
+<td>★0 / ★0 / ★0</td>
+<td>无 LICENSE</td>
+</tr>
+<tr>
+<td><code>rwkv-rs/rwkv-skills</code></td>
+<td>★8，08-09</td>
+<td>★8，pushed 2026-08-09</td>
+<td><strong>无 LICENSE</strong></td>
+</tr>
+<tr>
+<td><code>rwkv-rs/browsecomp-plus-eval</code></td>
+<td>★1，07-21</td>
+<td>★1，pushed 2026-07-21</td>
+<td><strong>无 LICENSE</strong></td>
+</tr>
+<tr>
+<td><code>rwkv-rs/RWKV-AUTODECO</code></td>
+<td>★0，01-27</td>
+<td>★0，pushed 2026-01-27</td>
+<td><strong>Apache-2.0</strong></td>
+</tr>
+<tr>
+<td><code>rwkv-rs/originium</code> / <code>rhine</code> / <code>rhine-schema-derive</code></td>
+<td>★7 / ★0 / ★0</td>
+<td>一致（originium pushed 2025-09-05；license：无 / GPL-3.0 / MIT）</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>TimeMobius/QueQiao-Router</code> / <code>Infinite_Lake</code></td>
+<td>★57 / ★52</td>
+<td>★57 Apache-2.0 / ★52 无 LICENSE</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>Beortext/RWKV-DeepEmbed-mmap</code></td>
+<td>★3</td>
+<td>★3，pushed 2025-09-02</td>
+<td><strong>Apache-2.0</strong></td>
+</tr>
+<tr>
+<td><code>No-22-Github/Preen</code></td>
+<td>★6</td>
+<td>★6，pushed 2026-10-09</td>
+<td>Apache-2.0</td>
+</tr>
+<tr>
+<td><code>No-22-Github/RWKV-Agent</code> / <code>RWKV_Agent_Lite</code></td>
+<td>★4 / ★1</td>
+<td>★4 / ★1</td>
+<td>无 LICENSE</td>
+</tr>
+<tr>
+<td><code>rwkv-rs/Albatross</code></td>
+<td>★0</td>
+<td>★0，pushed 2025-10-09</td>
+<td>Apache-2.0</td>
+</tr>
+<tr>
+<td><code>Big-dreamer-creator/helicopter</code></td>
+<td>（摘要未单列）</td>
+<td>★0，created 2026-07-09，pushed 2026-08-10</td>
+<td><strong>无 LICENSE</strong></td>
+</tr>
+<tr>
+<td><code>Big-dreamer-creator/lm-evaluation-harness-rwkv</code></td>
+<td>（摘要称含 16 个 EvalScope coding 迁移）</td>
+<td>★0，created 2026-08-09；README 为上游 lm-eval 原版</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>123213213weqw</code> 账号</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="readme"><a class="toclink" href="#readme">二、内容核验（README/结果原文）</a></h2>
+<h3 id="1-rwkv-harbor-scratchterminal-bench-20"><a class="toclink" href="#1-rwkv-harbor-scratchterminal-bench-20">1. <code>rwkv-harbor-scratch</code>：Terminal-Bench 2.0 唯一公开跑分（数字属实）</a></h3>
+<p><code>docs/results/README.md</code> 原文（被测 <code>rwkv7-g1k-7.2b-20260930-ctx25600</code> + rwkv_lightning_cuda on W7900，
+agent <code>RwkvTerminus</code> = terminus-2 + 续写后端，Docker x86 模拟 on Apple Silicon，2026-10-28）：</p>
+<table>
+<thead>
+<tr>
+<th>题集</th>
+<th>得分</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hello-world</td>
+<td><strong>1/1</strong></td>
+</tr>
+<tr>
+<td>Terminal-Bench 2.0 简单题</td>
+<td><strong>0/4</strong></td>
+</tr>
+<tr>
+<td>terminal-bench-sample@2.0</td>
+<td><strong>0/8</strong>（有效 8/10；剔除判分环境损坏的 qemu-alpine-ssh、qemu-startup）</td>
+</tr>
+</tbody>
+</table>
+<p>失败分析（原文）：自发 <code>&lt;think&gt;</code> 复读写满输出上限；失败命令照抄/打转（fix-git 同一命令执行 52 次）；
+偏离目标/违反约束；简单题上下文仅 10k–24k → <strong>问题在多步决策，不在接入</strong>；调采样参数无效。
+→ 这是目前<strong>唯一公开的 RWKV agent 绝对跑分</strong>，且是 0 分区间；7.2B + W7900 的配置也不能直接与我们的 1.5B/bf16 对比。</p>
+<h3 id="2-rwkv-skills"><a class="toclink" href="#2-rwkv-skills">2. <code>rwkv-skills</code>：六域评测脚手架（属实）</a></h3>
+<p>README 原文：目标外部 vLLM-RWKV OpenAI 接口；<code>src/eval/tasks/</code> 含
+<strong>knowledge / maths / coding / instruction_following / function_calling / agent_bench</strong> 六域；
+GPU scheduler + PostgreSQL；<strong>"公开榜在 Helicopter 仓库单独维护"</strong> ✅</p>
+<h3 id="3-rwkv-rl-search-r1-agentic-rl"><a class="toclink" href="#3-rwkv-rl-search-r1-agentic-rl">3. <code>RWKV-RL-Search-R1</code>：唯一公开 agentic RL 数字（属实）</a></h3>
+<p>README 表格：GRPO ≈0.40、Dr.GRPO 0.40、<strong>RAFT 第一轮 0.407</strong>（target 0.45 未达）；
+另有 Search-R1 7B Base PPO 0.431 的参考行。训练管线：SFT warm start → GRPO → RAFT/DAPO 取舍。
+→ 与我们的结论一致：<strong>RL 有实现，但公开可比的 agentic RL 数字极少</strong>。</p>
+<h3 id="4-rwkv_lightning_grpostate-only-grpo"><a class="toclink" href="#4-rwkv_lightning_grpostate-only-grpo">4. <code>rwkv_lightning_grpo</code>：state-only 在线 GRPO（属实）</a></h3>
+<p>README：Online State-only GRPO；<code>Rollout → 远程 Qwen Judge → GRPO/Dr.GRPO → BPTT → 只更新 FP32 Initial WKV State</code>；
+冻结的 BF16 backbone/embedding/head <strong>不拷贝、不保存</strong>（全参数梯度图不跨 24 层）。<strong>Apache-2.0</strong>。</p>
+<h3 id="5-rwkv-autodeco15"><a class="toclink" href="#5-rwkv-autodeco15">5. <code>RWKV-AUTODECO</code>：15 分钟起训（属实）</a></h3>
+<p>README："start pre-training a fully aligned RWKV v7 model within 15 minutes"（191M–3B），
+实际是 <strong>RWKV-LM-V7 fork</strong>（Lightning 框架）。<strong>Apache-2.0</strong>。</p>
+<h3 id="6-rwkv_lightning_xdna-queqiao-router"><a class="toclink" href="#6-rwkv_lightning_xdna-queqiao-router">6. <code>rwkv_lightning_xdna</code> / <code>QueQiao-Router</code>（属实）</a></h3>
+<ul>
+<li>xdna：C++17 → XRT → amdxdna → NPU 的 Ryzen AI NPU 后端（Apache-2.0）</li>
+<li>QueQiao-Router：Rust/Axum/Tokio，统一 OpenAI/Azure/Anthropic/DeepSeek/vLLM/Llama.cpp 后端、权重路由/故障转移、
+  思考格式归一化、Prometheus、按月审计（Apache-2.0，★57）</li>
+</ul>
+<h3 id="7-helicopter-fork"><a class="toclink" href="#7-helicopter-fork">7. <code>helicopter</code>：<strong>社区 fork 现在公开存在</strong>（对旧审计的修正）</a></h3>
+<ul>
+<li><code>Big-dreamer-creator/helicopter</code>（★0，created 2026-07-09，pushed 2026-08-10，<strong>无 LICENSE</strong>）</li>
+<li>内容是 Helicopter 框架（<code>infer</code> vLLM / <code>takeoff</code> verl GRPO / <code>install</code> / CLI），
+  <code>reports/</code> 只有 <code>rwkv-vllm-verl-performance-handoff.md</code>，<strong>没有公开榜单分数</strong></li>
+<li>旧结论"Helicopter 公开不存在"应修正为：<strong>框架 fork 公开存在，但 scoreboard 数据未发布</strong>；
+  <code>rwkv-skills</code> README 也印证该设计意图。</li>
+</ul>
+<h2 id="_1"><a class="toclink" href="#_1">三、需要修正/未核实的外部说法</a></h2>
+<table>
+<thead>
+<tr>
+<th>外部说法</th>
+<th>核验结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"这些库从未追踪"</td>
+<td>⚠️ 部分错误：我们已追踪 <code>rwkv-skills</code>、<code>browsecomp-plus-eval</code>、<code>RWKV-AUTODECO</code>、<code>lm-evaluation-harness-rwkv</code>（rwkv-rs 版）等；确实漏的是 No-22/Alic-Li/TimeMobius/Big-dreamer 的个人仓库</td>
+</tr>
+<tr>
+<td>"lm-evaluation-harness-rwkv 里 w1c2j3 移植 16 个 EvalScope coding benchmark（含 SWE-bench Lite/Verified）"</td>
+<td>⚠️ <strong>未核实</strong>：<code>Big-dreamer-creator</code> 的 fork 树中未见 <code>swebench</code>/<code>livecodebench</code>/<code>bigcodebench</code>/<code>bird</code> 任务目录；可能在其他分支/未合并提交</td>
+</tr>
+<tr>
+<td>"llm-compressor-rwkv 有 8000 行 NVFP4 + 保护清单（w0/x_*/k_k/v_first 不可量化），因缺 Blackwell 停更 3.5 个月"</td>
+<td>⚠️ <strong>部分</strong>：仓库是 llm-compressor fork（Apache-2.0，pushed 2026-08-02，≈3.6 个月未更新），树中有 nvfp4 文档/示例，但未见 RWKV 专属保护清单；需看分支/PR 才能核实</td>
+</tr>
+<tr>
+<td>"RL 共 7 处实现，只有 1 处有分数"</td>
+<td>⚠️ 口径问题：<code>llm-compressor-rwkv</code> 是<strong>量化压缩</strong>不是 RL；准确说是 6 处 RL 实现（skyrl-rwkv、lightning_cuda 在线 RL、lightning_grpo、verl-rwkv、antidoom-rwkv、RL-Search-R1）+ 1 处量化。另：<strong>我们自己的 DAPO/SAO 也是公开 RL 数字</strong>（数学，非 agentic）</td>
+</tr>
+<tr>
+<td>"123213213weqw 的 Venturi / rwkv-agent ★9"</td>
+<td>⚠️ <strong>无法核实</strong>：该账号 2026-11-20 起公开 GitHub 404（此前 XHarness 同样 404）；相关仓库可能转私有/删号</td>
+</tr>
+<tr>
+<td>"36 个跟踪 → 加 4 个到 40"</td>
+<td>这是外部文档口径；我们的 <code>tracking/repos.txt</code> 已有 70 条（39 个 rwkv-rs org 仓 + 外部仓），新增后约 85 条，仍在可维护范围</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_2"><a class="toclink" href="#_2">四、建议加入我们基线的清单</a></h2>
+<table>
+<thead>
+<tr>
+<th>优先级</th>
+<th>仓库</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>P1</strong></td>
+<td><code>No-22-Github/rwkv-harbor-scratch</code></td>
+<td>唯一公开 Terminal-Bench 绝对跑分（0 分区间），是"agent 能力差距"的硬证据</td>
+</tr>
+<tr>
+<td><strong>P1</strong></td>
+<td><code>No-22-Github/RWKV-RL-Search-R1</code></td>
+<td>唯一公开 agentic RL 数字（0.407），可作我们 RL 对照</td>
+</tr>
+<tr>
+<td><strong>P1</strong></td>
+<td><code>Big-dreamer-creator/helicopter</code></td>
+<td>Helicopter 框架公开（无榜单数据），验证"榜单曾计划"的判断</td>
+</tr>
+<tr>
+<td>P2</td>
+<td><code>Alic-Li/rwkv_lightning_grpo</code></td>
+<td>state-only GRPO，成本极低的 RL 路线参考</td>
+</tr>
+<tr>
+<td>P2</td>
+<td><code>Alic-Li/rwkv_lightning_xdna</code></td>
+<td>NPU 后端（端侧推理）</td>
+</tr>
+<tr>
+<td>P2</td>
+<td><code>TimeMobius/QueQiao-Router</code></td>
+<td>生产部署/路由层（★57，Apache-2.0）</td>
+</tr>
+<tr>
+<td>P3</td>
+<td><code>Alic-Li/Mini_RWKV_7</code>（★95）、<code>No-22-Github/Preen</code>、<code>Beortext/RWKV-DeepEmbed-mmap</code>、<code>No-22-Github/RWKV-Agent(_Lite)</code>、<code>rwkv-tokenizer-go</code>、<code>TimeMobius/Infinite_Lake</code></td>
+<td>社区/领域/数据侧参考</td>
+</tr>
+</tbody>
+</table>
+<p><strong>许可注意</strong>：harbor-scratch / RL-Search-R1 / rwkv-skills / helicopter / rwkv-cc / Infinite_Lake / 123213213weqw 系
+均<strong>无 LICENSE</strong>（只能引用，不可复用）；<code>rwkv_lightning_grpo</code>、<code>xdna</code>、<code>Mini_RWKV_7</code>、<code>DeepEmbed</code>、<code>QueQiao</code>、
+<code>AUTODECO</code>、<code>Albatross</code> 为 Apache-2.0（可参考复用，仍需遵守署名）。</p>
+<h2 id="_3"><a class="toclink" href="#_3">五、引用</a></h2>
+<ul>
+<li>harbor-scratch: https://github.com/No-22-Github/rwkv-harbor-scratch （results: docs/results/README.md）</li>
+<li>rwkv-skills: https://github.com/rwkv-rs/rwkv-skills</li>
+<li>RWKV-RL-Search-R1: https://github.com/No-22-Github/RWKV-RL-Search-R1</li>
+<li>rwkv_lightning_grpo / xdna: https://github.com/Alic-Li/rwkv_lightning_grpo / <code>rwkv_lightning_xdna</code></li>
+<li>RWKV-AUTODECO: https://github.com/rwkv-rs/RWKV-AUTODECO</li>
+<li>helicopter fork: https://github.com/Big-dreamer-creator/helicopter</li>
+<li>QueQiao-Router: https://github.com/TimeMobius/QueQiao-Router</li>
+<li>Mini_RWKV_7: https://github.com/Alic-Li/Mini_RWKV_7</li>
+</ul></div></article>
+<footer class="foot">Generated from the repository Markdown sources · <a href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">source on GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>

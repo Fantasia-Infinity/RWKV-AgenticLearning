@@ -199,3 +199,14 @@ API 有限流风险（未认证 60/h）；优先 `GET /repos/<owner>/<repo>/pull
 - **新仓**：`cgisky1980/rwkv-rsv`（MIT，Rust+Vulkan RWKV-7 推理运行时，★4）——license-clean，可作公开复现参考。
 - **FlashRWKV2 0.2.0a1** 已发 PyPI（2026-11-19T20:42Z）；四个仓库 open PR 全部清零；
   serving 默认 FP16 state，但训练/rollout/eval 用 FP32 state 复现 logprobs。
+### 2026-11-20 漏库审计登记（追加）
+- **Helicopter 修正**：`w1c2j3/helicopter` 404，但社区 fork **`Big-dreamer-creator/helicopter` 公开存在**
+  （★0，无 LICENSE，2026-07-09 建，pushed 2026-08-10；infer/takeoff/install 框架，**无公开榜单数据**）。
+  旧结论"Helicopter 公开不存在"应改为"框架 fork 存在，scoreboard 数据未发布"。
+- **唯一公开 agent 绝对分**：`No-22-Github/rwkv-harbor-scratch` 的 Terminal-Bench 2.0 结果
+  **hello-world 1/1 / easy 0/4 / sample 0/8（有效 8/10）**；7.2B g1k + lightning W7900 + x86 模拟，不可直接外推。
+- **唯一公开 agentic RL 数字**：`No-22-Github/RWKV-RL-Search-R1` 最好 **0.407**（目标 0.45 未达）。
+- **未核实说法**：Big-dreamer lm-eval fork 的"16 个 EvalScope coding 迁移"（树中未见）；llm-compressor-rwkv 的
+  "8000 行 NVFP4 + RWKV 保护清单"（只确认 fork + nvfp4 文档 + 08-02 后停更）；`123213213weqw` 账号 404。
+- **许可**：harbor-scratch / RL-Search-R1 / rwkv-skills / helicopter / rwkv-cc 无 LICENSE（只引用）；
+  rwkv_lightning_grpo / xdna / Mini_RWKV_7 / DeepEmbed / QueQiao / AUTODECO / Albatross 为 Apache-2.0。

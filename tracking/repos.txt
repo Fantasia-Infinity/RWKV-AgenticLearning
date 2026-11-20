@@ -46,7 +46,7 @@ rwkv-rs/wandb-rs
 rwkv-rs/wx-cli
 
 # ===== 个人关键基建（bus factor 高，需盯许可证/活跃度/是否公开分数）=====
-w1c2j3/helicopter
+w1c2j3/helicopter  # 404；社区 fork Big-dreamer-creator/helicopter 公开存在（★0，无 LICENSE，2026-07-09 建，pushed 2026-08-10；infer/takeoff/install 框架，reports 仅性能 handoff，无公开榜单数据）
 # 待核实后加入: w1c2j3/RWKV-SearchReader, w1c2j3/Gsm8k_rwkv, w1c2j3/rwkv-gepa-distill
 
 # ===== 2026-11-06 新增：v8/ROSA 前沿（趋势层，非当前执行栈）=====
@@ -100,3 +100,22 @@ rwkv-org/F-rwkv  # 2026-11-15 仍只有 LICENSE（11357B）；空壳
 
 # ===== 2026-11-20 官方 Agent 专场披露的新仓库 =====
 cgisky1980/rwkv-rsv  # MIT；Ai00-X 的 Rust+Vulkan/CUDA RWKV-7 推理运行时（★4，2026-08-07 建；3B 3.2GB 显存，2080Ti B=128 1039 tok/s）
+
+# ===== 2026-11-20 漏库审计补齐（P1/P2/P3） =====
+No-22-Github/rwkv-harbor-scratch  # 无 LICENSE；Terminal-Bench 2.0 唯一公开跑分：hello-world 1/1、easy 0/4、sample 0/8（有效 8/10；7.2B g1k + lightning on W7900）
+No-22-Github/RWKV-RL-Search-R1  # 无 LICENSE；2.9B Search-R1：SFT→GRPO→Dr.GRPO→RAFT，最好 0.407（目标 0.45 未达）；唯一公开 agentic RL 数字
+Alic-Li/rwkv_lightning_grpo  # Apache-2.0；state-only 在线 GRPO（rollout→远程 Qwen Judge→GRPO/BPTT，仅更新 FP32 initial WKV state）
+Alic-Li/rwkv_lightning_xdna  # Apache-2.0；Ryzen AI NPU (XDNA) C++17 后端
+Alic-Li/Mini_RWKV_7  # Apache-2.0 ★95；34.2M 参数 Mini_RWKV_V7_LM
+Alic-Li/rwkv-mobile  # 无 LICENSE；多后端移动端推理
+Alic-Li/rwkvcn-docs  # 无 LICENSE；RWKV 官方中文文档
+Alic-Li/RWKV_Qbot  # 无 LICENSE；RWKV 官方 QQ 机器人
+No-22-Github/Preen  # Apache-2.0 ★6；Mac MLX state tuning
+No-22-Github/RWKV-Agent  # 无 LICENSE ★4；Go+MLX 工作区 agent（568 题/LoopGuard）
+No-22-Github/RWKV_Agent_Lite  # ★1；RWKV-Agent 精简版
+No-22-Github/rwkv-tokenizer-go  # Apache-2.0；纯 Go RWKV tokenizer（v5/v6+）
+Beortext/RWKV-DeepEmbed-mmap  # Apache-2.0 ★3；RWKV-v7s DeepEmbed 逐层载入
+TimeMobius/QueQiao-Router  # Apache-2.0 ★57；LLM 智能路由网关（Rust/Axum）
+TimeMobius/Infinite_Lake  # 无 LICENSE ★52；预训练/微调数据湖架构
+Big-dreamer-creator/helicopter  # 无 LICENSE ★0；Helicopter 框架 fork（infer vLLM/takeoff verl），无公开榜单数据
+Big-dreamer-creator/lm-evaluation-harness-rwkv  # 社区 fork；"EvalScope coding 16 benchmarks" 说法未在本仓树中验证

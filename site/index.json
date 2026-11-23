@@ -1,7 +1,7 @@
 {
   "site": "RWKV-AgenticLearning · 报告站",
   "repo": "https://github.com/Fantasia-Infinity/RWKV-AgenticLearning",
-  "built": "2026-11-20T17:13:44.040611+00:00",
+  "built": "2026-11-23T15:28:55.110970+00:00",
   "reports": [
     {
       "rel": "README.md",
@@ -9,7 +9,7 @@
       "title": "RWKV-AgenticLearning",
       "category": "项目",
       "date": "",
-      "chars": 16287
+      "chars": 16595
     },
     {
       "rel": "ROADMAP.md",
@@ -170,6 +170,14 @@
       "category": "核心报告",
       "date": "2026-11-20",
       "chars": 4508
+    },
+    {
+      "rel": "reports/2026-11-23-weekly-verification.md",
+      "html": "reports/2026-11-23-weekly-verification.html",
+      "title": "2026-11-23 周检核验：8 项信号全未新增触发，但 6 条新变化在清单之外",
+      "category": "核心报告",
+      "date": "2026-11-23",
+      "chars": 4532
     },
     {
       "rel": "reports/EVIDENCE.md",

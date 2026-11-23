@@ -3,7 +3,7 @@
 # 维护约定: rwkv-rs 组织全量仓库必须在此(2026-11-05 校准为 30 个)
 
 # ===== L2 训练 / RL =====
-rwkv-rs/skyrl-rwkv
+rwkv-rs/skyrl-rwkv  # 官方 RL 算法线；rwkv 配方 env_class 仅 gsm8k/ultradata/aime（无多轮工具 env）；TLPO 0 命中
 rwkv-rs/vllm-rwkv | rwkv  # 2026-11-20 open=0（0.2.0a1 适配/FP16 state/去 runtime tuning 已合并）
 rwkv-rs/verl-rwkv
 rwkv-rs/torchtitan-rwkv-old  # 2026-11-15 确认更名（原 torchtitan-rwkv 404）；TorchTitan 路线退役，规模化转 Megatron-Bridge；BSD-3-Clause
@@ -60,7 +60,7 @@ KakaruHayate/RWKV8-ROSA-FPGA
 aabbdev/rosa
 
 # ===== 新增：推理/客户端侧关键单点 =====
-Alic-Li/rwkv_lightning_cuda  # 无 LICENSE；2026-11-18 #25(inference scratch/state-copy) merged 07:35Z；#26(packed BF16 training) open；11-14 quant 重构 W8A16+SB6 W4/W6
+Alic-Li/rwkv_lightning_cuda  # 无 LICENSE；2026-11-23 #27 merged（多轮 end_target:0、弹性多机 NCCL DP、packed BF16/NoRA、DP tune servers）；#26 closed 被 #27 取代；#25 merged；11-14 quant 重构 W8A16+SB6
 RWKV-APP/RWKV_APP
 
 # ===== 2026-11-06 新增（官方目录扫描）：训练适配 / 官方 org =====
@@ -99,7 +99,7 @@ rwkv-rs/wx-cli  # Apache-2.0；WeChat local data CLI
 rwkv-org/F-rwkv  # 2026-11-15 仍只有 LICENSE（11357B）；空壳
 
 # ===== 2026-11-20 官方 Agent 专场披露的新仓库 =====
-cgisky1980/rwkv-rsv  # MIT；Ai00-X 的 Rust+Vulkan/CUDA RWKV-7 推理运行时（★4，2026-08-07 建；3B 3.2GB 显存，2080Ti B=128 1039 tok/s）
+cgisky1980/rwkv-rsv  # MIT；Ai00-X 的 Rust+Vulkan/CUDA RWKV-7 推理运行时（★4；3B 3.2GB）；2026-11-21 深度循环 post-hoc No-Go（PPL +14% 起，state 6.49MB 与 L 无关）
 
 # ===== 2026-11-20 漏库审计补齐（P1/P2/P3） =====
 No-22-Github/rwkv-harbor-scratch  # 无 LICENSE；Terminal-Bench 2.0 唯一公开跑分：hello-world 1/1、easy 0/4、sample 0/8（有效 8/10；7.2B g1k + lightning on W7900）

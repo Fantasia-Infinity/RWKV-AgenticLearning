@@ -210,3 +210,13 @@ API 有限流风险（未认证 60/h）；优先 `GET /repos/<owner>/<repo>/pull
   "8000 行 NVFP4 + RWKV 保护清单"（只确认 fork + nvfp4 文档 + 08-02 后停更）；`123213213weqw` 账号 404。
 - **许可**：harbor-scratch / RL-Search-R1 / rwkv-skills / helicopter / rwkv-cc 无 LICENSE（只引用）；
   rwkv_lightning_grpo / xdna / Mini_RWKV_7 / DeepEmbed / QueQiao / AUTODECO / Albatross 为 Apache-2.0。
+### 2026-11-23 周检登记（追加）
+- **8 项信号全未新增触发**：skyrl-rwkv env_class 仅 gsm8k/ultradata/aime、TLPO 0 命中；wkvm ★359 无 LICENSE（push 09-10）；
+  Joluck/RWKV-PEFT（→ JL-er）停在 2026-10-22；OpenMOSE 58 模型无 G1；RWKV-LM 仅 README 更新。
+- **清单外的关键变化**：lightning #27 合并（多轮 end_target:0 + 弹性多机 NCCL DP；#26 被取代）；
+  rwkv-rsv 深度循环 post-hoc No-Go（PPL +14.0% 起；state 6,488,064B 与 L 无关）。
+- **信号框架重构**：从"以 skyrl-rwkv 为唯一入口"改为**七条独立线**：算法/框架、引擎/在线 RL、state-only RL、
+  agentic RL（Search-R1）、评测/榜单（skills/harbor/browsecomp）、数据/训练基础设施、推理/部署。
+  今后任何"官方 RL 进展"判断必须七线并查，禁止只看 skyrl-rwkv。
+- **口径**：end_target 修的是"标签侧"（EOS/state 污染），不等于多轮工具 RL 的 advantage 方案；
+  我们的 P3 负结果仍是公开多轮工具 RL 的唯一证据。

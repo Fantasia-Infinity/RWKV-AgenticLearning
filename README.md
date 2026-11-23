@@ -8,7 +8,7 @@
 
 ## Why this exists
 
-RWKV's **single-turn RLVR is mature** (official `skyrl-rwkv`: GRPO/DAPO/CISPO/SAO/OPD/Anti-Doom, async RLVR, reward-checked math; published recipe-level gains). **Multi-turn agentic RL** — tool-using episodes, per-token log-probs across turns, episode-level training with stable state — remains the public gap: prior public RWKV agent scores are **SFT adapters**, not RL.
+RWKV's **single-turn RLVR is mature** (official `skyrl-rwkv`: GRPO/DAPO/CISPO/SAO/OPD/Anti-Doom, async RLVR, reward-checked math; published recipe-level gains). **Multi-turn agentic RL** — tool-using episodes, per-token log-probs across turns, episode-level training with stable state — remains the public gap: prior public RWKV agent scores are **mostly SFT adapters**; the few RL/benchmark data points are No.22's Search-R1 **0.407** and Terminal-Bench 2.0 **0/8**, still with no standard multi-turn tool benchmark coverage.
 
 This repository does three things:
 
@@ -56,7 +56,7 @@ machine-readable: [`reports/data/2026-11-10-summary.json`](reports/data/2026-11-
 1. **The ecosystem map was incomplete.** `rwkv-rs` alone has **39 public repositories** (as of 2026-11-18; `torchtitan-rwkv` → `torchtitan-rwkv-old` in November, training mainline moved to `Megatrwkv-Bridge`). A previous audit missed 30 of them.
 2. **"No agentic models, no scores" is partly wrong.** The official `rwkv-agent-eval` released a 1,019-question multi-turn agent exam in November (SFT/NoRA adapters: base 30.9% → 52.8%, later **58.7** with more SFT data — still **SFT, not RL**; repository has **no LICENSE**). Outside the org, `No-22-Github/RWKV-Agent` publishes a 568-question exam with numbers.
 3. **The official position is nuanced**: the official org does not train agentic RL itself, but it standardized the agentic interface (chat templates, tools, DSH plugin tutorial) and delegates practice to the community.
-4. **What is still blank**: public multi-turn **agentic RL** training recipes/results (our P3 is the only public negative evidence), public RWKV scores on standard agent benchmarks (BrowseComp-Plus / τ-bench / BFCL), and a state-native rollout layer.
+4. **What is still blank**: public multi-turn **tool-use RL** results on standard benchmarks (our P3 is still the only public negative evidence; the label-side `end_target: 0` fix landed in `rwkv_lightning_cuda` #27, but no multi-turn tool-RL result exists), public RWKV scores on τ-bench / BFCL / SWE-bench (only Terminal-Bench 2.0 0/8 and Search-R1 0.407 are public), and a state-native rollout layer.
 5. **The audit corrected 12 factual claims** (vLLM pin, wkvm `live-migrate`, Megatron 28B evidence, missing Helicopter scoreboard, …). Full table in [`reports/2026-11-05-verification.md`](reports/2026-11-05-verification.md); weekly deltas in `reports/2026-11-*.verified-update.md`.
 
 ## Repository layout

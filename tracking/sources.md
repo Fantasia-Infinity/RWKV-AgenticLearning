@@ -220,3 +220,14 @@ API 有限流风险（未认证 60/h）；优先 `GET /repos/<owner>/<repo>/pull
   今后任何"官方 RL 进展"判断必须七线并查，禁止只看 skyrl-rwkv。
 - **口径**：end_target 修的是"标签侧"（EOS/state 污染），不等于多轮工具 RL 的 advantage 方案；
   我们的 P3 负结果仍是公开多轮工具 RL 的唯一证据。
+### 2026-11-28 新模型调查登记（RWKV-Agent-Lab）
+- HF 组织 `RWKV-Agent-Lab`（"RWKV Agent Lab"，**isVerified=false**，4 members / 2 models / 2 datasets）：
+  - `RWKV7-Agent-7.2B-OpenSource`（Apache-2.0）：4×14.4GB BF16（Agent v0.1 / Pi Anneal v0.1 / Pi v0.1-final / **Pi v0.2=Line-Edit v2+DAgger**）+ 2×7.69GB W8A16 + engine v1.8.15 zip + 一键部署；整包 ≈76GB
+  - `RWKV7-DSH-7.2B`（Apache-2.0）：302MB NoRA r64 adapter（对 g1l-7.2b-20261031 提取，98.71% SVD energy）；含评测：
+    私有 PB-20261120-200-Coding 13.96%→36.42%→**49.04%**（base→stage1→DSH，3.51×）；公开 Harbor：HumanEvalFix 48.78%、
+    EditBench-zh 22.22%、EditBench en 17.59%、QuixBugs 5.0%、Aider Polyglot 4.44%
+  - slide 上的三个单仓（RWKV7-Agent-7.2B / Pi-7.2B-Anneal / Pi-7.2B）**均 401（私有/gated）**，权重经 bundle 公开
+  - 数据集：`rwkv-pi-cot-trajectories-20261117`（31,346 条，CC-BY-4.0）、`rwkv-pi-bad-cases-20261118`（100 条，Apache-2.0）
+- `w1c2j3/rwkv-pi`：**无 LICENSE**，TypeScript，code-only（私有数据/评测不进仓）；v0.2 于 11-27 成为默认（line-edit）。
+- **口径**：这是 7.2B 的 **SFT/anneal/DAgger** 家族，**不是 RL**；"3×+"来自私有 DSH benchmark，公开绝对分仍低
+  （Aider 4.44%、QuixBugs 5.00%），不能当作公开可复现结论。

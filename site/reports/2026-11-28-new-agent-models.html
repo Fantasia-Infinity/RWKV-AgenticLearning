@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026-11-28 新模型调查：RWKV-Agent-Lab 的 7.2B Agent 家族 · RWKV-AgenticLearning · 报告站</title>
+<link rel="stylesheet" href="../assets/style.css">
+
+</head>
+<body>
+<header class="topbar"><div class="wrap"><a class="brand" href="../index.html">RWKV-AgenticLearning · 报告站</a>
+<span class="built">built 2026-11-28 13:25 UTC</span></div></header>
+<div class="layout wrap">
+<nav class="sidebar"><a href="../index.html">首页</a>
+<span class="nav-cat">核心报告</span>
+<a href="../reports/2026-11-28-new-agent-models.html" class="active">2026-11-28 新模型调查：RWKV-Agent-Lab 的 7.2B Agent 家族</a>
+<a href="../reports/2026-11-23-weekly-verification.html">2026-11-23 周检核验：8 项信号全未新增触发，但 6 条新变化在清单之外</a>
+<a href="../reports/2026-11-20-verified-update.html">2026-11-20 生态核验更新：官方 RWKV Agent 专场（11-26）+ FlashRWKV2 0.2.0a1 一夜迁移</a>
+<a href="../reports/2026-11-20-missed-repos-audit.html">2026-11-20 漏库审计核验：评测/RL/推理/数据四层补课</a>
+<a href="../reports/2026-11-18-verified-update.html">2026-11-18 生态核验更新：any2rwkv 首个外部 PR、FlashRWKV2 0.2.0a1 迁移栈</a>
+<a href="../reports/2026-11-17-verified-update.html">2026-11-17 生态核验更新：w1c2j3 状态管理 PR 集中提交 / XHarness 无法核实 / 编辑接口双解法</a>
+<a href="../reports/2026-11-15-verified-update.html">2026-11-15 生态核验更新：量化重构、torchtitan 退役与 39 仓清单</a>
+<a href="../reports/2026-11-12-verified-update.html">2026-11-12 生态核验更新：SFT 数据打分的 58.7，以及 eval harness 三条 open PR</a>
+<a href="../reports/2026-11-12-sao-gsm8k.html">SAO (critic-based RL) on GSM8K for RWKV-7 G1l-1.5B</a>
+<a href="../reports/2026-11-12-dapo-vs-sao-strict.html">DAPO vs SAO: strict matched comparison (GSM8K, G1l-1.5B)</a>
+<a href="../reports/2026-11-11-verified-update.html">2026-11-11 生态核验更新（irwkv 两块能力 + FlashRWKV2 a19）</a>
+<a href="../reports/2026-11-10-verified-update.html">2026-11-10 生态核验更新（含对日检摘要的修正）</a>
+<a href="../reports/2026-11-10-rl-results-summary.html">RWKV-7 G1l-1.5B agentic RL: consolidated results (2026-11-08 → 2026-11-12)</a>
+<a href="../reports/2026-11-10-dapo-gsm8k-rlvr.html">DAPO on GSM8K for RWKV-7 G1l-1.5B: positive RLVR result (avg@4 +10pp)</a>
+<a href="../reports/2026-11-09-verified-update.html">2026-11-09 核验：rwkvlightningcuda 在线 RL server 与生态空白修正</a>
+<a href="../reports/2026-11-07-agent-eval-methodology-review.html">方法评述：首批公开 RWKV 多轮 Agent 评测（rwkv-agent-eval，2026-11-07）</a>
+<a href="../reports/2026-11-06-ecosystem-update.html">RWKV 生态更新（2026-11-06）：helicopter、v8/ROSA 前沿、贡献者活跃度分层</a>
+<a href="../reports/2026-11-05-verification.html">RWKV 生态核验报告（2026-11-05 接续 session）</a>
+<span class="nav-cat">专题报告</span>
+<a href="../reports/state/evidence/CITATIONS.html">Evidence citations — state/</a>
+<a href="../reports/state/REPORT.html">状态层（wkvm）与规模化（RWKV-Megatron）、Helicopter 踪迹 —— 核验报告</a>
+<a href="../reports/skyrl/evidence/CITATIONS.html">Evidence citations — skyrl/</a>
+<a href="../reports/skyrl/evidence/00-env.html">环境与时间快照</a>
+<a href="../reports/skyrl/REPORT.html">skyrl-rwkv 深度核验报告（任务 task-1）</a>
+<a href="../reports/eco/evidence/CITATIONS.html">Evidence citations — eco/</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-promptformat-excerpts.html">Evidence: rwkv.cn /tutorials/basic/Prompt-Format</a>
+<a href="../reports/eco/evidence/09-official/rwkv.cn-lightning-excerpts.html">Evidence: rwkv.cn /tutorials/intermediate/rwkvlightning</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/models-rwkv-README.html">RWKV Native Model Templates</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/examples-rwkv_trainer-config-README.html">RWKV MaxRL configuration</a>
+<a href="../reports/eco/evidence/04-verl-rwkv/engine-rwkv_lm-README.html">Native rwkv-lm Engine</a>
+<a href="../reports/eco/REPORT.html">RWKV 生态增量/遗漏核验报告（task-3 / eco-delta）</a>
+<a href="../reports/EVIDENCE.html">Evidence — policy, layout, and how to re-verify</a>
+<span class="nav-cat">文档</span>
+<a href="../docs/ecosystem-review-2026-11-05.html">The RWKV ecosystem for agentic RL — a verified review (2026-11-05)</a>
+<a href="../docs/methodology.html">Methodology — how claims in this repository are produced and checked</a>
+<span class="nav-cat">项目</span>
+<a href="../THIRD_PARTY_NOTICES.html">Third-party notices</a>
+<a href="../ROADMAP.html">ROADMAP — RWKV agentic RL</a>
+<a href="../index.html">RWKV-AgenticLearning</a>
+<a class="ext" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">GitHub ↗</a></nav>
+<main class="content">
+<article class="report">
+<div class="crumb"><a href="../index.html">首页</a> / reports/2026-11-28-new-agent-models.md</div>
+<h1 class="report-title">2026-11-28 新模型调查：RWKV-Agent-Lab 的 7.2B Agent 家族</h1>
+<div class="meta"><span class="badge">核心报告</span><span class="badge date">2026-11-28</span><a class="src" href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning/blob/main/reports/2026-11-28-new-agent-models.md" target="_blank" rel="noopener">Markdown 源文件 ↗</a></div><details class="toc-box" open><summary>目录</summary><div class="toc">
+<ul>
+<li><a href="#0">0. 图像 ↔ 实际公开状态</a></li>
+<li><a href="#1-bundle-rwkv7-agent-72b-opensource">1. 公开 bundle 内容（RWKV7-Agent-7.2B-OpenSource）</a></li>
+<li><a href="#2-dsh-rwkv7-dsh-72b">2. DSH 线：RWKV7-DSH-7.2B（带公开评测）</a><ul>
+<li><a href="#k1-max_steps30-auto-fold-v2-tolerant">评测（模型卡原文，k=1, max_steps=30, auto-fold v2 + tolerant）</a></li>
+</ul>
+</li>
+<li><a href="#3-w1c2j3rwkv-pi">3. w1c2j3/rwkv-pi（客户端）</a></li>
+<li><a href="#4-rwkv-agent-lab">4. 公开数据集（RWKV-Agent-Lab）</a></li>
+<li><a href="#5">5. 判断与对我们的影响</a><ul>
+<li><a href="#51">5.1 是什么 / 不是什么</a></li>
+<li><a href="#52">5.2 与我们的实验对照</a></li>
+<li><a href="#53">5.3 待观察</a></li>
+</ul>
+</li>
+<li><a href="#_1">六、引用</a></li>
+</ul>
+</div>
+</details><div class="md-body"><h1 id="2026-11-28-rwkv-agent-lab-72b-agent"><a class="toclink" href="#2026-11-28-rwkv-agent-lab-72b-agent">2026-11-28 新模型调查：RWKV-Agent-Lab 的 7.2B Agent 家族</a></h1>
+<blockquote>
+<p>调查时间：2026-11-28 14:30–16:00 CET。来源：HuggingFace API/raw、GitHub API/raw、rwkv.cn API。
+触发：11-26 RWKV Agent 专场 slide（chase 线）列出的 3 个 HF 模型 + rwkv-pi / rwkv_lightning_cuda。</p>
+</blockquote>
+<h2 id="0"><a class="toclink" href="#0">0. 图像 ↔ 实际公开状态</a></h2>
+<p>slide 列出的三个模型：</p>
+<table>
+<thead>
+<tr>
+<th>slide 名称</th>
+<th>slide 描述</th>
+<th>2026-11-28 实际状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RWKV7-Agent-7.2B</code></td>
+<td>多源开智通用底座</td>
+<td>单仓 <strong>401（私有/gated）</strong>；权重在公开 bundle 中：<code>RWKV7-Agent-7.2B-v0.1.pth</code></td>
+</tr>
+<tr>
+<td><code>RWKV7-Pi-7.2B-Anneal</code></td>
+<td>同框架契约退火权重</td>
+<td>单仓 <strong>401</strong>；权重：<code>RWKV7-Pi-7.2B-Anneal-v0.1.pth</code></td>
+</tr>
+<tr>
+<td><code>RWKV7-Pi-7.2B</code></td>
+<td>rwkv-pi 强化发布版 · 开箱即用</td>
+<td>单仓 <strong>401</strong>；权重：<code>RWKV7-Pi-7.2B-v0.1-final.pth</code>（legacy）+ <strong>v0.2</strong>（11-27 新增，推荐）</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>公开分发仓</strong>：<code>RWKV-Agent-Lab/RWKV7-Agent-7.2B-OpenSource</code>（created 2026-11-26T11:22Z，<strong>Apache-2.0</strong>）</li>
+<li><strong>另一公开仓</strong>：<code>RWKV-Agent-Lab/RWKV7-DSH-7.2B</code>（created 11-26T11:20Z，<strong>Apache-2.0</strong>，NoRA r64 adapter）</li>
+<li>HF 组织 <code>RWKV-Agent-Lab</code>（"RWKV Agent Lab"）：<strong>未认证（isVerified=false）</strong>，4 members / 2 models / 2 datasets；
+  <strong>不是官方 RWKV 组织</strong>，应视为 chase 线的工作组</li>
+<li>rwkv.cn 尚未发直播回顾（最新仍为 11-19 的 #23423445 预告）</li>
+</ul>
+<h2 id="1-bundle-rwkv7-agent-72b-opensource"><a class="toclink" href="#1-bundle-rwkv7-agent-72b-opensource">1. 公开 bundle 内容（<code>RWKV7-Agent-7.2B-OpenSource</code>）</a></h2>
+<p>模型卡：<strong>所有 <code>.pth</code> 都是 standalone merged BF16 权重</strong>（无需外挂 LoRA/NoRA），家族谱系：</p>
+<div class="codehilite"><pre><span></span><code>RWKV7-Agent-7.2B-v0.1.pth                  (Shared General-Purpose Agent Foundation)
+├── RWKV7-Pi-7.2B-Anneal-v0.1.pth          (Pi Coding — Post-SFT Annealed)
+│   └── RWKV7-Pi-7.2B-v0.1-final.pth       (Pi Coding — legacy oldText/newText edit)
+└── RWKV7-DSH-7.2B-Anneal-*.pth            (DSH Deep-Search — Annealed; 由 DSH track 上传)
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>精度</th>
+<th>大小</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RWKV7-Agent-7.2B-v0.1.pth</code></td>
+<td>BF16</td>
+<td><strong>14.40 GB</strong></td>
+<td>通用多轮工具使用/推理底座</td>
+</tr>
+<tr>
+<td><code>RWKV7-Pi-7.2B-Anneal-v0.1.pth</code></td>
+<td>BF16</td>
+<td>14.40 GB</td>
+<td>高信号 post-SFT 退火编码 agent</td>
+</tr>
+<tr>
+<td><code>RWKV7-Pi-7.2B-v0.1-final.pth</code></td>
+<td>BF16</td>
+<td>14.40 GB</td>
+<td>旧编辑协议（<code>RWKV_EDIT_MODE=text</code>），已被 v0.2 取代</td>
+</tr>
+<tr>
+<td><strong><code>RWKV7-Pi-7.2B-v0.2.pth</code></strong></td>
+<td>BF16</td>
+<td>14.40 GB</td>
+<td><strong>推荐</strong>：Line-Edit v2 + DAgger（<code>RWKV_EDIT_MODE=line</code>）</td>
+</tr>
+<tr>
+<td><code>RWKV7-Pi-7.2B-v0.1-final.w8a16.rwkvq</code></td>
+<td>W8A16</td>
+<td><strong>7.69 GB</strong></td>
+<td>旧版量化</td>
+</tr>
+<tr>
+<td><strong><code>RWKV7-Pi-7.2B-v0.2.w8a16.rwkvq</code></strong></td>
+<td>W8A16</td>
+<td><strong>7.69 GB</strong></td>
+<td><strong>12–16 GB 显卡推荐</strong>（rwkv_lightning_cuda 原生 <code>.rwkvq</code>）</td>
+</tr>
+<tr>
+<td><code>engine/rwkv-lightning-v1.8.15-*.zip</code></td>
+<td>—</td>
+<td>2.72 GB 合计</td>
+<td>Linux/Windows × CUDA 12.9/13.2（作者许可再分发）</td>
+</tr>
+<tr>
+<td><code>quickstart-linux.sh</code> / <code>quickstart-windows.ps1</code></td>
+<td>—</td>
+<td>小</td>
+<td>一键部署（自动选 W8A16/BF16、注册 pi/rwkv-engine/rwkv-demos）</td>
+</tr>
+<tr>
+<td><code>rwkv-pi-demos.*</code>、<code>rwkv_vocab_v20230424.txt</code>、<code>SHA256SUMS.txt</code></td>
+<td>—</td>
+<td>小</td>
+<td>演示与词表</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>整包 ≈<strong>76 GB</strong>（4×14.4 BF16 + 2×7.69 W8A16 + 引擎 2.72 + 杂项）。
+部署要求：显存 ≥12 GB（W8A16 约 8.5 GB 占用，但模型卡/部署文档明确 <strong>量化有精度损失</strong>，显存允许建议 BF16 ≈14.2 GB）。</p>
+</blockquote>
+<h2 id="2-dsh-rwkv7-dsh-72b"><a class="toclink" href="#2-dsh-rwkv7-dsh-72b">2. DSH 线：<code>RWKV7-DSH-7.2B</code>（带公开评测）</a></h2>
+<ul>
+<li><strong><code>RWKV7-DSH-7.2B-v0.1-adapter-r64.pth</code>：302.2 MB NoRA r64</strong>（BF16），对公开基模
+  <code>rwkv7-g1l-7.2b-20261031-ctx34304</code> 提取：<strong>98.71% SVD energy 保留、0 个非目标 tensor diff</strong>；
+  可热加载到 <code>rwkv_lightning_cuda</code>（BF16 或 W8A16 base）</li>
+<li>谱系：<code>g1l-7.2b-20261031</code> → <code>RWKV7-Agent-7.2B</code>（Stage 1 A-D）→ <code>RWKV7-DSH-7.2B</code>（本 adapter）</li>
+</ul>
+<h3 id="k1-max_steps30-auto-fold-v2-tolerant"><a class="toclink" href="#k1-max_steps30-auto-fold-v2-tolerant">评测（模型卡原文，<code>k=1</code>, <code>max_steps=30</code>, auto-fold v2 + tolerant）</a></h3>
+<p><strong>私有长程 benchmark <code>PB-20261120-200-Coding</code>（200 题 / 2000 分）</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>模型</th>
+<th style="text-align: right;">总分 / 2000</th>
+<th style="text-align: right;">得分率</th>
+<th style="text-align: right;">PB-100-Edit</th>
+<th style="text-align: right;">git-eval-35</th>
+<th style="text-align: right;">wspill-30</th>
+<th style="text-align: right;">codefix-15</th>
+<th style="text-align: right;">cf-eval-20</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rwkv7-g1l-7.2b-20261031</code>（base）</td>
+<td style="text-align: right;">279.16</td>
+<td style="text-align: right;"><strong>13.96%</strong></td>
+<td style="text-align: right;">102.50</td>
+<td style="text-align: right;">98.33</td>
+<td style="text-align: right;">61.66</td>
+<td style="text-align: right;">10.00</td>
+<td style="text-align: right;">6.67</td>
+</tr>
+<tr>
+<td><code>RWKV7-Agent-7.2B</code>（stage1abcd）</td>
+<td style="text-align: right;">728.33</td>
+<td style="text-align: right;"><strong>36.42%</strong></td>
+<td style="text-align: right;">273.30</td>
+<td style="text-align: right;">193.34</td>
+<td style="text-align: right;">138.34</td>
+<td style="text-align: right;">90.00</td>
+<td style="text-align: right;">33.33</td>
+</tr>
+<tr>
+<td><strong><code>RWKV7-DSH-7.2B-v0.1</code></strong></td>
+<td style="text-align: right;"><strong>980.83</strong></td>
+<td style="text-align: right;"><strong>49.04%</strong></td>
+<td style="text-align: right;">419.13</td>
+<td style="text-align: right;">243.35</td>
+<td style="text-align: right;">178.33</td>
+<td style="text-align: right;">100.00</td>
+<td style="text-align: right;">40.00</td>
+</tr>
+</tbody>
+</table>
+<p>→ base → DSH <strong>3.51×</strong>（直播说的"3 倍以上"很可能来自这里；但这是 <strong>DSH 线 + 私有 benchmark</strong>，不是 Pi 线的数字）。</p>
+<p><strong>公开 Harbor benchmark（同口径）</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>Benchmark</th>
+<th style="text-align: right;">Tasks</th>
+<th style="text-align: right;">结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HumanEvalFix</td>
+<td style="text-align: right;">164</td>
+<td style="text-align: right;"><strong>80/164 = 48.78%</strong></td>
+</tr>
+<tr>
+<td>EditBench-zh</td>
+<td style="text-align: right;">108</td>
+<td style="text-align: right;"><strong>24/108 = 22.22%</strong>（valid 22.43%）</td>
+</tr>
+<tr>
+<td>EditBench (en)</td>
+<td style="text-align: right;">108</td>
+<td style="text-align: right;"><strong>19/108 = 17.59%</strong>（valid 17.76%）</td>
+</tr>
+<tr>
+<td>QuixBugs</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;"><strong>4/80 = 5.00%</strong></td>
+</tr>
+<tr>
+<td>Aider Polyglot</td>
+<td style="text-align: right;">225</td>
+<td style="text-align: right;"><strong>10/225 = 4.44%</strong>（valid 5.03%）</td>
+</tr>
+</tbody>
+</table>
+<p>→ 相对 base 有明显提升，但<strong>绝对值仍低</strong>（Aider 4.4%、QuixBugs 5%），与 Terminal-Bench 0/8 同一量级的"agent 差距"。</p>
+<h2 id="3-w1c2j3rwkv-pi"><a class="toclink" href="#3-w1c2j3rwkv-pi">3. <code>w1c2j3/rwkv-pi</code>（客户端）</a></h2>
+<ul>
+<li>GitHub：<strong>TypeScript</strong>，created 2026-11-08，pushed <strong>2026-11-27</strong>，<strong>★0，无 LICENSE</strong>（API <code>license: null</code>；仅 <code>templates/LICENSE</code> 为 Apache-2.0 模板许可）</li>
+<li>定位：把 RWKV 接入 Pi coding agent（<code>@earendil-works/pi-coding-agent</code>），Pi 的真实 loop/tools/sessions/terminal 不变，
+  RWKV 通过 <code>rwkv_lightning_cuda</code> 以纯续写模型运行</li>
+<li>关键设计：</li>
+<li><strong>训练/服务逐字节一致</strong>：同一 renderer + engine 原生 tokenizer 打包 SFT 数据（tokenizer 只走 Lightning 原生，不用 HF/irwkv/vLLM）</li>
+<li><strong>Line-Edit v2 + tolerant edit</strong>（v0.2 推荐；旧 v0.1 为 oldText/newText 协议）</li>
+<li>工具 read/write/edit/bash（grep/find/ls 可选）；重复失败/相同调用/单路径连续失败都有 hard limit</li>
+<li>插件：<code>strong-model</code> 教师接管（stall detector）、<code>subagents</code></li>
+<li>harness：真实 Pi + bubblewrap 沙箱；数据管线（Harbor lane、trajectory 打包）</li>
+<li><strong>代码仓只放代码</strong>：README 明确"questions/trajectories/datasets/evaluation reports 留在私有存储"，
+  训练与评测需要私有 artifact；因此 <strong>Pi v0.2 的公开评测数字目前没有</strong>（11-27 commit "report cumulative v0.2 demo pass rates" 的产物也未公开）</li>
+</ul>
+<h2 id="4-rwkv-agent-lab"><a class="toclink" href="#4-rwkv-agent-lab">4. 公开数据集（RWKV-Agent-Lab）</a></h2>
+<table>
+<thead>
+<tr>
+<th>数据集</th>
+<th>内容</th>
+<th>许可</th>
+<th>规模</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rwkv-pi-cot-trajectories-20261117</code></td>
+<td>Qwen/DeepSeek 历史合成轨迹 + CoT-cleaned v2 + CoT-compressed Open-SWE/SI2CA 子集</td>
+<td><strong>CC-BY-4.0</strong></td>
+<td><strong>31,346</strong> 条（29,143 train / 2,203 val）；组成 O2 19,353 + T3 8,524 + T1 1,094 + …</td>
+</tr>
+<tr>
+<td><code>rwkv-pi-bad-cases-20261118</code></td>
+<td>从 37 次 PiRwkv 评测的 3,425 条非能力失败中抽取的 <strong>100 条 bad cases</strong> + Top-7 harness/state/protocol 失败分类</td>
+<td><strong>Apache-2.0</strong></td>
+<td>100 条（坏例 + on-policy repair queue）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="5"><a class="toclink" href="#5">5. 判断与对我们的影响</a></h2>
+<h3 id="51"><a class="toclink" href="#51">5.1 是什么 / 不是什么</a></h3>
+<ul>
+<li><strong>是</strong>：目前公开的<strong>最大规模 RWKV agent 模型族</strong>（7.2B，4 个 BF16 + 2 个 W8A16 checkpoint，含 Pi/DSH 两条线、公开评测卡、一键部署、公开数据集）。</li>
+<li><strong>不是 RL</strong>：训练路线是 SFT → anneal → DAgger（on-policy 纠错，监督式）/ Line-Edit v2；<strong>没有 RLVR/GRPO 结果</strong>。
+  这与此前判断一致：公开 agent 成绩仍以 SFT 类为主。</li>
+<li><strong>"3×+" 的出处</strong>：最接近的是 DSH 私有 benchmark 上 base 13.96% → 49.04%（<strong>3.51×</strong>），但 benchmark 私有、且是 DSH 而非 Pi 线；
+  公开 Harbor 结果（Aider 4.4%、QuixBugs 5%）说明绝对能力仍有限。<strong>不可把 3× 当作公开可复现的 benchmark 结论。</strong></li>
+</ul>
+<h3 id="52"><a class="toclink" href="#52">5.2 与我们的实验对照</a></h3>
+<ol>
+<li><strong>接口方向一致</strong>：Line-Edit v2 + tolerant edit + DAgger，正是我们 P3 负结果指出的"工具接口 + 行为修正数据"路线；
+   我们当时用 answer-only RL 得到 tool-call shortcut，他们用 DAgger/接口改造绕过——两条路线可以互补。</li>
+<li><strong>评测口径</strong>：他们用私有 PB benchmark + Harbor 公开子集；我们 P4 若要对标，应优先选 <strong>Harbor/Terminal-Bench</strong> 类公开任务，
+   避免私有 benchmark 的不可复现问题。</li>
+<li><strong>规模差异</strong>：这是 7.2B（14.4GB/ckpt）的 SFT 模型族；我们 1.5B 的 DAPO/SAO 是 <strong>RL</strong> 结果。两者只在"相对提升"层面可比，
+   不能直接比较绝对分。</li>
+<li><strong>许可</strong>：模型权重 Apache-2.0（可用）；<strong>rwkv-pi 客户端无 LICENSE</strong>（只能读，不能复用代码）；
+   lightning 引擎 zip 是"作者许可再分发"但上游仓库无 LICENSE；trajectories 数据集 CC-BY-4.0（需署名）、bad cases Apache-2.0。</li>
+</ol>
+<h3 id="53"><a class="toclink" href="#53">5.3 待观察</a></h3>
+<ul>
+<li>3 个 slide 模型单仓何时转公开（当前 401），或官方是否会把它们作为独立仓库发布；</li>
+<li>Pi v0.2 的公开评测数字（目前只在私有侧）；</li>
+<li>11-26 直播回顾（rwkv.cn 尚未发）；</li>
+<li>7.2B 模型在 <strong>RL（skyrl/skyrl-rwkv）</strong> 上的后续（目前全是 SFT/DAgger 类）。</li>
+</ul>
+<h2 id="_1"><a class="toclink" href="#_1">六、引用</a></h2>
+<ul>
+<li>Bundle: https://huggingface.co/RWKV-Agent-Lab/RWKV7-Agent-7.2B-OpenSource</li>
+<li>DSH adapter: https://huggingface.co/RWKV-Agent-Lab/RWKV7-DSH-7.2B</li>
+<li>rwkv-pi: https://github.com/w1c2j3/rwkv-pi</li>
+<li>数据集: https://huggingface.co/datasets/RWKV-Agent-Lab/rwkv-pi-cot-trajectories-20261117 ; https://huggingface.co/datasets/RWKV-Agent-Lab/rwkv-pi-bad-cases-20261118</li>
+<li>lightning engine: https://github.com/Alic-Li/rwkv_lightning_cuda</li>
+<li>基模: https://huggingface.co/BlinkDL/rwkv7-g1</li>
+<li>预告（11-26 直播）: https://www.rwkv.cn/news/read/23423445</li>
+</ul></div></article>
+<footer class="foot">Generated from the repository Markdown sources · <a href="https://github.com/Fantasia-Infinity/RWKV-AgenticLearning" target="_blank" rel="noopener">source on GitHub</a></footer>
+</main>
+</div>
+</body>
+</html>

@@ -46,6 +46,7 @@ rwkv-rs/wandb-rs
 rwkv-rs/wx-cli
 
 # ===== 个人关键基建（bus factor 高，需盯许可证/活跃度/是否公开分数）=====
+w1c2j3/rwkv-pi  # TypeScript，无 LICENSE（license=null）；Pi coding agent 的 RWKV 接入；训练/服务同 renderer+原生 tokenizer；Line-Edit v2/DAgger；代码仓只放代码，评测私有；★0（11-08 建，11-27 push）
 w1c2j3/helicopter  # 404；社区 fork Big-dreamer-creator/helicopter 公开存在（★0，无 LICENSE，2026-07-09 建，pushed 2026-08-10；infer/takeoff/install 框架，reports 仅性能 handoff，无公开榜单数据）
 # 待核实后加入: w1c2j3/RWKV-SearchReader, w1c2j3/Gsm8k_rwkv, w1c2j3/rwkv-gepa-distill
 
